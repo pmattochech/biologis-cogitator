@@ -10,6 +10,7 @@ from ... import species_media as media
 from ... import species_profile as speciesmod
 from ...wizard_session import WizardSession
 from ..widgets.header import CogitatorHeader
+from ..widgets.profile_plate import ProfilePlate
 from ..widgets.warn_log import WarnLog
 from . import species_form as form
 
@@ -56,6 +57,7 @@ class EditSpecimensScreen(Screen):
             yield ListView(id="spec-list")
             yield Label("Profile (read-only)")
             with VerticalScroll(id="spec-detail"):
+                yield ProfilePlate(media.DEFAULT_PROFILE, id="spec-pic-preview")
                 yield Static("(select a specimen)", id="spec-ro")
             yield Static(id="biome-hint", classes="litany")
         yield WarnLog()
@@ -102,9 +104,22 @@ class EditSpecimensScreen(Screen):
             self._show_detail(keep)
         else:
             self.query_one("#spec-ro", Static).update("(select a specimen)")
+            try:
+                self.query_one("#spec-pic-preview", ProfilePlate).set_image_path(
+                    media.DEFAULT_PROFILE
+                )
+            except Exception:
+                pass
 
     def _show_detail(self, sid: str) -> None:
         session = self._session()
+        slug = session.body_slug() or ""
+        try:
+            self.query_one("#spec-pic-preview", ProfilePlate).set_image_path(
+                media.resolve_profile_image(slug, sid) if slug else media.DEFAULT_PROFILE
+            )
+        except Exception:
+            pass
         profile = session.get_species_profile(sid)
         if not profile:
             self.query_one("#spec-ro", Static).update(
@@ -114,10 +129,9 @@ class EditSpecimensScreen(Screen):
         text = form.format_profile_readonly(
             profile,
             trophic_slots=session.trophic_slots(),
-            body_slug=session.body_slug(),
+            body_slug=slug or None,
         )
         self.query_one("#spec-ro", Static).update(text)
-
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         sid = getattr(event.item, "spec_id", None)
         if not sid:

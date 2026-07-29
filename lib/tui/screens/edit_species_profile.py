@@ -14,6 +14,7 @@ from ... import species_media as media
 from ... import species_profile as speciesmod
 from ...wizard_session import WizardSession
 from ..widgets.header import CogitatorHeader
+from ..widgets.profile_plate import ProfilePlate
 from ..widgets.warn_log import WarnLog
 from . import species_form as form
 
@@ -74,10 +75,12 @@ class EditSpeciesProfileScreen(Screen):
                 yield Static(
                     f"Optional. Plate is always {media.PROFILE_WIDTH}×"
                     f"{media.PROFILE_HEIGHT} {media.PROFILE_FORMAT} "
-                    f"(contain + letterbox). Missing → default cog placeholder.",
+                    f"(contain + letterbox). Missing → default cog placeholder. "
+                    f"Preview renders in-pane below.",
                     id="sp-pic-hint",
                     classes="litany",
                 )
+                yield ProfilePlate(media.DEFAULT_PROFILE, id="sp-pic-preview")
                 yield Static(id="sp-pic-status")
                 with Horizontal(id="sp-pic-row"):
                     yield Input(placeholder="path to image…", id="sp-pic-path")
@@ -160,6 +163,17 @@ class EditSpeciesProfileScreen(Screen):
     def _session(self) -> WizardSession:
         return self.app.session  # type: ignore[attr-defined]
 
+    def _preview_image_path(self) -> Path:
+        if self._clear_image:
+            return media.DEFAULT_PROFILE
+        if self._pending_image is not None and self._pending_image.is_file():
+            return self._pending_image
+        slug = self._session().body_slug() or ""
+        sid = str(self.species_id or (self._profile or {}).get("id") or "")
+        if slug and sid:
+            return media.resolve_profile_image(slug, sid)
+        return media.DEFAULT_PROFILE
+
     def _refresh_pic_status(self) -> None:
         try:
             status = self.query_one("#sp-pic-status", Static)
@@ -167,6 +181,12 @@ class EditSpeciesProfileScreen(Screen):
             return
         slug = self._session().body_slug() or ""
         sid = str(self.species_id or (self._profile or {}).get("id") or "")
+        try:
+            self.query_one("#sp-pic-preview", ProfilePlate).set_image_path(
+                self._preview_image_path()
+            )
+        except Exception:
+            pass
         if self._clear_image:
             status.update(
                 "status: will clear custom plate on Save → default placeholder"
@@ -182,7 +202,6 @@ class EditSpeciesProfileScreen(Screen):
                 f"status: default placeholder "
                 f"({media.PROFILE_WIDTH}×{media.PROFILE_HEIGHT} {media.PROFILE_FORMAT})"
             )
-
     def _apply_pending_image(self, sid: str) -> str | None:
         """Write/clear staged profile plate. Returns warn log line or None."""
         slug = self._session().body_slug() or ""

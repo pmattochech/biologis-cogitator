@@ -195,7 +195,7 @@ Without GTK/VTE the cogitator still runs in a normal terminal (`BIOLOGIS_NO_WIND
 
 No GTK/VTE on native Windows — the TUI runs in the console. For the Mechanicus window, use **WSL** and the Linux installer.
 
-Pillow is required (profile picture resize + boot-GIF decode). It is listed in `requirements.txt` and installed with the app.
+Pillow and **textual-image** are required (profile picture resize + in-pane preview; boot-GIF decode). Both are listed in `requirements.txt` and installed with the app. Preview uses Kitty/Sixel when the terminal supports them, otherwise Unicode half-blocks (works in the Mechanicus VTE window).
 
 ---
 

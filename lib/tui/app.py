@@ -351,4 +351,8 @@ def run_wizard(
         from ..hybrid_splash import maybe_show_hybrid_splash
 
         maybe_show_hybrid_splash()
+    # textual-image must probe the terminal *before* App.run() (TGP/Sixel query).
+    from .widgets.profile_plate import ensure_image_support
+
+    ensure_image_support()
     CogitatorApp(seed=seed, pack=pack, splash=False).run()
