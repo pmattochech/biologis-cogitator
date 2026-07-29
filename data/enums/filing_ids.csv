@@ -1,5 +1,8 @@
 kind,filing_id,slug,parent_filing_id,label
+biome,AETH-CNC,aethelgard_oceanic_pelagic,AETH,oceanic_pelagic
 biome,AETH-MON,aethelgard_montane,AETH,Montane
+biome,AETH-OCA,aethelgard_oceanic_abyssal_2,AETH,oceanic_abyssal
+biome,AETH-OCE,aethelgard_oceanic_abyssal,AETH,oceanic_abyssal
 biome,AETH-REF,aethelgard_reefs,AETH,Reefs
 biome,AETH-SHR,aethelgard_shoreline,AETH,Shoreline
 biome,AETH-SHW,aethelgard_shallow_waters,AETH,Shallow waters
