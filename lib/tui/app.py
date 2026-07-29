@@ -39,6 +39,7 @@ class CogitatorApp(App[None]):
         self._current_notice_shown: bool = False
         self._update_banner_kind: str = "update"
         self._update_banner_text: str = updatemod.BANNER_TEXT
+        self._status_toast_sent: bool = False
 
     def on_mount(self) -> None:
         # Background poll — apply only on next launch; banners report status live.
@@ -62,11 +63,14 @@ class CogitatorApp(App[None]):
         except Exception:
             return
         if status.available:
+            first = not self._update_notice_shown
             self._update_notice_shown = True
             self._current_notice_shown = False
             self._update_banner_kind = "update"
             self._update_banner_text = updatemod.banner_text(status)
-            self._show_status_banner(self._update_banner_text, kind="update")
+            self._show_status_banner(
+                self._update_banner_text, kind="update", toast=first
+            )
             return
         # Up to date — show once, then auto-hide (update banner stays sticky).
         if self._update_notice_shown:
@@ -78,7 +82,9 @@ class CogitatorApp(App[None]):
         self._current_notice_shown = True
         self._update_banner_kind = "current"
         self._update_banner_text = updatemod.current_banner_text(status)
-        self._show_status_banner(self._update_banner_text, kind="current")
+        self._show_status_banner(
+            self._update_banner_text, kind="current", toast=True
+        )
         self.set_timer(12.0, self._hide_current_banner)
 
     def _hide_current_banner(self) -> None:
@@ -92,12 +98,17 @@ class CogitatorApp(App[None]):
         except Exception:
             pass
 
-    def _show_status_banner(self, text: str, *, kind: str) -> None:
+    def _show_status_banner(
+        self, text: str, *, kind: str, toast: bool = False
+    ) -> None:
         try:
             for hdr in self.screen.query(CogitatorHeader):
                 hdr.show_status_banner(text, kind=kind)
         except Exception:
             pass
+        if not toast or self._status_toast_sent:
+            return
+        self._status_toast_sent = True
         if kind == "update":
             try:
                 self.notify(
@@ -107,7 +118,7 @@ class CogitatorApp(App[None]):
                 )
             except Exception:
                 pass
-        elif kind == "current" and not self._update_notice_shown:
+        elif kind == "current":
             try:
                 self.notify(
                     "Cogitator current — latest build.",
@@ -118,7 +129,7 @@ class CogitatorApp(App[None]):
                 pass
 
     def _show_update_banner(self, text: str) -> None:
-        self._show_status_banner(text, kind="update")
+        self._show_status_banner(text, kind="update", toast=False)
 
     def push_screen(self, screen, *args, **kwargs):  # type: ignore[no-untyped-def]
         """Disarm dirty tracking while the new screen hydrates widgets."""
@@ -133,7 +144,8 @@ class CogitatorApp(App[None]):
             kind = self._update_banner_kind
 
             def _reapply() -> None:
-                self._show_status_banner(text, kind=kind)
+                # Re-paint header banner only — never re-toast on navigation.
+                self._show_status_banner(text, kind=kind, toast=False)
 
             self.call_after_refresh(_reapply)
         return result
