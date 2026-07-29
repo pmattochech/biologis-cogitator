@@ -38,6 +38,8 @@ That script will:
 4. Install shell completions + a desktop launcher
 5. Open the first-run folder picker (results + scratch)
 
+> **Trust note:** `curl | bash` runs remote code. Prefer a **verified install** (clone, inspect, then `./install.sh`). Updates prompt before re-installing unless `BIOLOGIS_ASSUME_YES=1`. Pin a tag with `BIOLOGIS_REF=<tag>` when you publish releases.
+
 Then launch:
 
 ```bash
@@ -58,6 +60,15 @@ Already have the tree locally?
 ./install.sh --yes    # auto-install missing pip packages
 ```
 
+**Verified install** (no pipe-to-shell):
+
+```bash
+git clone https://github.com/pmattochech/biologis-cogitator.git
+cd biologis-cogitator
+git checkout master   # or a release tag
+./install.sh
+```
+
 > Open a **new shell** after install (or `source ~/.bashrc`) so Tab completion and `~/.local/bin` are live.
 
 ### Windows
@@ -69,6 +80,8 @@ Native **Python + Textual** in Windows Terminal (recommended). The Mechanicus GT
 ```powershell
 irm https://raw.githubusercontent.com/pmattochech/biologis-cogitator/master/scripts/remote-install.ps1 | iex
 ```
+
+> Same trust note as Linux: prefer `git clone` + `.\install.ps1`. Updates prompt unless `$env:BIOLOGIS_ASSUME_YES=1`.
 
 Then open a **new** terminal and run:
 

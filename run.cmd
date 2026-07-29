@@ -25,7 +25,6 @@ call "%DIR%bin\biologis-cogitator.cmd" %*
 exit /b %ERRORLEVEL%
 
 :wsl
-set "WSLDIR=%DIR:\=/%"
-set "WSLDIR=/mnt/c%WSLDIR:~2%"
-wsl -e bash -lc "cd '%WSLDIR%' && chmod +x run bin/cli.py bin/biologis-cogitator 2>/dev/null; ./bin/biologis-cogitator %1 %2 %3 %4 %5 %6 %7 %8 %9"
+REM PowerShell helper: any drive letter + full argv (no 9-arg cap)
+powershell -NoProfile -ExecutionPolicy Bypass -File "%DIR%scripts\wsl-launch.ps1" %*
 exit /b %ERRORLEVEL%

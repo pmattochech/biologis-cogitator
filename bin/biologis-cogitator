@@ -46,17 +46,57 @@ from gi.repository import Gtk, Vte  # noqa: F401
 PY
 }
 
+have_tty() {
+  [[ -t 0 || -t 1 ]]
+}
+
+# When launched from a .desktop with Terminal=false and GTK/VTE is missing,
+# re-exec inside a terminal emulator so the Textual TUI is visible.
+reexec_in_terminal() {
+  local self="$HERE/biologis-cogitator"
+  export BIOLOGIS_NO_WINDOW=1
+  export BIOLOGIS_IN_TERMINAL=1
+  local -a cmd=("$self" "$@")
+  if command -v xdg-terminal-exec >/dev/null 2>&1; then
+    exec xdg-terminal-exec -- "${cmd[@]}"
+  fi
+  for term in kgx gnome-terminal konsole xfce4-terminal mate-terminal xterm; do
+    if command -v "$term" >/dev/null 2>&1; then
+      case "$term" in
+        gnome-terminal|kgx)
+          exec "$term" -- "${cmd[@]}"
+          ;;
+        konsole)
+          exec "$term" -e "${cmd[@]}"
+          ;;
+        *)
+          exec "$term" -e "${cmd[@]}"
+          ;;
+      esac
+    fi
+  done
+  echo "error: no terminal emulator found to host the TUI (install gnome-terminal or set BIOLOGIS_NO_WINDOW=1 from a terminal)" >&2
+  exit 1
+}
+
 open_window() {
   exec /usr/bin/python3 "$ROOT/bin/cogitator_window.py" "$@"
+}
+
+run_wizard() {
+  if can_open_window; then
+    open_window "$@"
+  fi
+  if [[ "${BIOLOGIS_IN_TERMINAL:-}" != "1" ]] && ! have_tty; then
+    reexec_in_terminal wizard "$@"
+  fi
+  exec bash "$ROOT/run" wizard "$@"
 }
 
 # No args → setup (if needed) then app window / wizard.
 if [[ $# -eq 0 ]]; then
   run_setup_if_needed
-  if can_open_window; then
-    open_window
-  fi
-  exec bash "$ROOT/run" wizard
+  run_wizard
 fi
 
 case "$1" in
@@ -71,10 +111,7 @@ case "$1" in
   wizard)
     shift || true
     run_setup_if_needed
-    if can_open_window; then
-      open_window "$@"
-    fi
-    exec bash "$ROOT/run" wizard "$@"
+    run_wizard "$@"
     ;;
   packs|generate-system|generate|show|propose-export|layers|help|-h|--help)
     exec bash "$ROOT/run" "$@"
@@ -82,9 +119,6 @@ case "$1" in
   *)
     # Convenience: biologis-cogitator --pack castra-vetera → wizard with args
     run_setup_if_needed
-    if can_open_window; then
-      open_window "$@"
-    fi
-    exec bash "$ROOT/run" wizard "$@"
+    run_wizard "$@"
     ;;
 esac

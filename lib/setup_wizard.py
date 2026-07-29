@@ -158,11 +158,24 @@ def run_gui_setup() -> int:
 
 
 def run_setup(*, prefer_gui: bool | None = None) -> int:
-    """Run setup. Prefer GUI when DISPLAY is set unless prefer_gui=False."""
+    """Run setup. Prefer GUI on graphical sessions (Linux display or Windows)."""
     import os
+    import sys
 
     if prefer_gui is None:
-        prefer_gui = bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
+        if os.name == "nt":
+            prefer_gui = True
+        else:
+            prefer_gui = bool(
+                os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")
+            )
+        # Headless CI / ssh without display: stay on CLI
+        if prefer_gui and os.environ.get("BIOLOGIS_SETUP_CLI") == "1":
+            prefer_gui = False
+        if prefer_gui and not sys.stdin.isatty() and os.name != "nt":
+            # Non-interactive Linux (no TTY): CLI may still work via piped input;
+            # keep GUI only when a display is present (already gated above).
+            pass
     if prefer_gui:
         return run_gui_setup()
     return run_cli_setup()

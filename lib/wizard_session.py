@@ -600,7 +600,9 @@ class WizardSession:
         sid = entryid.normalize_entry_id(str(profile.get("id") or ""))
         profile["id"] = sid
         profile["magos_scaffold_id"] = sid
-        path = speciesmod.save_species_profile(slug, profile)
+        path = speciesmod.save_species_profile(
+            slug, profile, body_biomes=self.current_biomes()
+        )
         self.species_profiles[sid] = copy.deepcopy(profile)
         self.upsert_specimen(speciesmod.profile_to_specimen_lock(profile))
         self.set_provenance(f"species:{sid}", "picked")

@@ -212,6 +212,6 @@ fi
 echo
 echo "Ready."
 echo "  Terminal:  biologis-cogitator"
-echo "  Desktop:   Biologis Cogitator (app menu; opens a terminal)"
+echo "  Desktop:   Biologis Cogitator (GTK window; falls back to a terminal if VTE missing)"
 echo "  Reconfigure folders: biologis-cogitator setup"
 echo "  Reload this shell (or source completions) for tab completion."

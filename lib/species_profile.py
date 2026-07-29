@@ -23,7 +23,7 @@ SPECIAL_ORIGIN_PLACES: list[tuple[str, str]] = [
     ("warp — immaterium / non-materium", "warp"),
     ("outer_space — vacuum / voidborne", "outer_space"),
 ]
-SPECIAL_ORIGIN_IDS = {v for _, v in SPECIAL_ORIGIN_PLACES}
+SPECIAL_ORIGIN_IDS = entryid.SPECIAL_ORIGIN_IDS
 
 
 def origin_place_options(
@@ -379,7 +379,12 @@ def build_midjourney_prompt(profile: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def save_species_profile(body_slug: str, profile: dict[str, Any]) -> Path:
+def save_species_profile(
+    body_slug: str,
+    profile: dict[str, Any],
+    *,
+    body_biomes: list[dict[str, Any]] | None = None,
+) -> Path:
     profile = dict(profile)
     sid = entryid.normalize_entry_id(str(profile.get("id") or ""))
     profile["id"] = sid
@@ -389,7 +394,10 @@ def save_species_profile(body_slug: str, profile: dict[str, Any]) -> Path:
     if "G" in answers:
         answers.pop("G", None)
         profile["answers"] = answers
-    errors = validate_minimum(profile)
+    biomes = body_biomes
+    if biomes is None:
+        biomes = biomes_for_body_slug(body_slug)
+    errors = validate_minimum(profile, body_biomes=biomes)
     if errors:
         raise ValueError("; ".join(errors))
     sch = qschema.load_schema()
@@ -407,6 +415,22 @@ def save_species_profile(body_slug: str, profile: dict[str, Any]) -> Path:
     if reminders.is_file():
         reminders.unlink()
     return d
+
+
+def biomes_for_body_slug(body_slug: str) -> list[dict[str, Any]] | None:
+    """Load biome list from sealed/working state.json when available."""
+    if not body_slug:
+        return None
+    try:
+        from .state import load_world
+
+        world = load_world(body_slug)
+    except Exception:
+        return None
+    locks = world.get("locks") or {}
+    layers = world.get("layers") or {}
+    biomes = list(locks.get("biomes") or layers.get("biomes") or [])
+    return biomes
 
 
 def _profile_yaml_path(body_slug: str, species_id: str) -> Path | None:
@@ -452,10 +476,11 @@ def load_all_profiles(body_slug: str) -> dict[str, dict[str, Any]]:
 
 def write_profiles_for_body(body_slug: str, profiles: dict[str, dict[str, Any]]) -> list[str]:
     written: list[str] = []
+    biomes = biomes_for_body_slug(body_slug)
     for sid, prof in profiles.items():
         p = dict(prof)
         p["id"] = sid
-        save_species_profile(body_slug, p)
+        save_species_profile(body_slug, p, body_biomes=biomes)
         written.append(sid)
     return written
 

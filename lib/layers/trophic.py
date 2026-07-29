@@ -6,6 +6,14 @@ from typing import Any
 from ..rngutil import make_rng, pick
 from ..util import ENUMS, MATRICES, load_yaml, warn
 
+# Non-planetary specimen origins (mirrors entry_id.SPECIAL_ORIGIN_IDS).
+SPECIAL_ORIGIN_IDS = frozenset({"void", "warp", "outer_space"})
+SPECIAL_ORIGIN_MEDIUM = {
+    "void": "industrial_void",
+    "warp": "industrial_void",
+    "outer_space": "industrial_void",
+}
+
 
 def apply(world: dict[str, Any]) -> None:
     ladder = load_yaml(ENUMS / "trophic_slots.yaml")
@@ -77,6 +85,25 @@ def apply(world: dict[str, Any]) -> None:
             )
 
         by_biome[biome["id"]] = biome_slots
+
+    # Place void / warp / outer_space specimens into synthetic habitat buckets
+    for spec in specimens:
+        primary = str(spec.get("primary_biome") or "").strip()
+        if primary not in SPECIAL_ORIGIN_IDS:
+            continue
+        sid = spec.get("id") or spec.get("name")
+        if sid in used_specimen_ids:
+            continue
+        slot_name = spec.get("trophic_slot") or "apex"
+        synth = {
+            "id": primary,
+            "class": primary,
+            "medium": SPECIAL_ORIGIN_MEDIUM.get(primary, "industrial_void"),
+            "richness": "sparse",
+        }
+        entry = _slot_from_specimen(spec, synth, slot_name, link=False)
+        by_biome.setdefault(primary, []).append(entry)
+        used_specimen_ids.add(sid)
 
     # Secondary biome links (range: multi) — same specimen, not a second birth
     for spec in specimens:

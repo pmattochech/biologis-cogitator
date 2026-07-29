@@ -22,6 +22,14 @@ ENTRY_ID_PARSE = re.compile(
 BODY_ID_RE = re.compile(r"^[A-Z]{4}$")
 BIOME_FILING_RE = re.compile(r"^[A-Z]{4}-[A-Z]{3}$")
 
+# Non-planetary origins — fixed BBB codes; never write biome rows to the CSV.
+SPECIAL_ORIGIN_ABBREVS: dict[str, str] = {
+    "void": "VOD",
+    "warp": "WRP",
+    "outer_space": "OSP",
+}
+SPECIAL_ORIGIN_IDS = frozenset(SPECIAL_ORIGIN_ABBREVS)
+
 REGISTRY_PATH = ENUMS / "filing_ids.csv"
 CSV_FIELDS = ("kind", "filing_id", "slug", "parent_filing_id", "label")
 
@@ -223,6 +231,11 @@ def allocate_biome_filing_id(
     rows: list[dict[str, str]] | None = None,
 ) -> str:
     """Return existing AAAA-BBB for biome under body, or allocate+register."""
+    if str(biome_slug or "").strip() in SPECIAL_ORIGIN_IDS:
+        raise ValueError(
+            f"{biome_slug!r} is a special origin place — use allocate_base_id, "
+            "do not register it as a planetary biome"
+        )
     data = list(rows) if rows is not None else load_registry()
     body_id = allocate_body_filing_id(body_slug, rows=data)
     # reload after possible body write
@@ -399,12 +412,20 @@ def allocate_base_id(
     biome_id: str,
     reserved_ids: list[str] | None = None,
 ) -> str:
-    """Allocate next AAAA-BBB-NNN using CSV body/biome filing ids."""
+    """Allocate next AAAA-BBB-NNN using CSV body/biome filing ids.
+
+    Special origins (void / warp / outer_space) use fixed BBB codes and do
+    **not** register biome rows in filing_ids.csv.
+    """
     body_id = allocate_body_filing_id(body_slug)
-    biome_fid = allocate_biome_filing_id(biome_id, body_slug=body_slug)
-    bbb = biome_abbrev_from_filing(biome_fid)
-    if not bbb:
-        raise ValueError(f"invalid biome filing id {biome_fid!r}")
+    origin = str(biome_id or "").strip()
+    if origin in SPECIAL_ORIGIN_ABBREVS:
+        bbb = SPECIAL_ORIGIN_ABBREVS[origin]
+    else:
+        biome_fid = allocate_biome_filing_id(origin, body_slug=body_slug)
+        bbb = biome_abbrev_from_filing(biome_fid)
+        if not bbb:
+            raise ValueError(f"invalid biome filing id {biome_fid!r}")
     prefix = f"{body_id}-{bbb}"
     serial = next_serial(body_slug, prefix, reserved_ids=reserved_ids)
     return format_entry_id(body_id, bbb, serial)
