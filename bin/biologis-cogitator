@@ -15,16 +15,53 @@ fi
 cd "$ROOT"
 
 # Pull latest from origin before loading Python (so this process starts on new code).
+# Channel: BIOLOGIS_REF (env) wins; else config.yaml git_ref; else master.
+# Older installs only understood BIOLOGIS_REF — when config has git_ref and env
+# is unset, export it for this update step only so a one-line config switch
+# still moves a stale checkout onto the chosen branch.
 run_startup_update() {
-  python3 - <<'PY' || true
+  local cfg_ref=""
+  local cfg="${XDG_CONFIG_HOME:-$HOME/.config}/biologis-cogitator/config.yaml"
+  if [[ -z "${BIOLOGIS_REF:-}" && -f "$cfg" ]]; then
+    cfg_ref="$(
+      python3 - "$cfg" <<'PY' 2>/dev/null || true
+import sys
+from pathlib import Path
+path = Path(sys.argv[1])
+try:
+    import yaml
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+except Exception:
+    data = {}
+ref = str((data or {}).get("git_ref") or "").strip()
+print(ref, end="")
+PY
+    )"
+  fi
+  if [[ -n "$cfg_ref" ]]; then
+    echo "[biologis-cogitator] build channel from config: $cfg_ref" >&2
+    BIOLOGIS_REF="$cfg_ref" python3 - <<'PY' || true
 import sys
 sys.path.insert(0, ".")
 try:
-    from lib.update import apply_startup_update
+    from lib.update import apply_startup_update, update_ref, ref_source
+    print(f"[biologis-cogitator] tracking {update_ref()} ({ref_source()})", flush=True)
     apply_startup_update(verbose=True)
 except Exception as exc:
     print(f"[biologis-cogitator] startup update skipped: {exc}", flush=True)
 PY
+  else
+    python3 - <<'PY' || true
+import sys
+sys.path.insert(0, ".")
+try:
+    from lib.update import apply_startup_update, update_ref, ref_source
+    print(f"[biologis-cogitator] tracking {update_ref()} ({ref_source()})", flush=True)
+    apply_startup_update(verbose=True)
+except Exception as exc:
+    print(f"[biologis-cogitator] startup update skipped: {exc}", flush=True)
+PY
+  fi
 }
 
 run_startup_update

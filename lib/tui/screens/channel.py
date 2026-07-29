@@ -47,8 +47,10 @@ class ChannelScreen(Screen):
                 yield Button("Back", id="btn-back")
             yield Static(
                 "Pick an origin branch to test before merging to master. "
-                "BIOLOGIS_REF (env) overrides the saved channel when set. "
-                "After Apply, Terminate and reopen to load the new build.",
+                "Saved choice lives only in your local config.yaml (git_ref) — "
+                "never in the repo. BIOLOGIS_REF (env) overrides when set. "
+                "After Apply, Terminate and reopen — this session keeps old code "
+                "in memory until then.",
                 classes="litany",
             )
             yield Static(id="ch-status")
