@@ -56,8 +56,8 @@ class OutArchiveScreen(Screen):
     #slug-list {
         height: 1fr;
         min-height: 8;
-        border: solid #8a6a20;
-        background: #100c06;
+        border: solid #2a8040;
+        background: #081008;
     }
     #file-select {
         height: 3;
@@ -66,13 +66,13 @@ class OutArchiveScreen(Screen):
     #viewer-path {
         height: 1;
         margin: 0 0 0 1;
-        color: #a07830;
+        color: #3a9960;
     }
     #viewer {
         height: 1fr;
-        border: solid #8a6a20;
-        background: #100c06;
-        color: #ffe08a;
+        border: solid #2a8040;
+        background: #081008;
+        color: #b8ffd0;
         margin-left: 1;
     }
     """

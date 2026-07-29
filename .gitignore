@@ -4,3 +4,12 @@ __pycache__/
 .venv/
 venv/
 *.egg-info/
+
+# Bulky SWF/GIF bake intermediates (recreate with scripts/bake_splash_anim.py)
+assets/swf-export/
+assets/swf-frames/
+assets/swf-jpegs/
+assets/gif-frames/
+assets/splash-anim/
+assets/cogitator-boot-ref.gif
+

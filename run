@@ -12,6 +12,7 @@ Usage: ./run <command> [args...]
 
 Commands:
   wizard [--seed N] [--pack NAME]     Cogitator TUI (guided system → body)
+  setup                               Choose results/out folders (GUI or CLI)
   packs                               List scenario packs
   generate-system <slug> [--seed N] [--spark] [--mode natural|engineered_mesh] [--existing] [--pack NAME]
   generate <body-slug> [--seed N] [--spark] [--from-lock path] [--system slug] [--existing-system slug] [--pack NAME]
@@ -26,7 +27,7 @@ EOF
 }
 
 case "$CMD" in
-  wizard|packs|generate-system|generate|show|propose-export|layers)
+  wizard|setup|packs|generate-system|generate|show|propose-export|layers)
     exec python3 "$ROOT/bin/cli.py" "$CMD" "$@"
     ;;
   help|-h|--help|"")

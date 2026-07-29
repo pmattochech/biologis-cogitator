@@ -1,0 +1,49 @@
+#compdef biologis-cogitator cogitator init-cogitator
+
+_biologis_cogitator() {
+  local -a cmds
+  cmds=(
+    'wizard:Cogitator TUI guided flow'
+    'setup:Choose results/out folders'
+    'packs:List scenario packs'
+    'generate-system:Generate stellar system'
+    'generate:Generate body biosphere'
+    'show:Show body or system pack'
+    'propose-export:Dry-run external lore paths'
+    'layers:List pipeline layers'
+    'help:Show help'
+  )
+
+  if (( CURRENT == 2 )); then
+    _describe -t commands 'command' cmds
+    return
+  fi
+
+  case $words[2] in
+    wizard)
+      _arguments '--seed[Seed]:seed' '--pack[Pack id]:pack'
+      ;;
+    generate-system)
+      _arguments \
+        '--seed[Seed]:seed' \
+        '--spark[Spark mode]' \
+        '--mode[Mode]:mode:(natural engineered_mesh)' \
+        '--existing[Use existing lock]' \
+        '--pack[Pack id]:pack'
+      ;;
+    generate)
+      _arguments \
+        '--seed[Seed]:seed' \
+        '--spark[Spark mode]' \
+        '--from-lock[Lock path]:file:_files' \
+        '--system[System slug]:slug' \
+        '--existing-system[Existing system]:slug' \
+        '--pack[Pack id]:pack'
+      ;;
+    show)
+      _arguments '--json[JSON output]' '--as-system[Treat as system]'
+      ;;
+  esac
+}
+
+_biologis_cogitator "$@"

@@ -11,12 +11,32 @@ ENUMS = DATA / "enums"
 MATRICES = DATA / "matrices"
 PACKS = DATA / "packs"
 # Sealed finals (Archive / Write seal). Scratch working copies stay under out/.
+# Overridden by XDG config when setup has run — see apply_config().
 RESULTS = ROOT / "cogitator-results"
 OUT = ROOT / "out"  # scratch / working only — not finals
 TEMPLATES = ROOT / "templates"
 # Legacy paths (pre-pack layout); kept only for compatibility shim
 LOCKS_BODIES = DATA / "locks" / "bodies"
 LOCKS_SYSTEMS = DATA / "locks" / "systems"
+
+
+def apply_config() -> None:
+    """Load user results/out dirs from XDG config into module globals."""
+    global RESULTS, OUT
+    from . import config as app_config
+
+    cfg = app_config.load_config()
+    if not cfg:
+        return
+    results = cfg.get("results_dir")
+    out = cfg.get("out_dir")
+    if results:
+        RESULTS = Path(results).expanduser()
+    if out:
+        OUT = Path(out).expanduser()
+
+
+apply_config()
 
 # Active pack for lock resolution (set by CLI / wizard)
 _active_pack: str | None = None

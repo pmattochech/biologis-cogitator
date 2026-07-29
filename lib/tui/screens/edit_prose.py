@@ -18,7 +18,7 @@ class EditProseScreen(Screen):
     #prose-main { height: 1fr; padding: 0 1; }
     #prose-toolbar { height: 3; }
     #prose-toolbar Button { margin: 0 1 0 0; min-width: 12; height: 3; }
-    #prose-editor { height: 1fr; border: solid #8a6a20; }
+    #prose-editor { height: 1fr; border: solid #2a8040; }
     """
 
     def __init__(self, *, kind: str = "magos", **kwargs) -> None:

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Global entry: biologis-cogitator | cogitator | init-cogitator
-# Default: open the cogitator TUI (wizard). Extra args pass through to ./run.
+# Default (on a graphical session): custom GTK window hosting the TUI.
+# Extra args pass through to ./run / the window.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
@@ -13,17 +14,77 @@ fi
 
 cd "$ROOT"
 
-# No args → wizard. First arg that matches a ./run command is forwarded as-is.
+already_configured() {
+  python3 - <<'PY'
+import sys
+sys.path.insert(0, ".")
+from lib.config import is_configured
+raise SystemExit(0 if is_configured() else 1)
+PY
+}
+
+run_setup_if_needed() {
+  if already_configured; then
+    return 0
+  fi
+  echo "First run: opening setup to choose results and scratch folders…"
+  bash "$ROOT/run" setup || {
+    echo "error: setup did not complete; re-run: biologis-cogitator setup" >&2
+    exit 1
+  }
+}
+
+can_open_window() {
+  # Force classic terminal with BIOLOGIS_NO_WINDOW=1
+  [[ "${BIOLOGIS_NO_WINDOW:-}" == "1" ]] && return 1
+  [[ -n "${DISPLAY:-}" || -n "${WAYLAND_DISPLAY:-}" ]] || return 1
+  /usr/bin/python3 - <<'PY' 2>/dev/null
+import gi
+gi.require_version("Gtk", "3.0")
+gi.require_version("Vte", "2.91")
+from gi.repository import Gtk, Vte  # noqa: F401
+PY
+}
+
+open_window() {
+  exec /usr/bin/python3 "$ROOT/bin/cogitator_window.py" "$@"
+}
+
+# No args → setup (if needed) then app window / wizard.
 if [[ $# -eq 0 ]]; then
+  run_setup_if_needed
+  if can_open_window; then
+    open_window
+  fi
   exec bash "$ROOT/run" wizard
 fi
 
 case "$1" in
-  wizard|packs|generate-system|generate|show|propose-export|layers|help|-h|--help)
+  setup)
+    exec bash "$ROOT/run" "$@"
+    ;;
+  window)
+    shift || true
+    run_setup_if_needed
+    open_window "$@"
+    ;;
+  wizard)
+    shift || true
+    run_setup_if_needed
+    if can_open_window; then
+      open_window "$@"
+    fi
+    exec bash "$ROOT/run" wizard "$@"
+    ;;
+  packs|generate-system|generate|show|propose-export|layers|help|-h|--help)
     exec bash "$ROOT/run" "$@"
     ;;
   *)
     # Convenience: biologis-cogitator --pack castra-vetera → wizard with args
+    run_setup_if_needed
+    if can_open_window; then
+      open_window "$@"
+    fi
     exec bash "$ROOT/run" wizard "$@"
     ;;
 esac

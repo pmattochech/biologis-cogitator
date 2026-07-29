@@ -18,7 +18,7 @@ class EditPickScreen(Screen):
     #edit-pick-main { height: 1fr; padding: 0 1; }
     #edit-pick-toolbar { height: 3; }
     #edit-pick-toolbar Button { margin: 0 1 0 0; min-width: 12; height: 3; }
-    #slug-list { height: 1fr; border: solid #8a6a20; }
+    #slug-list { height: 1fr; border: solid #2a8040; }
     """
 
     def compose(self) -> ComposeResult:

@@ -21,7 +21,7 @@ class EditHubScreen(Screen):
     #edit-hub-toolbar Button { margin: 0 1 0 0; min-width: 10; height: 3; }
     #edit-sections { height: 1fr; }
     #edit-sections Button { width: 100%; margin: 0 0 1 0; height: 3; }
-    #edit-status { height: auto; border: solid #8a6a20; padding: 1; margin-top: 1; }
+    #edit-status { height: auto; border: solid #2a8040; padding: 1; margin-top: 1; }
     """
 
     def compose(self) -> ComposeResult:

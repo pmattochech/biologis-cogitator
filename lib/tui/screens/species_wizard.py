@@ -21,8 +21,8 @@ class NewSpeciesBiomeScreen(Screen):
     #new-main { height: 1fr; padding: 0 1; }
     #new-toolbar { height: 3; }
     #new-toolbar Button { margin: 0 1 0 0; min-width: 10; height: 3; }
-    #new-hint { height: auto; color: #c9a227; margin: 1 0; }
-    #new-preview { height: auto; color: #ffe08a; margin: 1 0; border: solid #8a6a20; padding: 1; }
+    #new-hint { height: auto; color: #3aa060; margin: 1 0; }
+    #new-preview { height: auto; color: #b8ffd0; margin: 1 0; border: solid #2a8040; padding: 1; }
     """
 
     def __init__(self, **kwargs) -> None:

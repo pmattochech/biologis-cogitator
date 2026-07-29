@@ -11,14 +11,14 @@ class CogitatorHeader(Horizontal):
     CogitatorHeader {
         dock: top;
         height: 5;
-        background: #1a1408;
-        border: heavy #8a6a20;
+        background: #0a1810;
+        border: heavy #2a8040;
         padding: 0 1;
     }
     CogitatorHeader #header-title {
         width: 1fr;
         height: 100%;
-        color: #ffcc66;
+        color: #66ff99;
         text-style: bold;
         content-align: left middle;
     }

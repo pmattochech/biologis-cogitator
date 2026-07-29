@@ -1,18 +1,18 @@
-"""Amber phosphor cogitator theme for Textual."""
+"""Amber→green phosphor theme for Textual (CRT cogitator)."""
 from __future__ import annotations
 
 COGITATOR_CSS = """
 Screen {
-    background: #0a0a08;
-    color: #e6b84d;
+    background: #050a06;
+    color: #33ff66;
 }
 
 #header {
     dock: top;
     height: 3;
-    background: #1a1408;
-    color: #ffcc66;
-    border: heavy #8a6a20;
+    background: #0a1810;
+    color: #66ff99;
+    border: heavy #2a8040;
     padding: 0 1;
     text-style: bold;
 }
@@ -20,9 +20,9 @@ Screen {
 #warn-log {
     dock: bottom;
     height: 6;
-    background: #120e06;
-    border: solid #5a4010;
-    color: #c99030;
+    background: #081208;
+    border: solid #1a5028;
+    color: #2a9960;
     overflow-y: auto;
 }
 
@@ -33,8 +33,8 @@ Screen {
 }
 
 TextArea {
-    background: #100c06;
-    color: #ffe08a;
+    background: #081008;
+    color: #b8ffd0;
     height: 1fr;
     min-height: 8;
     margin-bottom: 1;
@@ -42,67 +42,67 @@ TextArea {
 
 .title {
     text-style: bold;
-    color: #ffcc66;
+    color: #66ff99;
     height: auto;
     margin: 0 0 1 0;
 }
 
 .litany {
-    color: #a07830;
+    color: #3a9960;
     height: auto;
     margin: 0 0 1 0;
 }
 
 Button {
-    background: #1a1408;
-    color: #e6b84d;
-    border: solid #8a6a20;
+    background: #0a1810;
+    color: #33ff66;
+    border: solid #2a8040;
     margin: 0 1 1 0;
     min-width: 16;
     height: 3;
 }
 
 Button:hover {
-    background: #2a2010;
-    color: #ffe08a;
+    background: #143020;
+    color: #b8ffd0;
 }
 
 Button.-primary {
-    background: #3a2810;
-    border: heavy #c9a040;
+    background: #1a4030;
+    border: heavy #40c070;
 }
 
 .panel {
-    border: solid #8a6a20;
-    background: #100c06;
+    border: solid #2a8040;
+    background: #081008;
     padding: 1;
     margin: 0 0 1 0;
     height: auto;
 }
 
 .label {
-    color: #c9a040;
+    color: #40c070;
 }
 
 .value {
-    color: #ffe08a;
+    color: #b8ffd0;
     text-style: bold;
 }
 
 /* Fixed control heights — Textual Select defaults to height:auto and overlaps Labels */
 Screen Input {
-    background: #0a0a08;
-    border: solid #8a6a20;
-    color: #ffe08a;
+    background: #050a06;
+    border: solid #2a8040;
+    color: #b8ffd0;
     height: 3;
     margin: 0 0 1 0;
     width: 1fr;
 }
 
 Screen Select {
-    background: #0a0a08;
+    background: #050a06;
     border: none;
-    color: #e6b84d;
+    color: #33ff66;
     height: 3 !important;
     max-height: 3;
     min-height: 3;
@@ -114,21 +114,21 @@ Screen Select > SelectCurrent {
     height: 3 !important;
     max-height: 3;
     min-height: 3;
-    background: #0a0a08;
+    background: #050a06;
     /* solid not tall — tall borders inflate height and overlap Labels */
-    border: solid #8a6a20 !important;
-    color: #ffe08a;
+    border: solid #2a8040 !important;
+    color: #b8ffd0;
     padding: 0 1 !important;
 }
 
 Screen Select:focus > SelectCurrent {
-    border: solid #c9a040 !important;
+    border: solid #40c070 !important;
 }
 
 SelectCurrent {
     height: 3 !important;
     max-height: 3;
-    border: solid #8a6a20 !important;
+    border: solid #2a8040 !important;
     padding: 0 1 !important;
 }
 
@@ -137,7 +137,7 @@ Screen Label {
     min-height: 1;
     max-height: 1;
     margin: 1 0 0 0;
-    color: #c9a040;
+    color: #40c070;
 }
 
 /* List rows are height 1 — Label top margin would push text out of the clip */
@@ -146,7 +146,7 @@ Screen ListItem > Label {
     min-height: 1;
     max-height: 1;
     margin: 0;
-    color: #ffe08a;
+    color: #b8ffd0;
 }
 
 /* Pipeline form rows — do not apply to header / docked chrome */
@@ -167,8 +167,8 @@ VerticalScroll > Horizontal.-toolbar {
 }
 
 Screen ListView {
-    border: solid #8a6a20;
-    background: #100c06;
+    border: solid #2a8040;
+    background: #081008;
     height: 8;
     max-height: 8;
     margin: 0 0 1 0;
@@ -180,7 +180,7 @@ Screen ListItem {
 }
 
 Screen ListItem:hover {
-    background: #2a2010;
+    background: #143020;
 }
 
 /* Vertical stacks inside scroll areas keep natural flow */

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Biologis Cogitator
+Comment=Warhammer 40,000 system and biosphere mesh workshop
+Exec=biologis-cogitator
+Icon=biologis-cogitator
+Terminal=false
+Categories=Education;Science;
+Keywords=warhammer;biosphere;generator;tui;cogitator;
+StartupNotify=true

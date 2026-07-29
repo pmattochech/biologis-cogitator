@@ -10,13 +10,14 @@ from textual.widgets import Input, Select, TextArea
 from ..profile_schema import clear_schema_cache
 from ..wizard_session import WizardSession
 from .screens.boot import BootScreen
+from .screens.splash import SplashScreen
 from .theme import COGITATOR_CSS
 from .widgets.confirm_dirty import ConfirmDirtyScreen
 
 
 class CogitatorApp(App[None]):
     CSS = COGITATOR_CSS
-    TITLE = "Castra Biogen — Cogitator"
+    TITLE = "Biologis Cogitator"
     BINDINGS = [("q", "request_terminate", "Terminate")]
 
     def __init__(
@@ -24,15 +25,20 @@ class CogitatorApp(App[None]):
         *,
         seed: int | None = None,
         pack: str | None = None,
+        splash: bool = True,
     ) -> None:
         super().__init__()
         self.session = WizardSession(seed=seed, pack_id=pack)
+        self._show_splash = splash
         # Ignore widget Changed events until the new screen finishes hydrating
         self._dirty_armed: bool = True
         self._dirty_was_before_push: bool = False
 
     def on_mount(self) -> None:
-        self.push_screen(BootScreen())
+        if self._show_splash:
+            self.push_screen(SplashScreen())
+        else:
+            self.push_screen(BootScreen())
 
     def push_screen(self, screen, *args, **kwargs):  # type: ignore[no-untyped-def]
         """Disarm dirty tracking while the new screen hydrates widgets."""
@@ -226,5 +232,15 @@ class CogitatorApp(App[None]):
         self.request_terminate()
 
 
-def run_wizard(*, seed: int | None = None, pack: str | None = None) -> None:
-    CogitatorApp(seed=seed, pack=pack).run()
+def run_wizard(
+    *,
+    seed: int | None = None,
+    pack: str | None = None,
+    splash: bool = True,
+) -> None:
+    # Hybrid: real SWF-derived GIF in a Tk window, then Textual hub (no TTY art splash).
+    if splash:
+        from ..hybrid_splash import maybe_show_hybrid_splash
+
+        maybe_show_hybrid_splash()
+    CogitatorApp(seed=seed, pack=pack, splash=False).run()

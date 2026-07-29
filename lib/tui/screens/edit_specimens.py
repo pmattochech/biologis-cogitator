@@ -21,14 +21,14 @@ class EditSpecimensScreen(Screen):
     #spec-main { height: 1fr; padding: 0 1; }
     #spec-toolbar { height: 3; }
     #spec-toolbar Button { margin: 0 1 0 0; min-width: 10; height: 3; }
-    #spec-list { height: 8; border: solid #8a6a20; }
+    #spec-list { height: 8; border: solid #2a8040; }
     #spec-detail {
         height: 1fr;
-        border: solid #8a6a20;
+        border: solid #2a8040;
         padding: 0 1;
-        color: #ffe08a;
+        color: #b8ffd0;
     }
-    #spec-hint { height: auto; color: #c9a227; margin: 0 0 1 0; }
+    #spec-hint { height: auto; color: #3aa060; margin: 0 0 1 0; }
     """
 
     def __init__(self, **kwargs) -> None:

@@ -23,7 +23,7 @@ class EditSpeciesProfileScreen(Screen):
     #sp-main { height: 1fr; padding: 0 1; }
     #sp-toolbar { height: 3; }
     #sp-toolbar Button { margin: 0 1 0 0; min-width: 10; height: 3; }
-    #sp-min-hint { height: auto; color: #c9a227; margin: 0 0 1 0; }
+    #sp-min-hint { height: auto; color: #3aa060; margin: 0 0 1 0; }
     #sp-scroll { height: 1fr; }
     #sp-scroll Label { margin-top: 1; }
     """

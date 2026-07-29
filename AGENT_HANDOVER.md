@@ -41,7 +41,7 @@ Re-run only if re-copying from Codex; scrape **must not** rewrite `scripts/migra
 1. **Decouple absolutely** from Codex-Batavi — no runtime checkout, no imports, no required `codex-batavi/` tree.
 2. **Keep `cogitator-results/`** so `castra-vetera` remains a known-good test pack.
 3. **Product changes still ahead:**
-   - **Setup phase:** install the app; **pick folder locations** where outputs are saved (today paths are fixed under repo `ROOT`: `cogitator-results/`, `out/`, `data/`).
+   - ~~**Setup phase:**~~ Linux `./install.sh` + XDG config + Tk/CLI folder setup (`biologis-cogitator setup`).
    - **Refactor the main / boot screen** (hub UX).
 4. Future Codex retirement is a **separate** Codex PR (delete or stub `tools/castra-biogen/`) — not done yet.
 
@@ -68,7 +68,9 @@ chmod +x run bin/cli.py bin/biologis-cogitator
 
 **Deps:** `requirements.txt` — `PyYAML>=6.0`, `textual>=0.47.0`.
 
-**ROOT model:** `lib/util.py` — `ROOT = Path(__file__).resolve().parent.parent` (this repo root). No climb to Codex.
+**ROOT model:** `lib/util.py` — `ROOT = Path(__file__).resolve().parent.parent` (this repo root). No climb to Codex. `RESULTS` / `OUT` come from `~/.config/biologis-cogitator/config.yaml` after setup (`lib/config.py` + `apply_config()`).
+
+**Linux install:** `./install.sh` — deps check first, then `~/.local/bin` links, bash/zsh completion under `~/.local/share/…`, desktop entry with `Terminal=true`, then setup GUI.
 
 ---
 
@@ -158,8 +160,8 @@ SSH to GitHub as `pmattochech` already works for **existing** repos; create-repo
 
 Priority order matching locked objectives:
 
-1. **Confirm push** to GitHub once auth/repo exists.
-2. **Design setup phase** — config for output dirs (`cogitator-results`, `out`, maybe packs); persist under XDG or a local `config.yaml`; wire `lib/util.py` / state save paths.
+1. ~~Confirm push~~ — done (`origin/master` in sync).
+2. ~~Setup phase / Linux install~~ — `./install.sh` (deps check, PATH, completion, `.desktop`), XDG config + Tk folder picker (`biologis-cogitator setup`).
 3. **Refactor boot / main screen** — clearer hub; keep greenfield / biosphere / pack / edit / archive entry points.
 4. **Optional hygiene** — drop or stub dead `external/lore` dossier strings; decide whether sealed results stay fully git-tracked long-term.
 5. **Do not** delete Codex `tools/castra-biogen` from this repo’s agent session unless the user explicitly opens Codex and orders retirement.
@@ -177,15 +179,16 @@ Priority order matching locked objectives:
 ## 11. Quick commands cheat sheet
 
 ```bash
+./install.sh                           # Linux: deps, PATH, completion, desktop, setup
 ./run wizard [--seed N] [--pack castra-vetera]
+./run setup                            # re-pick results/out folders
 ./run packs
 ./run generate-system <slug> ...
 ./run generate <body-slug> ...
 ./run show <slug>
 ./run propose-export <body-slug>    # dry-run external paths
-./install-cli.sh
 ```
 
 ---
 
-*Handover written for the first agent session in the biologis-cogitator workspace. Prefer updating this file when setup-phase or boot refactor land.*
+*Handover updated after Linux install/setup landed. Prefer updating this file when the boot-hub refactor lands.*

@@ -11,7 +11,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from lib import packs, pipeline, propose_export, state  # noqa: E402
-from lib.util import set_active_pack  # noqa: E402
+from lib.util import apply_config, set_active_pack  # noqa: E402
+
+apply_config()
 
 
 def cmd_layers(_: argparse.Namespace) -> int:
@@ -134,8 +136,14 @@ def cmd_propose_export(args: argparse.Namespace) -> int:
 def cmd_wizard(args: argparse.Namespace) -> int:
     from lib.tui.app import run_wizard
 
-    run_wizard(seed=args.seed, pack=args.pack)
+    run_wizard(seed=args.seed, pack=args.pack, splash=not args.no_splash)
     return 0
+
+
+def cmd_setup(_: argparse.Namespace) -> int:
+    from lib.setup_wizard import run_setup
+
+    return run_setup()
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -180,7 +188,15 @@ def build_parser() -> argparse.ArgumentParser:
     w = sub.add_parser("wizard", help="Cogitator TUI guided flow")
     w.add_argument("--seed", type=int, default=None)
     w.add_argument("--pack", default=None, help="Preselect pack id")
+    w.add_argument(
+        "--no-splash",
+        action="store_true",
+        help="Skip cogitator boot animation",
+    )
     w.set_defaults(func=cmd_wizard)
+
+    su = sub.add_parser("setup", help="Choose results/out folders (first-run / reconfigure)")
+    su.set_defaults(func=cmd_setup)
 
     return p
 
@@ -188,6 +204,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    apply_config()
     return args.func(args)
 
 

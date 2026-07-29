@@ -19,7 +19,7 @@ class EditTagsScreen(Screen):
     #tags-main { height: 1fr; padding: 0 1; }
     #tags-toolbar { height: 3; }
     #tags-toolbar Button { margin: 0 1 0 0; min-width: 10; height: 3; }
-    #custom-list { height: 10; border: solid #8a6a20; }
+    #custom-list { height: 10; border: solid #2a8040; }
     """
 
     def compose(self) -> ComposeResult:

@@ -17,14 +17,14 @@ class ConfirmDirtyScreen(ModalScreen[str]):
     #dirty-box {
         width: 72;
         height: auto;
-        border: heavy #c9a040;
-        background: #1a1408;
+        border: heavy #40c070;
+        background: #0a1810;
         padding: 1 2;
     }
     #dirty-box Static {
         height: auto;
         margin-bottom: 1;
-        color: #ffe08a;
+        color: #b8ffd0;
     }
     #dirty-actions {
         height: 3;
