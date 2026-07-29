@@ -4,7 +4,7 @@ from __future__ import annotations
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import Screen
-from textual.widgets import Button, Input, Select, Static
+from textual.widgets import Button, Input, Label, Select, Static
 
 from ... import packs as packsmod
 from ...wizard_session import WizardSession
@@ -16,34 +16,131 @@ class EditHubScreen(Screen):
     TRACK_DIRTY = True
 
     CSS = """
-    #edit-hub { height: 1fr; padding: 0 1; }
-    #edit-hub-toolbar { height: 3; }
-    #edit-hub-toolbar Button { margin: 0 1 0 0; min-width: 10; height: 3; }
-    #edit-sections { height: 1fr; }
-    #edit-sections Button { width: 100%; margin: 0 0 1 0; height: 3; }
-    #edit-status { height: auto; border: solid #2a8040; padding: 1; margin-top: 1; }
+    #edit-hub {
+        height: 1fr;
+        padding: 0 1;
+    }
+    #edit-hub-body {
+        height: 1fr;
+    }
+    #edit-side {
+        width: 42;
+        min-width: 34;
+        max-width: 48;
+        height: 1fr;
+        padding: 0 1 0 0;
+        border-right: solid #2a8040;
+    }
+    #edit-status {
+        height: auto;
+        max-height: 14;
+        border: solid #2a8040;
+        background: #081008;
+        color: #b8ffd0;
+        padding: 1;
+        margin: 0 0 1 0;
+    }
+    #edit-side > Label {
+        margin: 1 0 0 0;
+        height: 1;
+        color: #40c070;
+    }
+    #edit-side .side-hint {
+        color: #3a9960;
+        height: auto;
+        margin: 0 0 1 0;
+    }
+    #edit-side #pack-select,
+    #edit-side #pack-id {
+        width: 1fr;
+        margin: 0 0 1 0;
+    }
+    #edit-actions {
+        height: auto;
+        margin-top: 1;
+    }
+    #edit-actions Button {
+        width: 1fr;
+        min-width: 12;
+        height: 3;
+        margin: 0 0 1 0;
+    }
+    #edit-main {
+        width: 1fr;
+        height: 1fr;
+        padding: 0 0 0 1;
+    }
+    #edit-main-title {
+        margin: 0 0 1 0;
+        color: #66ff99;
+        text-style: bold;
+    }
+    #edit-main-hint {
+        color: #3a9960;
+        height: auto;
+        margin: 0 0 1 0;
+    }
+    #edit-sections {
+        height: 1fr;
+    }
+    #edit-sections Button {
+        width: 1fr;
+        height: 4;
+        min-height: 3;
+        margin: 0 0 1 0;
+        content-align: left middle;
+        text-align: left;
+    }
     """
 
     def compose(self) -> ComposeResult:
         yield CogitatorHeader("EDITOR / BODY")
         with Vertical(id="edit-hub"):
-            with Horizontal(id="edit-hub-toolbar"):
-                yield Button("Save pack", id="btn-save", variant="primary")
-                yield Button("Seal results", id="btn-seal", variant="primary")
-                yield Button("Archive", id="btn-archive")
-                yield Button("Back", id="btn-back")
-            yield Static(id="edit-status", classes="panel")
-            yield Select([("…", "__init__")], id="pack-select", allow_blank=False)
-            yield Input(placeholder="or type new pack id", id="pack-id")
-            with VerticalScroll(id="edit-sections"):
-                yield Button("Classification (planet / kind / notes)", id="btn-class")
-                yield Button("Geology", id="btn-geo")
-                yield Button("Climate / immaterium", id="btn-chem")
-                yield Button("Biomes", id="btn-biomes")
-                yield Button("Specimens", id="btn-specimens")
-                yield Button("Magos prose", id="btn-magos")
-                yield Button("Literary prose", id="btn-lit")
-                yield Button("Custom tags", id="btn-tags")
+            with Horizontal(id="edit-hub-body"):
+                with Vertical(id="edit-side"):
+                    yield Static(id="edit-status")
+                    yield Label("Pack target")
+                    yield Static(
+                        "Existing pack to write locks into (dropdown).",
+                        classes="side-hint",
+                    )
+                    yield Select(
+                        [("…", "__init__")],
+                        id="pack-select",
+                        allow_blank=False,
+                        prompt="Existing pack",
+                    )
+                    yield Label("New pack id")
+                    yield Static(
+                        "Optional — type a new id to create/save under that name.",
+                        classes="side-hint",
+                    )
+                    yield Input(placeholder="e.g. my-mesh-export", id="pack-id")
+                    with Vertical(id="edit-actions"):
+                        yield Button("Save pack", id="btn-save", variant="primary")
+                        yield Button("Seal results", id="btn-seal", variant="primary")
+                        yield Button("Archive", id="btn-archive")
+                        yield Button("Back", id="btn-back")
+                with Vertical(id="edit-main"):
+                    yield Static("Amend sections", id="edit-main-title")
+                    yield Static(
+                        "Open a dossier layer to edit. Biomes and species are "
+                        "registered from here.",
+                        id="edit-main-hint",
+                        classes="litany",
+                    )
+                    with VerticalScroll(id="edit-sections"):
+                        yield Button(
+                            "Classification  —  planet / kind / notes",
+                            id="btn-class",
+                        )
+                        yield Button("Geology", id="btn-geo")
+                        yield Button("Climate / immaterium", id="btn-chem")
+                        yield Button("Biomes", id="btn-biomes")
+                        yield Button("Specimens", id="btn-specimens")
+                        yield Button("Magos prose", id="btn-magos")
+                        yield Button("Literary prose", id="btn-lit")
+                        yield Button("Custom tags", id="btn-tags")
         yield WarnLog()
 
     def on_mount(self) -> None:
@@ -59,6 +156,7 @@ class EditHubScreen(Screen):
         packs = packsmod.list_packs()
         opts = [(str(p.get("id")), str(p.get("id"))) for p in packs if p.get("id")]
         sel = self.query_one("#pack-select", Select)
+        typed = self.query_one("#pack-id", Input)
         if opts:
             sel.set_options(opts)
             prefer = session.pack_id or opts[0][1]
@@ -66,18 +164,27 @@ class EditHubScreen(Screen):
                 sel.value = prefer
             else:
                 sel.value = opts[0][1]
-            self.query_one("#pack-id", Input).value = str(sel.value)
+            # Keep typed field empty unless user is inventing a new id
+            # (prefill with current pack only when it is not in the dropdown).
+            if session.pack_id and not any(v == session.pack_id for _, v in opts):
+                typed.value = session.pack_id
+            else:
+                typed.value = ""
+                typed.placeholder = f"or new id (current: {sel.value})"
         else:
-            sel.set_options([("(none yet)", "")])
+            sel.set_options([("(none yet — type a new id)", "")])
             if session.pack_id:
-                self.query_one("#pack-id", Input).value = session.pack_id
+                typed.value = session.pack_id
 
     def on_select_changed(self, event: Select.Changed) -> None:
         if event.select.id != "pack-select":
             return
         if event.value in (Select.BLANK, "", None):
             return
-        self.query_one("#pack-id", Input).value = str(event.value)
+        # Selecting an existing pack clears a typed override so Save uses the dropdown.
+        typed = self.query_one("#pack-id", Input)
+        if not typed.value.strip():
+            typed.placeholder = f"or new id (current: {event.value})"
 
     def _pack_id(self) -> str | None:
         typed = self.query_one("#pack-id", Input).value.strip()
@@ -109,11 +216,19 @@ class EditHubScreen(Screen):
         prose = locks.get("prose") or {}
         profiles = len(session.species_profiles)
         text = (
-            f"Body: {meta.get('slug')}  system={meta.get('system_slug')}\n"
-            f"Pack: {session.pack_id or '(none)'}\n"
-            f"Planet: {pt.get('planet_type')} / {pt.get('body_kind')}\n"
-            f"Biomes: {biomes}  Specimens: {specs}  Species profiles: {profiles}\n"
-            f"Prose overrides: magos={'yes' if prose.get('magos') else 'no'} "
+            f"BODY\n"
+            f"  {meta.get('slug') or '—'}\n"
+            f"SYSTEM\n"
+            f"  {meta.get('system_slug') or '—'}\n"
+            f"ACTIVE PACK\n"
+            f"  {session.pack_id or '(none)'}\n"
+            f"PLANET\n"
+            f"  {pt.get('planet_type') or '—'} / {pt.get('body_kind') or '—'}\n"
+            f"COUNTS\n"
+            f"  biomes {biomes} · specimens {specs}\n"
+            f"  species profiles {profiles}\n"
+            f"PROSE\n"
+            f"  magos={'yes' if prose.get('magos') else 'no'}  "
             f"literary={'yes' if prose.get('literary') else 'no'}"
         )
         self.query_one("#edit-status", Static).update(text)
