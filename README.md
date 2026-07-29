@@ -50,12 +50,20 @@ biologis-cogitator
 |--------|---------|
 | Skip the folder picker for now | `BIOLOGIS_NO_SETUP=1 curl -fsSL … \| bash` then later `biologis-cogitator setup` |
 | Install somewhere else | `BIOLOGIS_HOME=~/src/biologis-cogitator curl -fsSL … \| bash` |
-| Pin a branch/tag | `BIOLOGIS_REF=master curl -fsSL … \| bash` |
+| Pin a branch/tag (install or launch) | `BIOLOGIS_REF=cursor/my-branch biologis-cogitator` |
 | Classic terminal (no GTK window) | `BIOLOGIS_NO_WINDOW=1 biologis-cogitator` |
 | Disable auto-update | `BIOLOGIS_NO_AUTOUPDATE=1 biologis-cogitator` |
 | Update check interval (seconds) | `BIOLOGIS_UPDATE_CHECK_SECONDS=30` (default 30, min 10) |
 
-**Auto-update:** on every launch the cogitator fetches `origin` (`BIOLOGIS_REF`, default `master`) and fast-forwards a clean install checkout. While open, a **green** banner confirms you are on the latest build (then fades); if the remote moves ahead, an **amber** banner asks you to save, Terminate, and reopen. Dirty developer working trees are never force-updated.
+**Build channel (test before master):** auto-update tracks one origin branch/tag.
+
+1. **Env (wins):** `BIOLOGIS_REF=<branch>` for this process only.
+2. **In-app:** boot screen → **Build channel** — pick a remote branch, Apply, then **Terminate and reopen**.
+3. **Config:** saved as `git_ref` in `~/.config/biologis-cogitator/config.yaml` (used when env is unset).
+
+Priority: `BIOLOGIS_REF` → config `git_ref` → `master`.
+
+**Auto-update:** on every launch the cogitator fetches that channel and fast-forwards a clean install checkout. While open, a **green** banner confirms you are on the latest build (then fades); if the remote moves ahead, an **amber** banner asks you to save, Terminate, and reopen. Dirty developer working trees are never force-updated.
 
 Already have the tree locally?
 
@@ -100,11 +108,12 @@ biologis-cogitator
 | Local checkout | `.\install.ps1` or `.\install.ps1 -Yes` |
 | Full Linux/GTK via WSL | Install under WSL with the Linux one-liner, or `.\run.cmd --wsl` from a checkout |
 | Disable auto-update | `$env:BIOLOGIS_NO_AUTOUPDATE=1` |
+| Pin a branch/tag | `$env:BIOLOGIS_REF='cursor/my-branch'` |
 
-Config on Windows: `%APPDATA%\biologis-cogitator\config.yaml`  
+Config on Windows: `%APPDATA%\biologis-cogitator\config.yaml` (includes optional `git_ref`)  
 Default results: `%USERPROFILE%\BiologisCogitator\results`
 
-Use **Windows Terminal** (not legacy `conhost`) for correct colors and keyboard handling. Auto-update on launch works the same as Linux (git fetch of `BIOLOGIS_REF`).
+Use **Windows Terminal** (not legacy `conhost`) for correct colors and keyboard handling. Auto-update / Build channel work the same as Linux (`BIOLOGIS_REF` or in-app **Build channel**).
 
 ---
 

@@ -59,7 +59,9 @@ if [[ -d "$DEST/.git" ]]; then
         ;;
     esac
   fi
-  git -C "$DEST" checkout -f -B "install-$REF" "FETCH_HEAD"
+  # Local tracking branch cannot contain '/'; sanitize for feature branches.
+  LOCAL_BRANCH="install-${REF//\//-}"
+  git -C "$DEST" checkout -f -B "$LOCAL_BRANCH" "FETCH_HEAD"
 elif [[ -e "$DEST" ]]; then
   echo "error: $DEST exists but is not a git checkout. Move it aside or set BIOLOGIS_HOME." >&2
   exit 1

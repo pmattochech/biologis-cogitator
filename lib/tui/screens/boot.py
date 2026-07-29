@@ -42,10 +42,29 @@ class BootScreen(Screen):
                     id="btn-consultation",
                     classes="rite-door",
                 )
+            with Horizontal(classes="-toolbar"):
+                yield Button("Build channel", id="btn-channel")
+            yield Static(id="boot-channel", classes="litany")
         yield WarnLog()
 
     def on_mount(self) -> None:
         self.query_one(WarnLog).boot()
+        self._show_channel_hint()
+
+    def _show_channel_hint(self) -> None:
+        try:
+            from ... import update as updatemod
+
+            ref = updatemod.update_ref()
+            src = updatemod.ref_source()
+            self.query_one("#boot-channel", Static).update(
+                f"Build channel: {ref} ({src})"
+            )
+        except Exception:
+            pass
+
+    def on_screen_resume(self) -> None:
+        self._show_channel_hint()
 
     def action_request_terminate(self) -> None:
         self.app.request_terminate()  # type: ignore[attr-defined]
@@ -66,4 +85,9 @@ class BootScreen(Screen):
             from .out_archive import OutArchiveScreen
 
             self.app.push_screen(OutArchiveScreen())
+            return
+        if bid == "btn-channel":
+            from .channel import ChannelScreen
+
+            self.app.push_screen(ChannelScreen())
             return
