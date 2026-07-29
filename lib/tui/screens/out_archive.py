@@ -49,15 +49,55 @@ class OutArchiveScreen(Screen):
         height: 1fr;
         padding: 0 1 0 0;
     }
-    #archive-sidebar Label {
+    /* Section headers only — never style ListItem children from here */
+    #archive-sidebar > Label {
         margin: 1 0 0 0;
         height: 1;
+        color: #40c070;
     }
     #slug-list {
         height: 1fr;
         min-height: 8;
         border: solid #2a8040;
         background: #081008;
+        color: #b8ffd0;
+    }
+    #slug-list > ListItem {
+        height: 1;
+        min-height: 1;
+        max-height: 1;
+        padding: 0 1;
+        width: 1fr;
+        color: #b8ffd0;
+        background: transparent;
+        overflow: hidden hidden;
+    }
+    #slug-list > ListItem > .slug-row {
+        height: 1;
+        width: 1fr;
+        margin: 0 !important;
+        padding: 0;
+        color: #b8ffd0;
+        background: transparent;
+    }
+    #slug-list > ListItem.-hovered {
+        background: #143020;
+    }
+    #slug-list > ListItem.-highlight {
+        background: #1a5040 !important;
+        color: #e8ffe8 !important;
+        text-style: bold;
+    }
+    #slug-list > ListItem.-highlight > .slug-row {
+        color: #e8ffe8 !important;
+        margin: 0 !important;
+    }
+    #slug-list:focus > ListItem.-highlight {
+        background: #248050 !important;
+        color: #ffffff !important;
+    }
+    #slug-list:focus > ListItem.-highlight > .slug-row {
+        color: #ffffff !important;
     }
     #file-select {
         height: 3;
@@ -157,7 +197,7 @@ class OutArchiveScreen(Screen):
         )
         highlight_idx = 0
         for i, slug in enumerate(slugs):
-            item = ListItem(Label(slug))
+            item = ListItem(Static(slug, classes="slug-row"))
             item.out_slug = slug  # type: ignore[attr-defined]
             lv.append(item)
             if select_slug and slug == select_slug:

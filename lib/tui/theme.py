@@ -150,12 +150,13 @@ Screen Label {
     color: #40c070;
 }
 
-/* List rows are height 1 — Label top margin would push text out of the clip */
-Screen ListItem > Label {
+/* List rows are height 1 — Label/Static top margin would push text out of the clip */
+Screen ListItem > Label,
+Screen ListItem > Static {
     height: 1;
     min-height: 1;
     max-height: 1;
-    margin: 0;
+    margin: 0 !important;
     color: #b8ffd0;
 }
 
@@ -182,15 +183,27 @@ Screen ListView {
     height: 8;
     max-height: 8;
     margin: 0 0 1 0;
+    color: #b8ffd0;
 }
 
 Screen ListItem {
     padding: 0 1;
     height: 1;
+    color: #b8ffd0;
 }
 
-Screen ListItem:hover {
+Screen ListItem.-hovered {
     background: #143020;
+}
+
+Screen ListItem.-highlight {
+    background: #1a5040;
+    color: #e8ffe8;
+}
+
+Screen ListView:focus > ListItem.-highlight {
+    background: #248050;
+    color: #ffffff;
 }
 
 /* Vertical stacks inside scroll areas keep natural flow */
