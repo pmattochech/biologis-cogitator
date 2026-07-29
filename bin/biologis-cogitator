@@ -14,6 +14,21 @@ fi
 
 cd "$ROOT"
 
+# Pull latest from origin before loading Python (so this process starts on new code).
+run_startup_update() {
+  python3 - <<'PY' || true
+import sys
+sys.path.insert(0, ".")
+try:
+    from lib.update import apply_startup_update
+    apply_startup_update(verbose=True)
+except Exception as exc:
+    print(f"[biologis-cogitator] startup update skipped: {exc}", flush=True)
+PY
+}
+
+run_startup_update
+
 already_configured() {
   python3 - <<'PY'
 import sys

@@ -7,12 +7,14 @@ from typing import Any
 from textual.app import App
 from textual.widgets import Input, Select, TextArea
 
+from .. import update as updatemod
 from ..profile_schema import clear_schema_cache
 from ..wizard_session import WizardSession
 from .screens.boot import BootScreen
 from .screens.splash import SplashScreen
 from .theme import COGITATOR_CSS
 from .widgets.confirm_dirty import ConfirmDirtyScreen
+from .widgets.header import CogitatorHeader
 
 
 class CogitatorApp(App[None]):
@@ -33,12 +35,52 @@ class CogitatorApp(App[None]):
         # Ignore widget Changed events until the new screen finishes hydrating
         self._dirty_armed: bool = True
         self._dirty_was_before_push: bool = False
+        self._update_notice_shown: bool = False
+        self._update_banner_text: str = updatemod.BANNER_TEXT
 
     def on_mount(self) -> None:
+        # Background poll — do not apply while running; banner tells user to restart.
+        if updatemod.auto_update_enabled() and updatemod.is_git_checkout():
+            self.set_interval(
+                updatemod.poll_interval_seconds(),
+                self._poll_for_updates,
+                name="biologis-update-poll",
+            )
+            self.set_timer(8.0, self._poll_for_updates)
         if self._show_splash:
             self.push_screen(SplashScreen())
         else:
             self.push_screen(BootScreen())
+
+    def _poll_for_updates(self) -> None:
+        if self._update_notice_shown:
+            return
+        if not updatemod.auto_update_enabled():
+            return
+        try:
+            status = updatemod.check_for_update(fetch=True)
+        except Exception:
+            return
+        if not status.available:
+            return
+        self._update_notice_shown = True
+        self._update_banner_text = updatemod.banner_text(status)
+        self._show_update_banner(self._update_banner_text)
+
+    def _show_update_banner(self, text: str) -> None:
+        try:
+            for hdr in self.screen.query(CogitatorHeader):
+                hdr.show_update_notice(text)
+        except Exception:
+            pass
+        try:
+            self.notify(
+                "Update available — save work, Terminate, and reopen.",
+                severity="warning",
+                timeout=12,
+            )
+        except Exception:
+            pass
 
     def push_screen(self, screen, *args, **kwargs):  # type: ignore[no-untyped-def]
         """Disarm dirty tracking while the new screen hydrates widgets."""
@@ -46,6 +88,13 @@ class CogitatorApp(App[None]):
         self._dirty_armed = False
         result = super().push_screen(screen, *args, **kwargs)
         self.call_after_refresh(self._arm_dirty_tracking)
+        if self._update_notice_shown:
+            text = self._update_banner_text
+
+            def _reapply() -> None:
+                self._show_update_banner(text)
+
+            self.call_after_refresh(_reapply)
         return result
 
     def _arm_dirty_tracking(self) -> None:
@@ -238,6 +287,12 @@ def run_wizard(
     pack: str | None = None,
     splash: bool = True,
 ) -> None:
+    # Apply any pending git update before importing/running UI code paths that
+    # already loaded — primarily for `./run wizard`. Launchers also update first.
+    try:
+        updatemod.apply_startup_update(verbose=True)
+    except Exception as exc:
+        print(f"[biologis-cogitator] startup update skipped: {exc}", flush=True)
     # Hybrid: real SWF-derived GIF in a Tk window, then Textual hub (no TTY art splash).
     if splash:
         from ..hybrid_splash import maybe_show_hybrid_splash

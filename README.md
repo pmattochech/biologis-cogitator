@@ -52,6 +52,10 @@ biologis-cogitator
 | Install somewhere else | `BIOLOGIS_HOME=~/src/biologis-cogitator curl -fsSL … \| bash` |
 | Pin a branch/tag | `BIOLOGIS_REF=master curl -fsSL … \| bash` |
 | Classic terminal (no GTK window) | `BIOLOGIS_NO_WINDOW=1 biologis-cogitator` |
+| Disable auto-update | `BIOLOGIS_NO_AUTOUPDATE=1 biologis-cogitator` |
+| Update check interval (seconds) | `BIOLOGIS_UPDATE_CHECK_SECONDS=300` (min 60) |
+
+**Auto-update:** on every launch the cogitator fetches `origin` (`BIOLOGIS_REF`, default `master`) and fast-forwards a clean install checkout. If an update appears while the app is already open, an amber banner asks you to save, Terminate, and reopen (code is not hot-swapped mid-session). Dirty developer working trees are never force-updated.
 
 Already have the tree locally?
 
@@ -95,11 +99,12 @@ biologis-cogitator
 | Install somewhere else | `$env:BIOLOGIS_HOME="$env:USERPROFILE\src\biologis-cogitator"; irm … \| iex` |
 | Local checkout | `.\install.ps1` or `.\install.ps1 -Yes` |
 | Full Linux/GTK via WSL | Install under WSL with the Linux one-liner, or `.\run.cmd --wsl` from a checkout |
+| Disable auto-update | `$env:BIOLOGIS_NO_AUTOUPDATE=1` |
 
 Config on Windows: `%APPDATA%\biologis-cogitator\config.yaml`  
 Default results: `%USERPROFILE%\BiologisCogitator\results`
 
-Use **Windows Terminal** (not legacy `conhost`) for correct colors and keyboard handling.
+Use **Windows Terminal** (not legacy `conhost`) for correct colors and keyboard handling. Auto-update on launch works the same as Linux (git fetch of `BIOLOGIS_REF`).
 
 ---
 

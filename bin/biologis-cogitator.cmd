@@ -22,6 +22,9 @@ if %ERRORLEVEL%==0 (
   set "PY=python"
 )
 
+REM Pull latest from origin before launching (clean install checkouts only)
+%PY% -c "import sys; sys.path.insert(0, r'%ROOT%'); from lib.update import apply_startup_update; apply_startup_update(verbose=True)"
+
 if "%~1"=="" goto :default
 if /I "%~1"=="setup" goto :setup
 if /I "%~1"=="wizard" goto :wizard

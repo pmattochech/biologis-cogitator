@@ -462,6 +462,15 @@ def main(argv: list[str] | None = None) -> int:
     if argv and argv[0] == "wizard":
         argv = argv[1:]
 
+    # Apply git update before spawning the TUI child (fresh interpreter = new code).
+    try:
+        sys.path.insert(0, str(ROOT))
+        from lib.update import apply_startup_update
+
+        apply_startup_update(verbose=True)
+    except Exception as exc:
+        print(f"[biologis-cogitator] startup update skipped: {exc}", flush=True)
+
     # Must run before any Gtk.Window so the shell can match StartupWMClass.
     GLib.set_prgname("biologis-cogitator")
     Gdk.set_program_class("biologis-cogitator")
