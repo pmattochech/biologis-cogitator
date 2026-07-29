@@ -14,6 +14,10 @@ DEFAULT_OUT = Path.home() / "BiologisCogitator" / "out"
 
 
 def config_dir() -> Path:
+    """User config directory: %APPDATA% on Windows, XDG elsewhere."""
+    if os.name == "nt":
+        base = Path(os.environ.get("APPDATA") or (Path.home() / "AppData" / "Roaming"))
+        return base / APP_NAME
     xdg = os.environ.get("XDG_CONFIG_HOME")
     base = Path(xdg) if xdg else Path.home() / ".config"
     return base / APP_NAME

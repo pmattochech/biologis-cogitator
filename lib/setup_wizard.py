@@ -66,7 +66,9 @@ def run_gui_setup() -> int:
         from tkinter import filedialog, messagebox, ttk
     except ImportError:
         print(
-            "tkinter is not available. Install it (Fedora: sudo dnf install python3-tkinter)\n"
+            "tkinter is not available.\n"
+            "  Linux:  sudo dnf install python3-tkinter  (or apt: python3-tk)\n"
+            "  Windows: reinstall Python from python.org with tcl/tk enabled\n"
             "Falling back to terminal prompts.\n",
             file=sys.stderr,
         )

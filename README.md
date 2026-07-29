@@ -22,7 +22,9 @@
 
 ## Install
 
-**Linux.** One command — no manual `git clone` required:
+### Linux
+
+One command — no manual `git clone` required:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/pmattochech/biologis-cogitator/master/scripts/remote-install.sh | bash
@@ -58,11 +60,39 @@ Already have the tree locally?
 
 > Open a **new shell** after install (or `source ~/.bashrc`) so Tab completion and `~/.local/bin` are live.
 
+### Windows
+
+Native **Python + Textual** in Windows Terminal (recommended). The Mechanicus GTK window is Linux/WSL-only.
+
+**PowerShell** (no manual clone):
+
+```powershell
+irm https://raw.githubusercontent.com/pmattochech/biologis-cogitator/master/scripts/remote-install.ps1 | iex
+```
+
+Then open a **new** terminal and run:
+
+```powershell
+biologis-cogitator
+```
+
+| Want… | Do this |
+|--------|---------|
+| Skip setup for now | `$env:BIOLOGIS_NO_SETUP=1; irm … \| iex` then `biologis-cogitator setup` |
+| Install somewhere else | `$env:BIOLOGIS_HOME="$env:USERPROFILE\src\biologis-cogitator"; irm … \| iex` |
+| Local checkout | `.\install.ps1` or `.\install.ps1 -Yes` |
+| Full Linux/GTK via WSL | Install under WSL with the Linux one-liner, or `.\run.cmd --wsl` from a checkout |
+
+Config on Windows: `%APPDATA%\biologis-cogitator\config.yaml`  
+Default results: `%USERPROFILE%\BiologisCogitator\results`
+
+Use **Windows Terminal** (not legacy `conhost`) for correct colors and keyboard handling.
+
 ---
 
 ## What it is
 
-Biologis Cogitator is a **standalone cogitator** — a green-phosphor TUI in a custom Mechanicus GTK window — for building and filing 40k biospheres as structured data, then rendering them as in-universe Magos reports and literary prose.
+Biologis Cogitator is a **standalone cogitator** — a green-phosphor Textual TUI (on Linux, optionally hosted in a Mechanicus GTK window) — for building and filing 40k biospheres as structured data, then rendering them as in-universe Magos reports and literary prose.
 
 Three rites on the boot screen:
 
@@ -91,6 +121,7 @@ It was then **cut free** into its own public home:
 - Clean standalone tree (no runtime dependency on a Codex checkout)
 - Product name **Biologis Cogitator** (`cogitator` / `init-cogitator` aliases)
 - Linux installer, XDG config, GTK host window, boot splash, and a three-rite hub
+- Windows installer (native Textual TUI; GTK window via WSL)
 - Castra Vetera kept only as an **optional pack**, not the core identity
 
 In short: a Magos’s desk that outgrew the fortress it was forged in.
@@ -103,40 +134,45 @@ In short: a Magos’s desk that outgrew the fortress it was forged in.
 
 | Dependency | Why |
 |------------|-----|
-| **Linux** | Supported desktop release |
+| **Python 3** + **pip** | Runtime |
 | **git** | Remote install / updates |
-| **python3** + **pip** | Runtime + packaging |
 | **PyYAML** ≥ 6 | Packs, enums, profiles, schema |
 | **textual** ≥ 0.47 | Cogitator TUI |
 
-Python packages are pulled from [`requirements.txt`](requirements.txt) by the installer.
+Python packages come from [`requirements.txt`](requirements.txt).
 
-### Recommended (graphical app)
+### Linux (graphical window)
 
 | Dependency | Why |
 |------------|-----|
-| **python3-gobject** + **vte291** (GTK3 + VTE) | Embedded terminal window + splash |
-| **python3-tkinter** | First-run folder picker GUI |
-
-Fedora examples:
+| **python3-gobject** + **vte291** (GTK3 + VTE) | Embedded terminal + splash |
+| **python3-tkinter** | First-run folder picker |
 
 ```bash
+# Fedora
 sudo dnf install python3 python3-pip git python3-tkinter python3-gobject vte291
-```
 
-Debian / Ubuntu examples:
-
-```bash
+# Debian / Ubuntu
 sudo apt install python3 python3-pip git python3-tk python3-gi gir1.2-gtk-3.0 gir1.2-vte-2.91
 ```
 
 Without GTK/VTE the cogitator still runs in a normal terminal (`BIOLOGIS_NO_WINDOW=1` or automatic fallback).
 
+### Windows
+
+| Dependency | Why |
+|------------|-----|
+| **Python 3** from [python.org](https://www.python.org/downloads/) (PATH + tcl/tk) | Runtime + setup GUI |
+| **Git for Windows** | Remote install |
+| **Windows Terminal** (recommended) | Best Textual experience |
+
+No GTK/VTE on native Windows — the TUI runs in the console. For the Mechanicus window, use **WSL** and the Linux installer.
+
 ### Optional
 
 | Dependency | Why |
 |------------|-----|
-| **Pillow** | Smoother boot-GIF decode in the GTK window (pre-baked `assets/cogitator-boot.gif` still works via GdkPixbuf alone) |
+| **Pillow** | Smoother boot-GIF decode in the GTK window (Linux) |
 
 ```bash
 python3 -m pip install Pillow
