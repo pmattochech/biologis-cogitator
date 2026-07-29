@@ -1,0 +1,32 @@
+system_slug: system-i-central-bastion
+stellar: pinned
+body_kind: belt_object
+planet_type: dead_world
+topology: "Debris / steel belt field."
+immaterium_stress: minoris
+biomes:
+  - id: steel_dock
+    class: dock_hull
+    richness: sparse
+    medium: industrial_void
+    overlay: true
+specimens: []
+risks:
+  - Micro-abrasion
+  - Vacuum exposure
+geology:
+  gravity_g: 0.05
+  crust: rocky
+  volcanism: inert
+  connectivity: archipelago
+  tidal_lock: false
+  hydrosphere_pct: 0
+chemistry_climate:
+  atmosphere: thin
+  water: false
+  solvent: water
+  cryosphere: cold
+  climate_belts: []
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-central-bastion.md

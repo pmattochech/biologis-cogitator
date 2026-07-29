@@ -1,0 +1,47 @@
+system_slug: system-i-central-bastion
+stellar: pinned
+body_kind: planet
+planet_type: ocean_world
+local_notes: "Ocean platforms, hydroponic towers, biomass processing."
+topology: "Ocean platforms, hydroponic towers, biomass processing infrastructure."
+gravity_g: 1.0
+immaterium_stress: minoris
+risks:
+  - Contamination tides
+  - Toxic blooms
+  - Industrial dump mutations
+biomes:
+  - id: horreum_hydro
+    class: hydroponic
+    richness: sparse
+    medium: freshwater
+    overlay: true
+  - id: horreum_pelagic
+    class: oceanic_pelagic
+    richness: sparse
+    medium: marine
+    overlay: false
+specimens:
+  - id: combat_algae
+    name: Combat algae
+    primary_biome: horreum_hydro
+    trophic_slot: producer
+    origin: exotic
+    origin_subtype: deliberate_transplant
+    analogue: combat_algae
+geology:
+  gravity_g: 1.0
+  crust: rocky
+  volcanism: low
+  connectivity: archipelago
+  tidal_lock: false
+  hydrosphere_pct: 95
+chemistry_climate:
+  atmosphere: breathable
+  water: true
+  solvent: water
+  cryosphere: moderate
+  climate_belts: [oceanic]
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-central-bastion.md

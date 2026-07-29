@@ -1,0 +1,32 @@
+system_slug: system-i-central-bastion
+stellar: pinned
+body_kind: gas_giant
+planet_type: dead_world
+topology: "Capture giant."
+immaterium_stress: minoris
+biomes:
+  - id: novio_iv_dock
+    class: dock_hull
+    richness: barren
+    medium: industrial_void
+    overlay: true
+specimens: []
+risks:
+  - Extreme pressure
+  - Onboard vectors
+geology:
+  gravity_g: 2.5
+  crust: gas
+  volcanism: inert
+  connectivity: pangaea
+  tidal_lock: false
+  hydrosphere_pct: 0
+chemistry_climate:
+  atmosphere: dense
+  water: false
+  solvent: water
+  cryosphere: cold
+  climate_belts: []
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-central-bastion.md

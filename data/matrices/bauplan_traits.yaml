@@ -1,0 +1,37 @@
+# Bauplan trait defaults by medium
+media:
+  terrestrial:
+    locomotion: [cursorial, ambush_stalk, fossorial]
+    respiration: pulmonary_analogue
+    size_ceiling: large
+  freshwater:
+    locomotion: [swim, amphibious, bottom_walk]
+    respiration: [gill_analogue, cutaneous]
+    size_ceiling: large
+  marine:
+    locomotion: [swim, jet, benthic_crawl]
+    respiration: gill_analogue
+    size_ceiling: leviathan
+  aerial:
+    locomotion: [powered_flight, soar, glide]
+    respiration: pulmonary_analogue
+    size_ceiling: medium
+  subterranean:
+    locomotion: [crawl, dig, climb]
+    respiration: [cutaneous, low_oxygen]
+    size_ceiling: medium
+  industrial_void:
+    locomotion: [crawl, cling, scuttle]
+    respiration: [filter, anaerobic_tolerant]
+    size_ceiling: small
+
+slot_size_bias:
+  microbiota: microscopic
+  producer: medium
+  decomposer: small
+  primary_consumer: medium
+  secondary_consumer: medium
+  mesopredator: medium
+  apex: large
+  scavenger: medium
+  parasite: tiny

@@ -1,0 +1,37 @@
+system_slug: system-i-central-bastion
+stellar: pinned
+body_kind: gas_giant
+planet_type: ice_world
+topology: "Ice refiner giant."
+immaterium_stress: minoris
+biomes:
+  - id: novio_v_ice
+    class: ice_cryogenic
+    richness: barren
+    medium: terrestrial
+    overlay: false
+  - id: novio_v_dock
+    class: dock_hull
+    richness: sparse
+    medium: industrial_void
+    overlay: true
+specimens: []
+risks:
+  - Cryogenic breach
+  - Radiation
+geology:
+  gravity_g: 2.2
+  crust: icy
+  volcanism: inert
+  connectivity: pangaea
+  tidal_lock: false
+  hydrosphere_pct: 0
+chemistry_climate:
+  atmosphere: dense
+  water: false
+  solvent: water
+  cryosphere: cold
+  climate_belts: [cryogenic]
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-central-bastion.md

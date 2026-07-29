@@ -1,0 +1,296 @@
+{
+  "meta": {
+    "slug": "tempestas-major-vii",
+    "system_slug": "system-ii-crucible",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:32Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/tempestas-major-vii.yaml",
+      "external/lore/bestiary/biogeographic-matrix-crucible.md"
+    ],
+    "topology": "Hyper-pressurized acid swamp world.",
+    "planet_type": "death_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "vii_acid",
+        "class": "acid_swamp",
+        "richness": "rich",
+        "medium": "freshwater",
+        "overlay": false
+      }
+    ],
+    "specimens": [
+      {
+        "id": "iron_fungi",
+        "name": "Iron fungi",
+        "primary_biome": "vii_acid",
+        "trophic_slot": "producer",
+        "origin": "native",
+        "origin_subtype": "aboriginal",
+        "analogue": "iron_fungus"
+      },
+      {
+        "id": "tyrannus_lutum",
+        "name": "Tyrannus Lutum",
+        "primary_biome": "vii_acid",
+        "trophic_slot": "apex",
+        "origin": "native",
+        "origin_subtype": "aboriginal",
+        "analogue": "armored_swamp_apex"
+      }
+    ],
+    "risks": [
+      "Chemical burn",
+      "Extreme pressure",
+      "Territorial predation"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "Hyper-pressurized acid swamp; iron fungi; Tyrannus Lutum.",
+    "system_slug": "system-ii-crucible",
+    "immaterium_stress": "majoris",
+    "geology": {
+      "gravity_g": 1.1,
+      "crust": "rocky",
+      "volcanism": "moderate",
+      "connectivity": "isoterra",
+      "tidal_lock": false,
+      "hydrosphere_pct": 80
+    },
+    "chemistry_climate": {
+      "atmosphere": "corrosive",
+      "water": true,
+      "solvent": "sulfuric_acid",
+      "cryosphere": "warm",
+      "climate_belts": [
+        "acid_swamp"
+      ],
+      "immaterium_stress": "majoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "death_world",
+      "body_kind": "planet",
+      "local_notes": "Hyper-pressurized acid swamp; iron fungi; Tyrannus Lutum."
+    },
+    "geology": {
+      "gravity_g": 1.1,
+      "crust": "rocky",
+      "volcanism": "moderate",
+      "connectivity": "isoterra",
+      "tidal_lock": false,
+      "hydrosphere_pct": 80,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Hyper-pressurized acid swamp world."
+    },
+    "chemistry_climate": {
+      "atmosphere": "corrosive",
+      "water": true,
+      "solvent": "sulfuric_acid",
+      "cryosphere": "warm",
+      "climate_belts": [
+        "acid_swamp"
+      ],
+      "immaterium_stress": "majoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Recurring veil weather; mutation/psychic pressure shapes niches"
+    },
+    "biomes": [
+      {
+        "id": "vii_acid",
+        "class": "acid_swamp",
+        "richness": "rich",
+        "medium": "freshwater",
+        "overlay": false
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "vii_acid": [
+          {
+            "slot_id": "vii_acid__producer__iron_fungi",
+            "slot": "producer",
+            "analogue": "iron_fungus",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "vii_acid",
+            "secondary_biomes": [],
+            "medium": "freshwater",
+            "locked": true,
+            "name": "Iron fungi",
+            "dossier": null,
+            "notes": ""
+          },
+          {
+            "slot_id": "vii_acid__apex__tyrannus_lutum",
+            "slot": "apex",
+            "analogue": "armored_swamp_apex",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "vii_acid",
+            "secondary_biomes": [],
+            "medium": "freshwater",
+            "locked": true,
+            "name": "Tyrannus Lutum",
+            "dossier": null,
+            "notes": ""
+          },
+          {
+            "slot_id": "vii_acid__decomposer",
+            "slot": "decomposer",
+            "analogue": "acid_detritivore",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "vii_acid",
+            "medium": "freshwater",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "vii_acid__primary_consumer",
+            "slot": "primary_consumer",
+            "analogue": "acid_grazer",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "vii_acid",
+            "medium": "freshwater",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "vii_acid__secondary_consumer",
+            "slot": "secondary_consumer",
+            "analogue": "armored_amphibian_meso",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "vii_acid",
+            "medium": "freshwater",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "vii_acid__scavenger",
+            "slot": "scavenger",
+            "analogue": "acid_scavenger",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "vii_acid",
+            "medium": "freshwater",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "vii_acid__producer__iron_fungi": {
+          "slot_id": "vii_acid__producer__iron_fungi",
+          "name": "Iron fungi",
+          "analogue": "iron_fungus",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "freshwater",
+          "locomotion": "swim",
+          "respiration": "gill_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "producer",
+          "primary_biome": "vii_acid",
+          "locked": false
+        },
+        "vii_acid__apex__tyrannus_lutum": {
+          "slot_id": "vii_acid__apex__tyrannus_lutum",
+          "name": "Tyrannus Lutum",
+          "analogue": "armored_swamp_apex",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "freshwater",
+          "locomotion": "swim",
+          "respiration": "gill_analogue",
+          "size_class": "large",
+          "size_ceiling": "large",
+          "trophic_slot": "apex",
+          "primary_biome": "vii_acid",
+          "locked": false
+        },
+        "vii_acid__decomposer": {
+          "slot_id": "vii_acid__decomposer",
+          "name": null,
+          "analogue": "acid_detritivore",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "freshwater",
+          "locomotion": "swim",
+          "respiration": "gill_analogue",
+          "size_class": "small",
+          "size_ceiling": "large",
+          "trophic_slot": "decomposer",
+          "primary_biome": "vii_acid",
+          "locked": false
+        },
+        "vii_acid__primary_consumer": {
+          "slot_id": "vii_acid__primary_consumer",
+          "name": null,
+          "analogue": "acid_grazer",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "freshwater",
+          "locomotion": "swim",
+          "respiration": "gill_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "primary_consumer",
+          "primary_biome": "vii_acid",
+          "locked": false
+        },
+        "vii_acid__secondary_consumer": {
+          "slot_id": "vii_acid__secondary_consumer",
+          "name": null,
+          "analogue": "armored_amphibian_meso",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "freshwater",
+          "locomotion": "swim",
+          "respiration": "gill_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "secondary_consumer",
+          "primary_biome": "vii_acid",
+          "locked": false
+        },
+        "vii_acid__scavenger": {
+          "slot_id": "vii_acid__scavenger",
+          "name": null,
+          "analogue": "acid_scavenger",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "freshwater",
+          "locomotion": "swim",
+          "respiration": "gill_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "scavenger",
+          "primary_biome": "vii_acid",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/tempestas-major-vii/magos.md",
+    "literary_path": "out/tempestas-major-vii/literary.md"
+  }
+}

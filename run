@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# biologis-cogitator entrypoint
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CMD="${1:-}"
+shift || true
+
+usage() {
+  cat <<'EOF'
+Usage: ./run <command> [args...]
+
+Commands:
+  wizard [--seed N] [--pack NAME]     Cogitator TUI (guided system → body)
+  packs                               List scenario packs
+  generate-system <slug> [--seed N] [--spark] [--mode natural|engineered_mesh] [--existing] [--pack NAME]
+  generate <body-slug> [--seed N] [--spark] [--from-lock path] [--system slug] [--existing-system slug] [--pack NAME]
+  show <slug> [--json] [--as-system]
+  propose-export <body-slug>
+  layers
+  help
+
+Greenfield: start with wizard or generate-system (no --pack).
+Castra Vetera mesh: --pack castra-vetera (optional example pack, not the engine core).
+EOF
+}
+
+case "$CMD" in
+  wizard|packs|generate-system|generate|show|propose-export|layers)
+    exec python3 "$ROOT/bin/cli.py" "$CMD" "$@"
+    ;;
+  help|-h|--help|"")
+    usage
+    [[ -n "$CMD" ]] || exit 1
+    exit 0
+    ;;
+  *)
+    echo "error: unknown command: $CMD" >&2
+    usage >&2
+    exit 1
+    ;;
+esac

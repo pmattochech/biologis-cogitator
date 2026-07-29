@@ -1,0 +1,32 @@
+system_slug: system-ii-crucible
+stellar: pinned
+body_kind: planet
+planet_type: dead_world
+topology: "Vitrified lens world."
+immaterium_stress: minoris
+biomes:
+  - id: vitreus_null
+    class: barren_null
+    richness: null
+    medium: terrestrial
+    overlay: false
+specimens: []
+risks:
+  - Optical trauma
+  - Stasis contamination
+geology:
+  gravity_g: 0.9
+  crust: rocky
+  volcanism: inert
+  connectivity: pangaea
+  tidal_lock: false
+  hydrosphere_pct: 0
+chemistry_climate:
+  atmosphere: thin
+  water: false
+  solvent: water
+  cryosphere: hot
+  climate_belts: [vitrified]
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-crucible.md

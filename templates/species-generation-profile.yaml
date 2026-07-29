@@ -1,0 +1,354 @@
+# Species profile — SOURCE OF TRUTH for the cogitator TUI.
+# Edit this file, then restart the cogitator OR re-open the species screen / Reload schema.
+# Human chat copy: species-generation-profile.md (keep roughly aligned).
+#
+# Registry order: A taxonomy+names → B body/morphology → C origin → D ecology → E look → G filing
+# Field types: text | select | yes_no | trophic_slot | comma_list
+
+id: species
+title: Species generation profile
+version: 7
+
+minimum:
+  required:
+    - store: profile.id
+      label: Entry ID
+    - store: answers.C.origin
+      label: C17 origin (native or exotic)
+    - store: answers.B.bodyshape
+      label: B6 bodyshape
+  any_of:
+    - label: at least one name (vernacular or formal registry)
+      stores:
+        - profile.working_common_name
+        - answers.A.formal_name
+        - answers.F.formal_name
+        - answers.F.high_gothic
+
+roles:
+  midjourney_bits:
+    - answers.B.bodyshape
+    - answers.E.skin_armor_color
+    - answers.E.head_must_haves
+    - answers.E.iconic_wrong
+    - answers.B.limb_disposition
+    - answers.B.limb_mode
+    - answers.B.jaw_disposition
+    - answers.B.jaw_mode
+    - answers.B.eyes
+    - answers.C.origin
+  midjourney_excludes:
+    - answers.E.head_excludes
+  naming_confusions:
+    - answers.A.confusions
+    - answers.F.confusions
+
+steps:
+  - id: meta
+    title: Meta / biome / slot
+    fields:
+      - id: species_id
+        store: profile.id
+        label: "Entry ID"
+        type: text
+        placeholder: "AAAA-BBB-NNN (e.g. AETH-SHR-001)"
+      - id: world_biome
+        store: profile.world_biome
+        label: "World / primary biome id"
+        type: text
+      - id: secondary_biomes
+        store: profile.secondary_biomes
+        label: "Secondary biomes (comma ids)"
+        type: comma_list
+      - id: range
+        store: profile.range
+        label: "Range (single|multi)"
+        type: text
+        default: single
+      - id: trophic_slot
+        store: profile.trophic_slot
+        label: "Trophic slot"
+        type: trophic_slot
+        default: apex
+      - id: origin_subtype
+        store: profile.origin_subtype
+        label: "Origin subtype"
+        type: text
+        default: aboriginal
+      - id: analogue
+        store: profile.analogue
+        label: "Analogue"
+        type: text
+      - id: notes
+        store: profile.notes
+        label: "Notes"
+        type: text
+
+  - id: A
+    title: "A — Taxonomy & names"
+    fields:
+      - id: working_common_name
+        store: profile.working_common_name
+        label: "1. Vernacular name (local / dock speech — working label)"
+        type: text
+        placeholder: "e.g. Ash-Back, tide-calf, Needles name"
+      - id: formal_name
+        store: answers.A.formal_name
+        label: "2. Formal registry name (Magos / binomial)"
+        type: text
+        placeholder: "e.g. Leviathus Aethelgardis"
+      - id: phylum
+        store: answers.A.phylum
+        label: "3. Phylum (pick code)"
+        type: select
+        options:
+          - { value: P1, label: "P1 Chordata (backbone / notochord animals)" }
+          - { value: P2, label: "P2 Arthropoda (jointed-limb armor)" }
+          - { value: P3, label: "P3 Mollusca (soft-bodied, often shelled)" }
+          - { value: P4, label: "P4 Cnidaria (sac-body stingers)" }
+          - { value: P5, label: "P5 Echinodermata (spiny radial sea)" }
+          - { value: P6, label: "P6 Annelida (segmented worms)" }
+          - { value: P7, label: "P7 Nematoda (roundworms)" }
+          - { value: P8, label: "P8 Platyhelminthes (flatworms)" }
+          - { value: P9, label: "P9 Porifera (sponges)" }
+          - { value: P10, label: "P10 Bryozoa (moss animals)" }
+          - { value: P11, label: "P11 Brachiopoda (lamp shells)" }
+          - { value: P12, label: "P12 Ctenophora (comb jellies)" }
+          - { value: P13, label: "P13 Rotifera (wheel animals)" }
+          - { value: P14, label: "P14 Tardigrada (water bears)" }
+          - { value: P15, label: "P15 Onychophora (velvet worms)" }
+          - { value: P16, label: "P16 other (name + gloss in other field)" }
+      - id: phylum_other
+        store: answers.A.phylum_other
+        label: "3b. Other phylum (if P16)"
+        type: text
+      - id: genetic_class
+        store: answers.A.genetic_class
+        label: "4. Genetic / taxonomic class (by phylum)"
+        type: select
+        depends_on: answers.A.phylum
+        options_by:
+          P1:
+            - { value: C-ch1, label: "C-ch1 Agnatha (jawless fish)" }
+            - { value: C-ch2, label: "C-ch2 Chondrichthyes (cartilage fish)" }
+            - { value: C-ch3, label: "C-ch3 Osteichthyes (bony fish)" }
+            - { value: C-ch4, label: "C-ch4 Amphibia" }
+            - { value: C-ch5, label: "C-ch5 Reptilia" }
+            - { value: C-ch6, label: "C-ch6 Aves (birds)" }
+            - { value: C-ch7, label: "C-ch7 Mammalia" }
+            - { value: C-ch8, label: "C-ch8 other chordate class" }
+          P2:
+            - { value: C-ar1, label: "C-ar1 Insecta" }
+            - { value: C-ar2, label: "C-ar2 Arachnida" }
+            - { value: C-ar3, label: "C-ar3 Crustacea" }
+            - { value: C-ar4, label: "C-ar4 Chilopoda (centipedes)" }
+            - { value: C-ar5, label: "C-ar5 Diplopoda (millipedes)" }
+            - { value: C-ar6, label: "C-ar6 Merostomata (horseshoe-crab grade)" }
+            - { value: C-ar7, label: "C-ar7 other arthropod class" }
+          P3:
+            - { value: C-mo1, label: "C-mo1 Gastropoda (snails/slugs)" }
+            - { value: C-mo2, label: "C-mo2 Bivalvia (clams/mussels)" }
+            - { value: C-mo3, label: "C-mo3 Cephalopoda" }
+            - { value: C-mo4, label: "C-mo4 Polyplacophora (chitons)" }
+            - { value: C-mo5, label: "C-mo5 other mollusc class" }
+          P4:
+            - { value: C-cn1, label: "C-cn1 Scyphozoa (true jellyfish)" }
+            - { value: C-cn2, label: "C-cn2 Anthozoa (anemones/corals)" }
+            - { value: C-cn3, label: "C-cn3 Hydrozoa" }
+            - { value: C-cn4, label: "C-cn4 other cnidarian class" }
+          P5:
+            - { value: C-ec1, label: "C-ec1 Asteroidea (starfish)" }
+            - { value: C-ec2, label: "C-ec2 Echinoidea (urchins)" }
+            - { value: C-ec3, label: "C-ec3 Holothuroidea (sea cucumbers)" }
+            - { value: C-ec4, label: "C-ec4 Crinoidea (sea lilies)" }
+            - { value: C-ec5, label: "C-ec5 Ophiuroidea (brittle stars)" }
+            - { value: C-ec6, label: "C-ec6 other echinoderm class" }
+          P6: &worm_classes
+            - { value: C-wo1, label: "C-wo1 Polychaeta (bristle worms)" }
+            - { value: C-wo2, label: "C-wo2 Oligochaeta (earthworm grade)" }
+            - { value: C-wo3, label: "C-wo3 Hirudinea (leeches)" }
+            - { value: C-wo4, label: "C-wo4 roundworm grade" }
+            - { value: C-wo5, label: "C-wo5 flatworm grade" }
+            - { value: C-wo6, label: "C-wo6 other worm grade" }
+          P7: *worm_classes
+          P8: *worm_classes
+          P9: &other_grades
+            - { value: C-ot1, label: "C-ot1 sponge grade" }
+            - { value: C-ot2, label: "C-ot2 moss-animal colony" }
+            - { value: C-ot3, label: "C-ot3 lamp-shell grade" }
+            - { value: C-ot4, label: "C-ot4 comb-jelly grade" }
+            - { value: C-ot5, label: "C-ot5 wheel-animal grade" }
+            - { value: C-ot6, label: "C-ot6 water-bear grade" }
+            - { value: C-ot7, label: "C-ot7 velvet-worm grade" }
+            - { value: C-ot8, label: "C-ot8 other" }
+          P10: *other_grades
+          P11: *other_grades
+          P12: *other_grades
+          P13: *other_grades
+          P14: *other_grades
+          P15: *other_grades
+          P16: *other_grades
+      - id: genetic_class_other
+        store: answers.A.genetic_class_other
+        label: "4b. Other class / gloss"
+        type: text
+      - id: confusions
+        store: answers.A.confusions
+        label: "5. Confusions to avoid"
+        type: text
+
+  - id: B
+    title: "B — Body plan & morphology"
+    fields:
+      - id: bodyshape
+        store: answers.B.bodyshape
+        label: "6. Basic bodyshape"
+        type: text
+        placeholder: "whale-like / serpentine / fish-like / …"
+      - id: size_min
+        store: answers.B.size_min
+        label: "7. Minimum size (life stage if split)"
+        type: text
+      - id: size_max
+        store: answers.B.size_max
+        label: "8. Maximum size"
+        type: text
+      - id: dimorphism
+        store: answers.B.dimorphism
+        label: "9. Sexual dimorphism"
+        type: text
+      - id: eyes
+        store: answers.B.eyes
+        label: "10. How many eyes?"
+        type: text
+      - id: limb_disposition
+        store: answers.B.limb_disposition
+        label: "11. Limb disposition (list each type: fins, flippers, legs, wings, etc.)"
+        type: text
+        placeholder: "e.g. 2 pectoral flippers + 1 horizontal fluke; 0 legs"
+      - id: ancestral_limb_count
+        store: answers.B.ancestral_limb_count
+        label: "12. Ancestral limb count (e.g. 0 / 4 / 6 / 8 / other)"
+        type: text
+      - id: limb_mode
+        store: answers.B.limb_mode
+        label: "13. Limb mode today"
+        type: select
+        options:
+          - { value: A, label: "A — Rayed fins only (bony/cartilage fish swimmers)" }
+          - { value: B, label: "B — Lobed fin-limbs (mud-shove / pole; bonefish→amphibian grade)" }
+          - { value: C, label: "C — Semi-amphibious (fins or limbs used on land and water)" }
+          - { value: D, label: "D — Flipper-limbs / paddles (whale–seal grade; secondarily aquatic)" }
+          - { value: E, label: "E — Walking limbs (true legs / arms on land)" }
+          - { value: F, label: "F — Climbing / grasping limbs (arboreal hands, hooks, prehensile)" }
+          - { value: G, label: "G — Wings / membranous flight (or gliding membranes)" }
+          - { value: H, label: "H — Jointed armor limbs (arthropod legs / claws / pedipalps)" }
+          - { value: I, label: "I — Soft / hydrostatic limbs (tentacles, tube feet, parapodia)" }
+          - { value: J, label: "J — Limbless / reduced (serpentine, eel, vestigial only)" }
+          - { value: K, label: "K — Other (describe in 13b)" }
+      - id: limb_mode_other
+        store: answers.B.limb_mode_other
+        label: "13b. Other limb mode (if K)"
+        type: text
+      - id: jaw_disposition
+        store: answers.B.jaw_disposition
+        label: "14. Jaw disposition (list each type: hinges, tusks, tooth rows, beak, etc.)"
+        type: text
+        placeholder: "e.g. 1 bilateral mandible hinge; 2 forward serrated tusks; shearing tooth rows"
+      - id: jaw_mode
+        store: answers.B.jaw_mode
+        label: "15. Jaw / bite mode today"
+        type: select
+        options:
+          - { value: A, label: "A — Crushing / grinding" }
+          - { value: B, label: "B — Shearing / flesh-cut" }
+          - { value: C, label: "C — Impaling / tusk-ram (forward spears)" }
+          - { value: D, label: "D — Filter / gulp" }
+          - { value: E, label: "E — Suction / engulf" }
+          - { value: F, label: "F — Beak / scissor" }
+          - { value: G, label: "G — Combined (describe in 15b)" }
+          - { value: H, label: "H — Other (describe in 15b)" }
+      - id: jaw_mode_other
+        store: answers.B.jaw_mode_other
+        label: "15b. Combined / other jaw mode detail (if G or H)"
+        type: text
+      - id: skull_seams
+        store: answers.B.skull_seams
+        label: "16. Skull seams / weak points (kill joints, armor gaps)"
+        type: text
+        placeholder: "e.g. rear cranial plate seam (Batav kill point on juveniles)"
+
+  - id: C
+    title: "C — Origin"
+    fields:
+      - id: origin
+        store: answers.C.origin
+        label: "17. Exotic or native to this world?"
+        type: select
+        options:
+          - { value: native, label: native }
+          - { value: exotic, label: exotic }
+
+  - id: D
+    title: "D — Ecology & behavior"
+    fields:
+      - id: diet
+        store: answers.D.diet
+        label: "18. Diet (by life stage if split)"
+        type: text
+      - id: lifespan
+        store: answers.D.lifespan
+        label: "19. Average lifespan"
+        type: text
+      - id: predators
+        store: answers.D.predators
+        label: "20. Predators (by life stage if split)"
+        type: text
+      - id: temperament
+        store: answers.D.temperament
+        label: "21. Temperament (by life stage if split)"
+        type: text
+
+  - id: E
+    title: "E — Appearance (Midjourney)"
+    fields:
+      - id: skin_armor_color
+        store: answers.E.skin_armor_color
+        label: "22. Skin / armor / color"
+        type: text
+      - id: head_must_haves
+        store: answers.E.head_must_haves
+        label: "23a. Head / face must-haves"
+        type: text
+      - id: head_excludes
+        store: answers.E.head_excludes
+        label: "23b. Hard excludes"
+        type: text
+      - id: iconic_wrong
+        store: answers.E.iconic_wrong
+        label: "24. Iconic / wrong silhouette"
+        type: text
+
+  - id: G
+    title: "G — Filing reminders (no codex writes)"
+    hint: "Reminders only — cogitator never writes external/lore/."
+    fields:
+      - id: dossier_path
+        store: answers.G.dossier_path
+        label: "Suggested dossier path under bestiary/"
+        type: text
+      - id: update_named_specimens
+        store: answers.G.update_named_specimens
+        label: "Update fauna-flora-named-specimens.md?"
+        type: yes_no
+        default: false
+      - id: update_index
+        store: answers.G.update_index
+        label: "Update bestiary INDEX.md?"
+        type: yes_no
+        default: false
+      - id: cross_link_geography
+        store: answers.G.cross_link_geography
+        label: "Cross-link geography / Magos food web?"
+        type: yes_no
+        default: false

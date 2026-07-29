@@ -1,0 +1,36 @@
+system_slug: system-iii-threshold
+stellar: pinned
+body_kind: planet
+planet_type: frontier_world
+topology: "Border gravity port."
+immaterium_stress: minoris
+risks:
+  - Dimensional contamination
+biomes:
+  - id: abyssal_anchor_a
+    class: station_hab
+    richness: barren
+    medium: industrial_void
+    overlay: true
+  - id: abyssal_anchor_b
+    class: dock_hull
+    richness: sparse
+    medium: industrial_void
+    overlay: true
+specimens: []
+geology:
+  gravity_g: 1.0
+  crust: rocky
+  volcanism: inert
+  connectivity: archipelago
+  tidal_lock: false
+  hydrosphere_pct: 0
+chemistry_climate:
+  atmosphere: thin
+  water: false
+  solvent: water
+  cryosphere: cold
+  climate_belts: []
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-threshold.md

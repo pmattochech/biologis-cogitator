@@ -1,0 +1,200 @@
+{
+  "meta": {
+    "slug": "great-reef",
+    "system_slug": "system-iii-threshold",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:32Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/great-reef.yaml",
+      "external/lore/bestiary/biogeographic-matrix-threshold.md"
+    ],
+    "topology": "Electrostatic conducting belt.",
+    "planet_type": "dead_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "great_reef_a",
+        "class": "dock_hull",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "great_reef_b",
+        "class": "slag_industrial",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Micro-abrasion"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-iii-threshold",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "dead_world",
+      "body_kind": "planet",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (K-dwarf)",
+      "topology": "Electrostatic conducting belt."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "great_reef_a",
+        "class": "dock_hull",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "great_reef_b",
+        "class": "slag_industrial",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "great_reef_a": [
+          {
+            "slot_id": "great_reef_a__microbiota",
+            "slot": "microbiota",
+            "analogue": "radiation_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "great_reef_a",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "great_reef_b": [
+          {
+            "slot_id": "great_reef_b__producer",
+            "slot": "producer",
+            "analogue": "slag_lichen",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "great_reef_b",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "great_reef_b__decomposer",
+            "slot": "decomposer",
+            "analogue": "metal_oxidizing_detritivore",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "great_reef_b",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "great_reef_a__microbiota": {
+          "slot_id": "great_reef_a__microbiota",
+          "name": null,
+          "analogue": "radiation_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "microscopic",
+          "size_ceiling": "small",
+          "trophic_slot": "microbiota",
+          "primary_biome": "great_reef_a",
+          "locked": false
+        },
+        "great_reef_b__producer": {
+          "slot_id": "great_reef_b__producer",
+          "name": null,
+          "analogue": "slag_lichen",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "producer",
+          "primary_biome": "great_reef_b",
+          "locked": false
+        },
+        "great_reef_b__decomposer": {
+          "slot_id": "great_reef_b__decomposer",
+          "name": null,
+          "analogue": "metal_oxidizing_detritivore",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "great_reef_b",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/great-reef/magos.md",
+    "literary_path": "out/great-reef/literary.md"
+  }
+}

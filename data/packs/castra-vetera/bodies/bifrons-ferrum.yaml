@@ -1,0 +1,37 @@
+system_slug: system-ii-crucible
+stellar: pinned
+body_kind: planet
+planet_type: dead_world
+topology: "Broken planet."
+immaterium_stress: minoris
+biomes:
+  - id: bifrons_null
+    class: barren_null
+    richness: barren
+    medium: terrestrial
+    overlay: false
+  - id: bifrons_slag
+    class: slag_industrial
+    richness: sparse
+    medium: industrial_void
+    overlay: true
+specimens: []
+risks:
+  - Biological rust vectors
+  - Ionized dust
+geology:
+  gravity_g: 0.6
+  crust: rocky
+  volcanism: inert
+  connectivity: archipelago
+  tidal_lock: false
+  hydrosphere_pct: 0
+chemistry_climate:
+  atmosphere: thin
+  water: false
+  solvent: water
+  cryosphere: cold
+  climate_belts: []
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-crucible.md

@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "slug": "horreum-secundus",
+    "system_slug": "system-i-central-bastion",
+    "seed": 42,
+    "spark": true,
+    "generated_at": "2026-07-28T22:59:21Z",
+    "filing_id": "HORR"
+  },
+  "locks": {
+    "sources": [
+      "data/packs/castra-vetera/bodies/horreum-secundus.yaml",
+      "external/lore/bestiary/biogeographic-matrix-central-bastion.md"
+    ],
+    "topology": "Ocean platforms, hydroponic towers, biomass processing infrastructure.",
+    "planet_type": "ocean_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "horreum_hydro",
+        "class": "hydroponic",
+        "richness": "sparse",
+        "medium": "freshwater",
+        "overlay": true,
+        "filing_id": "HORR-HYD"
+      },
+      {
+        "id": "horreum_pelagic",
+        "class": "oceanic_pelagic",
+        "richness": "sparse",
+        "medium": "marine",
+        "overlay": false,
+        "filing_id": "HORR-CNC"
+      }
+    ],
+    "specimens": [
+      {
+        "id": "combat_algae",
+        "name": "Combat algae",
+        "primary_biome": "horreum_hydro",
+        "trophic_slot": "producer",
+        "origin": "exotic",
+        "origin_subtype": "deliberate_transplant",
+        "analogue": "combat_algae"
+      }
+    ],
+    "risks": [
+      "Contamination tides",
+      "Toxic blooms",
+      "Industrial dump mutations"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "Ocean platforms, hydroponic towers, biomass processing.",
+    "system_slug": "system-i-central-bastion",
+    "immaterium_stress": "minoris",
+    "gravity_g": 1.0,
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "low",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 95
+    },
+    "chemistry_climate": {
+      "atmosphere": "breathable",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "moderate",
+      "climate_belts": [
+        "oceanic"
+      ],
+      "immaterium_stress": "minoris"
+    },
+    "filing_id": "HORR"
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "ocean_world",
+      "body_kind": "planet",
+      "local_notes": "Ocean platforms, hydroponic towers, biomass processing."
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "low",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 95,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Ocean platforms, hydroponic towers, biomass processing infrastructure."
+    },
+    "chemistry_climate": {
+      "atmosphere": "breathable",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "moderate",
+      "climate_belts": [
+        "oceanic"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "horreum_hydro",
+        "class": "hydroponic",
+        "richness": "sparse",
+        "medium": "freshwater",
+        "overlay": true,
+        "filing_id": "HORR-HYD"
+      },
+      {
+        "id": "horreum_pelagic",
+        "class": "oceanic_pelagic",
+        "richness": "sparse",
+        "medium": "marine",
+        "overlay": false,
+        "filing_id": "HORR-CNC"
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "horreum_hydro": [
+          {
+            "slot_id": "horreum_hydro__producer__combat_algae__primary",
+            "slot": "producer",
+            "analogue": "combat_algae",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "horreum_hydro",
+            "secondary_biomes": [],
+            "medium": "freshwater",
+            "locked": true,
+            "link": false,
+            "name": "Combat algae",
+            "dossier": null,
+            "notes": ""
+          },
+          {
+            "slot_id": "horreum_hydro__decomposer",
+            "slot": "decomposer",
+            "analogue": "filter_culture",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "horreum_hydro",
+            "medium": "freshwater",
+            "locked": false,
+            "name": null,
+            "link": false
+          }
+        ],
+        "horreum_pelagic": [
+          {
+            "slot_id": "horreum_pelagic__producer",
+            "slot": "producer",
+            "analogue": "phytoplankton",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "horreum_pelagic",
+            "medium": "marine",
+            "locked": false,
+            "name": null,
+            "link": false
+          },
+          {
+            "slot_id": "horreum_pelagic__decomposer",
+            "slot": "decomposer",
+            "analogue": "marine_microbe",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "horreum_pelagic",
+            "medium": "marine",
+            "locked": false,
+            "name": null,
+            "link": false
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "horreum_hydro__producer__combat_algae__primary": {
+          "slot_id": "horreum_hydro__producer__combat_algae__primary",
+          "name": "Combat algae",
+          "analogue": "combat_algae",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "freshwater",
+          "locomotion": "bottom_walk",
+          "respiration": "gill_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "producer",
+          "primary_biome": "horreum_hydro",
+          "locked": false
+        },
+        "horreum_hydro__decomposer": {
+          "slot_id": "horreum_hydro__decomposer",
+          "name": null,
+          "analogue": "filter_culture",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "freshwater",
+          "locomotion": "swim",
+          "respiration": "cutaneous",
+          "size_class": "small",
+          "size_ceiling": "large",
+          "trophic_slot": "decomposer",
+          "primary_biome": "horreum_hydro",
+          "locked": false
+        },
+        "horreum_pelagic__producer": {
+          "slot_id": "horreum_pelagic__producer",
+          "name": null,
+          "analogue": "phytoplankton",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "marine",
+          "locomotion": "swim",
+          "respiration": "gill_analogue",
+          "size_class": "medium",
+          "size_ceiling": "leviathan",
+          "trophic_slot": "producer",
+          "primary_biome": "horreum_pelagic",
+          "locked": false
+        },
+        "horreum_pelagic__decomposer": {
+          "slot_id": "horreum_pelagic__decomposer",
+          "name": null,
+          "analogue": "marine_microbe",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "marine",
+          "locomotion": "swim",
+          "respiration": "gill_analogue",
+          "size_class": "small",
+          "size_ceiling": "leviathan",
+          "trophic_slot": "decomposer",
+          "primary_biome": "horreum_pelagic",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "cogitator-results/horreum-secundus/magos.md",
+    "literary_path": "cogitator-results/horreum-secundus/literary.md",
+    "species_dir": "cogitator-results/horreum-secundus/species"
+  }
+}

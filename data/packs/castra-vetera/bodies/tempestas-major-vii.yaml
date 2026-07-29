@@ -1,0 +1,48 @@
+system_slug: system-ii-crucible
+stellar: pinned
+body_kind: planet
+planet_type: death_world
+local_notes: "Hyper-pressurized acid swamp; iron fungi; Tyrannus Lutum."
+topology: "Hyper-pressurized acid swamp world."
+immaterium_stress: majoris
+risks:
+  - Chemical burn
+  - Extreme pressure
+  - Territorial predation
+biomes:
+  - id: vii_acid
+    class: acid_swamp
+    richness: rich
+    medium: freshwater
+    overlay: false
+specimens:
+  - id: iron_fungi
+    name: Iron fungi
+    primary_biome: vii_acid
+    trophic_slot: producer
+    origin: native
+    origin_subtype: aboriginal
+    analogue: iron_fungus
+  - id: tyrannus_lutum
+    name: Tyrannus Lutum
+    primary_biome: vii_acid
+    trophic_slot: apex
+    origin: native
+    origin_subtype: aboriginal
+    analogue: armored_swamp_apex
+geology:
+  gravity_g: 1.1
+  crust: rocky
+  volcanism: moderate
+  connectivity: isoterra
+  tidal_lock: false
+  hydrosphere_pct: 80
+chemistry_climate:
+  atmosphere: corrosive
+  water: true
+  solvent: sulfuric_acid
+  cryosphere: warm
+  climate_belts: [acid_swamp]
+  immaterium_stress: majoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-crucible.md

@@ -1,0 +1,287 @@
+{
+  "meta": {
+    "slug": "castra-vetera-prime",
+    "system_slug": "system-i-central-bastion",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:31Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/castra-vetera-prime.yaml",
+      "external/lore/bestiary/biogeographic-matrix-central-bastion.md"
+    ],
+    "topology": "Stratified ecumenopolis by judicial and archival districts.",
+    "planet_type": "hive_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "cvp_hive",
+        "class": "hive_stack",
+        "richness": "moderate",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "cvp_gardens",
+        "class": "archival_garden",
+        "richness": "sparse",
+        "medium": "terrestrial",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Low biological risk by Imperial standard",
+      "Psychosocial risk from hyper-bureaucracy"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "Ecumenopolis of judgment, law, and archives; perpetual autumn climate control.",
+    "system_slug": "system-i-central-bastion",
+    "immaterium_stress": "minoris",
+    "gravity_g": 1.0,
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "low",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 20
+    },
+    "chemistry_climate": {
+      "atmosphere": "breathable",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "cool",
+      "climate_belts": [
+        "perpetual_autumn_control"
+      ],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "hive_world",
+      "body_kind": "planet",
+      "local_notes": "Ecumenopolis of judgment, law, and archives; perpetual autumn climate control."
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "low",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 20,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Stratified ecumenopolis by judicial and archival districts."
+    },
+    "chemistry_climate": {
+      "atmosphere": "breathable",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "cool",
+      "climate_belts": [
+        "perpetual_autumn_control"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "cvp_hive",
+        "class": "hive_stack",
+        "richness": "moderate",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "cvp_gardens",
+        "class": "archival_garden",
+        "richness": "sparse",
+        "medium": "terrestrial",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "cvp_hive": [
+          {
+            "slot_id": "cvp_hive__producer",
+            "slot": "producer",
+            "analogue": "cultivated_fungus",
+            "origin": "exotic",
+            "origin_subtype": "feral_exotic",
+            "range": "single",
+            "primary_biome": "cvp_hive",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "cvp_hive__decomposer",
+            "slot": "decomposer",
+            "analogue": "waste_detritivore",
+            "origin": "exotic",
+            "origin_subtype": "feral_exotic",
+            "range": "single",
+            "primary_biome": "cvp_hive",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "cvp_hive__primary_consumer",
+            "slot": "primary_consumer",
+            "analogue": "hive_vermin_grazer",
+            "origin": "exotic",
+            "origin_subtype": "feral_exotic",
+            "range": "single",
+            "primary_biome": "cvp_hive",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "cvp_hive__mesopredator",
+            "slot": "mesopredator",
+            "analogue": "hive_predator_pest",
+            "origin": "exotic",
+            "origin_subtype": "feral_exotic",
+            "range": "single",
+            "primary_biome": "cvp_hive",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "cvp_gardens": [
+          {
+            "slot_id": "cvp_gardens__producer",
+            "slot": "producer",
+            "analogue": "ornamental_cultivar",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "cvp_gardens",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "cvp_gardens__decomposer",
+            "slot": "decomposer",
+            "analogue": "garden_detritivore",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "cvp_gardens",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "cvp_hive__producer": {
+          "slot_id": "cvp_hive__producer",
+          "name": null,
+          "analogue": "cultivated_fungus",
+          "origin": "exotic",
+          "origin_subtype": "feral_exotic",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "producer",
+          "primary_biome": "cvp_hive",
+          "locked": false
+        },
+        "cvp_hive__decomposer": {
+          "slot_id": "cvp_hive__decomposer",
+          "name": null,
+          "analogue": "waste_detritivore",
+          "origin": "exotic",
+          "origin_subtype": "feral_exotic",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "cvp_hive",
+          "locked": false
+        },
+        "cvp_hive__primary_consumer": {
+          "slot_id": "cvp_hive__primary_consumer",
+          "name": null,
+          "analogue": "hive_vermin_grazer",
+          "origin": "exotic",
+          "origin_subtype": "feral_exotic",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "primary_consumer",
+          "primary_biome": "cvp_hive",
+          "locked": false
+        },
+        "cvp_hive__mesopredator": {
+          "slot_id": "cvp_hive__mesopredator",
+          "name": null,
+          "analogue": "hive_predator_pest",
+          "origin": "exotic",
+          "origin_subtype": "feral_exotic",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "mesopredator",
+          "primary_biome": "cvp_hive",
+          "locked": false
+        },
+        "cvp_gardens__producer": {
+          "slot_id": "cvp_gardens__producer",
+          "name": null,
+          "analogue": "ornamental_cultivar",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "producer",
+          "primary_biome": "cvp_gardens",
+          "locked": false
+        },
+        "cvp_gardens__decomposer": {
+          "slot_id": "cvp_gardens__decomposer",
+          "name": null,
+          "analogue": "garden_detritivore",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "small",
+          "size_ceiling": "large",
+          "trophic_slot": "decomposer",
+          "primary_biome": "cvp_gardens",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/castra-vetera-prime/magos.md",
+    "literary_path": "out/castra-vetera-prime/literary.md"
+  }
+}

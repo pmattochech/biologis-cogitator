@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "slug": "steel-belt",
+    "system_slug": "system-i-central-bastion",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:31Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/steel-belt.yaml",
+      "external/lore/bestiary/biogeographic-matrix-central-bastion.md"
+    ],
+    "topology": "Debris / steel belt field.",
+    "planet_type": "dead_world",
+    "body_kind": "belt_object",
+    "biomes": [
+      {
+        "id": "steel_dock",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Micro-abrasion",
+      "Vacuum exposure"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-i-central-bastion",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 0.05,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "dead_world",
+      "body_kind": "belt_object",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 0.05,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Debris / steel belt field."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "steel_dock",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "steel_dock": [
+          {
+            "slot_id": "steel_dock__decomposer",
+            "slot": "decomposer",
+            "analogue": "hull_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "steel_dock",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "steel_dock__decomposer": {
+          "slot_id": "steel_dock__decomposer",
+          "name": null,
+          "analogue": "hull_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "steel_dock",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/steel-belt/magos.md",
+    "literary_path": "out/steel-belt/literary.md"
+  }
+}

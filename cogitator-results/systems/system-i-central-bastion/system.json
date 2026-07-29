@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "slug": "system-i-central-bastion",
+    "seed": 42,
+    "spark": false,
+    "generated_at": "2026-07-28T22:59:21Z"
+  },
+  "locks": {
+    "system_mode": "engineered_mesh",
+    "star": {
+      "spectral": "G",
+      "size_band": "dwarf",
+      "label": "G-dwarf",
+      "note": "symbolic/engineered primary"
+    },
+    "bodies": [
+      {
+        "slug": "noviomagus-prime",
+        "band": "habitable",
+        "kind": "engineered"
+      },
+      {
+        "slug": "castra-vetera-prime",
+        "band": "habitable",
+        "kind": "engineered"
+      },
+      {
+        "slug": "khan-bator-prime",
+        "band": "habitable",
+        "kind": "engineered"
+      },
+      {
+        "slug": "horreum-secundus",
+        "band": "habitable",
+        "kind": "engineered"
+      },
+      {
+        "slug": "noviomagus-i",
+        "band": "inner",
+        "kind": "rocky"
+      },
+      {
+        "slug": "steel-belt",
+        "band": "inner",
+        "kind": "belt"
+      },
+      {
+        "slug": "noviomagus-iv",
+        "band": "outer",
+        "kind": "gas_giant"
+      },
+      {
+        "slug": "noviomagus-v",
+        "band": "ice",
+        "kind": "gas_giant"
+      },
+      {
+        "slug": "bator-tertius",
+        "band": "habitable",
+        "kind": "rocky"
+      }
+    ],
+    "formations": [
+      "steel_belt",
+      "debris_field"
+    ],
+    "notes": "Central Bastion — engineered gravity-well mesh; not a natural star system.",
+    "companions": {
+      "type": "none"
+    },
+    "sources": [
+      "data/packs/castra-vetera/systems/system-i-central-bastion.yaml"
+    ]
+  },
+  "layers": {
+    "star": {
+      "spectral": "G",
+      "size_band": "dwarf",
+      "label": "G-dwarf",
+      "note": "symbolic/engineered primary"
+    },
+    "orbit_bands": {
+      "inner": {
+        "typical_body_kinds": [
+          "rocky",
+          "greenhouse",
+          "belt"
+        ],
+        "typical_count": [
+          0,
+          2
+        ]
+      },
+      "habitable": {
+        "typical_body_kinds": [
+          "rocky",
+          "ocean",
+          "greenhouse"
+        ],
+        "typical_count": [
+          1,
+          3
+        ]
+      },
+      "outer": {
+        "typical_body_kinds": [
+          "gas_giant",
+          "ice",
+          "rocky",
+          "belt"
+        ],
+        "typical_count": [
+          0,
+          3
+        ]
+      },
+      "ice": {
+        "typical_body_kinds": [
+          "ice",
+          "belt",
+          "captured_giant"
+        ],
+        "typical_count": [
+          0,
+          4
+        ]
+      }
+    },
+    "companions": {
+      "type": "none"
+    },
+    "formations": [
+      "steel_belt",
+      "debris_field"
+    ],
+    "body_slots": [
+      {
+        "slug": "noviomagus-prime",
+        "band": "habitable",
+        "kind": "engineered"
+      },
+      {
+        "slug": "castra-vetera-prime",
+        "band": "habitable",
+        "kind": "engineered"
+      },
+      {
+        "slug": "khan-bator-prime",
+        "band": "habitable",
+        "kind": "engineered"
+      },
+      {
+        "slug": "horreum-secundus",
+        "band": "habitable",
+        "kind": "engineered"
+      },
+      {
+        "slug": "noviomagus-i",
+        "band": "inner",
+        "kind": "rocky"
+      },
+      {
+        "slug": "steel-belt",
+        "band": "inner",
+        "kind": "belt"
+      },
+      {
+        "slug": "noviomagus-iv",
+        "band": "outer",
+        "kind": "gas_giant"
+      },
+      {
+        "slug": "noviomagus-v",
+        "band": "ice",
+        "kind": "gas_giant"
+      },
+      {
+        "slug": "bator-tertius",
+        "band": "habitable",
+        "kind": "rocky"
+      }
+    ],
+    "system_mode": "engineered_mesh",
+    "pinned": true
+  },
+  "warnings": [],
+  "_saved": "cogitator-results/systems/system-i-central-bastion/system.json"
+}

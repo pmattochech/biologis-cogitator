@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "slug": "silent-belt",
+    "system_slug": "system-iii-threshold",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:33Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/silent-belt.yaml",
+      "external/lore/bestiary/biogeographic-matrix-threshold.md"
+    ],
+    "topology": "Listening asteroids.",
+    "planet_type": "dead_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "silent_belt_a",
+        "class": "dock_hull",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "silent_belt_b",
+        "class": "barren_null",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Psychoacoustic saturation"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-iii-threshold",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "dead_world",
+      "body_kind": "planet",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (K-dwarf)",
+      "topology": "Listening asteroids."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "silent_belt_a",
+        "class": "dock_hull",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "silent_belt_b",
+        "class": "barren_null",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "silent_belt_a": [
+          {
+            "slot_id": "silent_belt_a__microbiota",
+            "slot": "microbiota",
+            "analogue": "radiation_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "silent_belt_a",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "silent_belt_b": []
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "silent_belt_a__microbiota": {
+          "slot_id": "silent_belt_a__microbiota",
+          "name": null,
+          "analogue": "radiation_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "microscopic",
+          "size_ceiling": "small",
+          "trophic_slot": "microbiota",
+          "primary_biome": "silent_belt_a",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/silent-belt/magos.md",
+    "literary_path": "out/silent-belt/literary.md"
+  }
+}

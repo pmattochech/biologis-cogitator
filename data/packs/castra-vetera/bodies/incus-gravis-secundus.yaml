@@ -1,0 +1,39 @@
+system_slug: system-ii-crucible
+stellar: pinned
+body_kind: planet
+planet_type: mining_world
+local_notes: "Tunnel-world; white plague risk."
+topology: "Tunnel-world, habitable geology at depth, crystal mining domes."
+immaterium_stress: minoris
+risks:
+  - Chronic light deficiency (white plague)
+  - Closed-hab outbreaks
+  - Fungemia
+biomes:
+  - id: igs_cave
+    class: cave_subterranean
+    richness: moderate
+    medium: subterranean
+    overlay: false
+  - id: igs_hab
+    class: station_hab
+    richness: barren
+    medium: industrial_void
+    overlay: true
+specimens: []
+geology:
+  gravity_g: 1.2
+  crust: rocky
+  volcanism: moderate
+  connectivity: pangaea
+  tidal_lock: false
+  hydrosphere_pct: 15
+chemistry_climate:
+  atmosphere: breathable
+  water: true
+  solvent: water
+  cryosphere: cool
+  climate_belts: [subterranean]
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-crucible.md

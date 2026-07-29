@@ -1,0 +1,288 @@
+{
+  "meta": {
+    "slug": "khan-bator-prime",
+    "system_slug": "system-i-central-bastion",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:31Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/khan-bator-prime.yaml",
+      "external/lore/bestiary/biogeographic-matrix-central-bastion.md"
+    ],
+    "topology": "Monoculture plains, silo cities, heavy agricultural logistics belts.",
+    "planet_type": "agri_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "khan_mono",
+        "class": "monoculture_plain",
+        "richness": "moderate",
+        "medium": "terrestrial",
+        "overlay": true
+      },
+      {
+        "id": "khan_grass",
+        "class": "grassland",
+        "richness": "sparse",
+        "medium": "terrestrial",
+        "overlay": false
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Crop collapse from contamination",
+      "Selective pests",
+      "Fertilizer sabotage"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "Dense-atmosphere super-oxygenated agri-world; monoculture plains; silo-cities.",
+    "system_slug": "system-i-central-bastion",
+    "immaterium_stress": "minoris",
+    "gravity_g": 1.0,
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "low",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 40
+    },
+    "chemistry_climate": {
+      "atmosphere": "dense",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "warm",
+      "climate_belts": [
+        "super_oxygen_plains"
+      ],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "agri_world",
+      "body_kind": "planet",
+      "local_notes": "Dense-atmosphere super-oxygenated agri-world; monoculture plains; silo-cities."
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "low",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 40,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Monoculture plains, silo cities, heavy agricultural logistics belts."
+    },
+    "chemistry_climate": {
+      "atmosphere": "dense",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "warm",
+      "climate_belts": [
+        "super_oxygen_plains"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "khan_mono",
+        "class": "monoculture_plain",
+        "richness": "moderate",
+        "medium": "terrestrial",
+        "overlay": true
+      },
+      {
+        "id": "khan_grass",
+        "class": "grassland",
+        "richness": "sparse",
+        "medium": "terrestrial",
+        "overlay": false
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "khan_mono": [
+          {
+            "slot_id": "khan_mono__producer",
+            "slot": "producer",
+            "analogue": "tithe_crop",
+            "origin": "exotic",
+            "origin_subtype": "imperial_tithe",
+            "range": "single",
+            "primary_biome": "khan_mono",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "khan_mono__decomposer",
+            "slot": "decomposer",
+            "analogue": "soil_amendment_fungus",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "khan_mono",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "khan_mono__primary_consumer",
+            "slot": "primary_consumer",
+            "analogue": "herd_tithe_stock",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "khan_mono",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "khan_mono__mesopredator",
+            "slot": "mesopredator",
+            "analogue": "agro_pest_meso",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "khan_mono",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "khan_grass": [
+          {
+            "slot_id": "khan_grass__producer",
+            "slot": "producer",
+            "analogue": "graminoid",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "khan_grass",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "khan_grass__decomposer",
+            "slot": "decomposer",
+            "analogue": "dung_detritivore",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "khan_grass",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "khan_mono__producer": {
+          "slot_id": "khan_mono__producer",
+          "name": null,
+          "analogue": "tithe_crop",
+          "origin": "exotic",
+          "origin_subtype": "imperial_tithe",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "producer",
+          "primary_biome": "khan_mono",
+          "locked": false
+        },
+        "khan_mono__decomposer": {
+          "slot_id": "khan_mono__decomposer",
+          "name": null,
+          "analogue": "soil_amendment_fungus",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "small",
+          "size_ceiling": "large",
+          "trophic_slot": "decomposer",
+          "primary_biome": "khan_mono",
+          "locked": false
+        },
+        "khan_mono__primary_consumer": {
+          "slot_id": "khan_mono__primary_consumer",
+          "name": null,
+          "analogue": "herd_tithe_stock",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "primary_consumer",
+          "primary_biome": "khan_mono",
+          "locked": false
+        },
+        "khan_mono__mesopredator": {
+          "slot_id": "khan_mono__mesopredator",
+          "name": null,
+          "analogue": "agro_pest_meso",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "mesopredator",
+          "primary_biome": "khan_mono",
+          "locked": false
+        },
+        "khan_grass__producer": {
+          "slot_id": "khan_grass__producer",
+          "name": null,
+          "analogue": "graminoid",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "producer",
+          "primary_biome": "khan_grass",
+          "locked": false
+        },
+        "khan_grass__decomposer": {
+          "slot_id": "khan_grass__decomposer",
+          "name": null,
+          "analogue": "dung_detritivore",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "small",
+          "size_ceiling": "large",
+          "trophic_slot": "decomposer",
+          "primary_biome": "khan_grass",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/khan-bator-prime/magos.md",
+    "literary_path": "out/khan-bator-prime/literary.md"
+  }
+}

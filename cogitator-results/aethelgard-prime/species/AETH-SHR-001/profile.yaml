@@ -1,0 +1,60 @@
+id: AETH-SHR-001
+magos_scaffold_id: AETH-SHR-001
+working_common_name: Tide-Ox
+world_biome: aethelgard_shoreline
+trophic_slot: secondary_consumer
+secondary_biomes:
+- aethelgard_shallow_waters
+- aethelgard_reefs
+range: multi
+origin_subtype: aboriginal
+analogue: tidal_piscivore
+dossier: ''
+notes: Younger form of the Spireback Leviathan, can enter sexual maturity in adolescence
+  before enter the adult phase and goes to open ocean and deep waters
+answers:
+  A:
+    formal_name: Leviathus Spinaculii
+    phylum: P1
+    phylum_other: ''
+    genetic_class: C-ch7
+    genetic_class_other: ''
+    confusions: ''
+  B:
+    bodyshape: whale-shaped
+    size_min: 8 meters (calf/estuary stage)
+    size_max: 60 meter (Ash-Back ancient)
+    dimorphism: Males have proeminent bone protusions and plates on their first pair
+      of pectoral flippers
+    eyes: 4 eyes (2 pairs)
+    limb_disposition: two pairs of pectoral flippers, one pair of pelvic fins, one
+      large and broad tail with a larger tip for swimming
+    ancestral_limb_count: '6'
+    limb_mode: D
+    limb_mode_other: ''
+    jaw_bones: ''
+    jaw_disposition: ''
+    jaw_mode: ''
+    jaw_mode_other: ''
+    skull_seams: ''
+  C:
+    origin: native
+  D:
+    diet: ''
+    lifespan: ''
+    predators: ''
+    temperament: ''
+  E:
+    skin_armor_color: ''
+    head_must_haves: ''
+    head_excludes: ''
+    iconic_wrong: ''
+  G:
+    dossier_path: ''
+    update_named_specimens: false
+    update_index: false
+    cross_link_geography: false
+  F:
+    common_name: Leviathans (young)
+schema_id: species
+schema_version: 7

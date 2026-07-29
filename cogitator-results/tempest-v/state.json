@@ -1,0 +1,173 @@
+{
+  "meta": {
+    "slug": "tempest-v",
+    "system_slug": "system-iii-threshold",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:32Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/tempest-v.yaml",
+      "external/lore/bestiary/biogeographic-matrix-threshold.md"
+    ],
+    "topology": "Airless sentinel world.",
+    "planet_type": "dead_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "tempest_v_a",
+        "class": "barren_null",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "tempest_v_b",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "EM exposure"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-iii-threshold",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "dead_world",
+      "body_kind": "planet",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (K-dwarf)",
+      "topology": "Airless sentinel world."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "tempest_v_a",
+        "class": "barren_null",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "tempest_v_b",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "tempest_v_a": [
+          {
+            "slot_id": "tempest_v_a__microbiota",
+            "slot": "microbiota",
+            "analogue": "residual_spore",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "tempest_v_a",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "tempest_v_b": [
+          {
+            "slot_id": "tempest_v_b__decomposer",
+            "slot": "decomposer",
+            "analogue": "hull_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "tempest_v_b",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "tempest_v_a__microbiota": {
+          "slot_id": "tempest_v_a__microbiota",
+          "name": null,
+          "analogue": "residual_spore",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "microscopic",
+          "size_ceiling": "small",
+          "trophic_slot": "microbiota",
+          "primary_biome": "tempest_v_a",
+          "locked": false
+        },
+        "tempest_v_b__decomposer": {
+          "slot_id": "tempest_v_b__decomposer",
+          "name": null,
+          "analogue": "hull_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "tempest_v_b",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/tempest-v/magos.md",
+    "literary_path": "out/tempest-v/literary.md"
+  }
+}

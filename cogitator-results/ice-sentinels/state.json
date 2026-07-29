@@ -1,0 +1,173 @@
+{
+  "meta": {
+    "slug": "ice-sentinels",
+    "system_slug": "system-iii-threshold",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:34Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/ice-sentinels.yaml",
+      "external/lore/bestiary/biogeographic-matrix-threshold.md"
+    ],
+    "topology": "Armed comet cloud.",
+    "planet_type": "ice_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "ice_sentinels_a",
+        "class": "ice_cryogenic",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "ice_sentinels_b",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Cryogenic breach"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-iii-threshold",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "ice_world",
+      "body_kind": "planet",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (K-dwarf)",
+      "topology": "Armed comet cloud."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "ice_sentinels_a",
+        "class": "ice_cryogenic",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "ice_sentinels_b",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "ice_sentinels_a": [
+          {
+            "slot_id": "ice_sentinels_a__microbiota",
+            "slot": "microbiota",
+            "analogue": "cryophile_microbes",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "ice_sentinels_a",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "ice_sentinels_b": [
+          {
+            "slot_id": "ice_sentinels_b__decomposer",
+            "slot": "decomposer",
+            "analogue": "hull_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "ice_sentinels_b",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "ice_sentinels_a__microbiota": {
+          "slot_id": "ice_sentinels_a__microbiota",
+          "name": null,
+          "analogue": "cryophile_microbes",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "microscopic",
+          "size_ceiling": "small",
+          "trophic_slot": "microbiota",
+          "primary_biome": "ice_sentinels_a",
+          "locked": false
+        },
+        "ice_sentinels_b__decomposer": {
+          "slot_id": "ice_sentinels_b__decomposer",
+          "name": null,
+          "analogue": "hull_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "ice_sentinels_b",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/ice-sentinels/magos.md",
+    "literary_path": "out/ice-sentinels/literary.md"
+  }
+}

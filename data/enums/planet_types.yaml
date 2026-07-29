@@ -1,0 +1,36 @@
+# Classic Imperial Administratum / Lexicanum-style world classes
+planet_types:
+  - agri_world
+  - cardinal_world
+  - cemetery_world
+  - civilised_world
+  - dead_world
+  - death_world
+  - desert_world
+  - feudal_world
+  - feral_world
+  - forge_world
+  - fortress_world
+  - frontier_world
+  - garden_world
+  - hive_world
+  - ice_world
+  - industrial_world
+  - jungle_world
+  - knight_world
+  - mining_world
+  - ocean_world
+  - paradise_world
+  - penal_world
+  - quarantine_world
+  - shrine_world
+  - war_world
+
+body_kinds:
+  - planet
+  - moon
+  - gas_giant
+  - asteroid
+  - belt_object
+  - station
+  - engineered_construct

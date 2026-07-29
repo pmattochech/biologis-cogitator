@@ -1,0 +1,36 @@
+system_slug: system-iii-threshold
+stellar: pinned
+body_kind: planet
+planet_type: fortress_world
+topology: "Distributed sensor net hub."
+immaterium_stress: minoris
+risks:
+  - Vocal atrophy
+biomes:
+  - id: station_ix_a
+    class: station_hab
+    richness: barren
+    medium: industrial_void
+    overlay: true
+  - id: station_ix_b
+    class: dock_hull
+    richness: sparse
+    medium: industrial_void
+    overlay: true
+specimens: []
+geology:
+  gravity_g: 1.0
+  crust: rocky
+  volcanism: inert
+  connectivity: archipelago
+  tidal_lock: false
+  hydrosphere_pct: 0
+chemistry_climate:
+  atmosphere: thin
+  water: false
+  solvent: water
+  cryosphere: cold
+  climate_belts: []
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-threshold.md

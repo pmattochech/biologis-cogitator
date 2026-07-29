@@ -1,0 +1,14 @@
+kind,filing_id,slug,parent_filing_id,label
+biome,AETH-MON,aethelgard_montane,AETH,Montane
+biome,AETH-REF,aethelgard_reefs,AETH,Reefs
+biome,AETH-SHR,aethelgard_shoreline,AETH,Shoreline
+biome,AETH-SHW,aethelgard_shallow_waters,AETH,Shallow waters
+biome,AETH-SWP,aethelgard_swamp,AETH,Swamp
+biome,AETH-TAI,aethelgard_taiga,AETH,Taiga
+biome,HORR-CNC,horreum_pelagic,HORR,oceanic_pelagic
+biome,HORR-HYD,horreum_hydro,HORR,hydroponic
+biome,VIGI-CIE,vigil_ice,VIGI,ice_cryogenic
+biome,VIGI-CNC,vigil_abyssal,VIGI,oceanic_abyssal
+body,AETH,aethelgard-prime,,Aethelgard Prime
+body,HORR,horreum-secundus,,Horreum Secundus
+body,VIGI,vigil-secundus,,Vigil Secundus

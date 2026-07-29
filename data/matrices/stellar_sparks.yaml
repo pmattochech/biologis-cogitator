@@ -1,0 +1,26 @@
+# Soft orbit-band suggestions and formation tables for L-1 sparks
+formations:
+  - asteroid_belt
+  - steel_belt
+  - debris_field
+  - ring_system
+  - captured_giant
+  - ice_sentinel_cloud
+  - accretion_disk
+
+companions:
+  none: 0.55
+  binary_star: 0.15
+  distant_companion: 0.20
+  none_engineered: 1.0
+
+spectral_weights:
+  M: 3
+  K: 3
+  G: 4
+  F: 2
+
+size_weights:
+  dwarf: 8
+  subgiant: 1
+  giant: 1

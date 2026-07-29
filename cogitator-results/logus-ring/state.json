@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "slug": "logus-ring",
+    "system_slug": "system-ii-crucible",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:32Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/logus-ring.yaml",
+      "external/lore/bestiary/biogeographic-matrix-crucible.md"
+    ],
+    "topology": "Industrial accretion disk.",
+    "planet_type": "industrial_world",
+    "body_kind": "belt_object",
+    "biomes": [
+      {
+        "id": "logus_slag",
+        "class": "slag_industrial",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "logus_dock",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Scrap vermin",
+      "Oxidized-metal organisms"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-ii-crucible",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 0.1,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "industrial_world",
+      "body_kind": "belt_object",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 0.1,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Industrial accretion disk."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "logus_slag",
+        "class": "slag_industrial",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "logus_dock",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "logus_slag": [
+          {
+            "slot_id": "logus_slag__producer",
+            "slot": "producer",
+            "analogue": "slag_lichen",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "logus_slag",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "logus_slag__decomposer",
+            "slot": "decomposer",
+            "analogue": "metal_oxidizing_detritivore",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "logus_slag",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "logus_dock": [
+          {
+            "slot_id": "logus_dock__decomposer",
+            "slot": "decomposer",
+            "analogue": "hull_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "logus_dock",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "logus_slag__producer": {
+          "slot_id": "logus_slag__producer",
+          "name": null,
+          "analogue": "slag_lichen",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "producer",
+          "primary_biome": "logus_slag",
+          "locked": false
+        },
+        "logus_slag__decomposer": {
+          "slot_id": "logus_slag__decomposer",
+          "name": null,
+          "analogue": "metal_oxidizing_detritivore",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "logus_slag",
+          "locked": false
+        },
+        "logus_dock__decomposer": {
+          "slot_id": "logus_dock__decomposer",
+          "name": null,
+          "analogue": "hull_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "logus_dock",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/logus-ring/magos.md",
+    "literary_path": "out/logus-ring/literary.md"
+  }
+}

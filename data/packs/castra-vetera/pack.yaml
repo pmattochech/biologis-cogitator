@@ -1,0 +1,7 @@
+id: castra-vetera
+title: castra-vetera
+description: ''
+systems:
+- system-i-central-bastion
+- system-ii-crucible
+- system-iii-threshold

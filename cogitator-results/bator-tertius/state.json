@@ -1,0 +1,449 @@
+{
+  "meta": {
+    "slug": "bator-tertius",
+    "system_slug": "system-i-central-bastion",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:32Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/bator-tertius.yaml",
+      "external/lore/bestiary/fauna-flora-named-specimens.md"
+    ],
+    "topology": "Radiation jungle greenhouse world (Bator-Sol).",
+    "planet_type": "death_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "bator_jungle",
+        "class": "jungle",
+        "richness": "rich",
+        "medium": "terrestrial",
+        "overlay": false
+      },
+      {
+        "id": "bator_mono",
+        "class": "monoculture_plain",
+        "richness": "moderate",
+        "medium": "terrestrial",
+        "overlay": true
+      }
+    ],
+    "specimens": [
+      {
+        "id": "guillotine_trees",
+        "name": "Guillotine trees",
+        "primary_biome": "bator_jungle",
+        "trophic_slot": "mesopredator",
+        "origin": "native",
+        "origin_subtype": "pre_compliance",
+        "analogue": "ambush_meso"
+      },
+      {
+        "id": "grox_prime",
+        "name": "Grox-Prime (irradiated)",
+        "primary_biome": "bator_mono",
+        "trophic_slot": "primary_consumer",
+        "origin": "exotic",
+        "origin_subtype": "imperial_tithe",
+        "analogue": "herd_tithe_stock"
+      }
+    ],
+    "risks": [
+      "Bator-Sol radiation",
+      "Predatory flora"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "Greenhouse / radiation jungle; guillotine trees; Grox-Prime. Atlas-locked; missing from Central Bastion matrix.",
+    "system_slug": "system-i-central-bastion",
+    "immaterium_stress": "majoris",
+    "gravity_g": 1.0,
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "moderate",
+      "connectivity": "isoterra",
+      "tidal_lock": false,
+      "hydrosphere_pct": 40
+    },
+    "chemistry_climate": {
+      "atmosphere": "dense",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "hot",
+      "climate_belts": [
+        "radiation_jungle"
+      ],
+      "immaterium_stress": "majoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "death_world",
+      "body_kind": "planet",
+      "local_notes": "Greenhouse / radiation jungle; guillotine trees; Grox-Prime. Atlas-locked; missing from Central Bastion matrix."
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "moderate",
+      "connectivity": "isoterra",
+      "tidal_lock": false,
+      "hydrosphere_pct": 40,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Radiation jungle greenhouse world (Bator-Sol)."
+    },
+    "chemistry_climate": {
+      "atmosphere": "dense",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "hot",
+      "climate_belts": [
+        "radiation_jungle"
+      ],
+      "immaterium_stress": "majoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Recurring veil weather; mutation/psychic pressure shapes niches"
+    },
+    "biomes": [
+      {
+        "id": "bator_jungle",
+        "class": "jungle",
+        "richness": "rich",
+        "medium": "terrestrial",
+        "overlay": false
+      },
+      {
+        "id": "bator_mono",
+        "class": "monoculture_plain",
+        "richness": "moderate",
+        "medium": "terrestrial",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "bator_jungle": [
+          {
+            "slot_id": "bator_jungle__mesopredator__guillotine_trees",
+            "slot": "mesopredator",
+            "analogue": "ambush_meso",
+            "origin": "native",
+            "origin_subtype": "pre_compliance",
+            "range": "single",
+            "primary_biome": "bator_jungle",
+            "secondary_biomes": [],
+            "medium": "terrestrial",
+            "locked": true,
+            "name": "Guillotine trees",
+            "dossier": null,
+            "notes": ""
+          },
+          {
+            "slot_id": "bator_jungle__producer",
+            "slot": "producer",
+            "analogue": "canopy_tree",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "bator_jungle",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "bator_jungle__decomposer",
+            "slot": "decomposer",
+            "analogue": "tropical_fungus",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "bator_jungle",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "bator_jungle__primary_consumer",
+            "slot": "primary_consumer",
+            "analogue": "arboreal_browser",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "bator_jungle",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "bator_jungle__secondary_consumer",
+            "slot": "secondary_consumer",
+            "analogue": "ambush_meso",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "bator_jungle",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "bator_jungle__apex",
+            "slot": "apex",
+            "analogue": "jungle_apex",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "bator_jungle",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "bator_jungle__scavenger",
+            "slot": "scavenger",
+            "analogue": "forest_scavenger",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "bator_jungle",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "bator_mono": [
+          {
+            "slot_id": "bator_mono__primary_consumer__grox_prime",
+            "slot": "primary_consumer",
+            "analogue": "herd_tithe_stock",
+            "origin": "exotic",
+            "origin_subtype": "imperial_tithe",
+            "range": "single",
+            "primary_biome": "bator_mono",
+            "secondary_biomes": [],
+            "medium": "terrestrial",
+            "locked": true,
+            "name": "Grox-Prime (irradiated)",
+            "dossier": null,
+            "notes": ""
+          },
+          {
+            "slot_id": "bator_mono__producer",
+            "slot": "producer",
+            "analogue": "tithe_crop",
+            "origin": "exotic",
+            "origin_subtype": "imperial_tithe",
+            "range": "single",
+            "primary_biome": "bator_mono",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "bator_mono__decomposer",
+            "slot": "decomposer",
+            "analogue": "soil_amendment_fungus",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "bator_mono",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "bator_mono__mesopredator",
+            "slot": "mesopredator",
+            "analogue": "agro_pest_meso",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "bator_mono",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "bator_jungle__mesopredator__guillotine_trees": {
+          "slot_id": "bator_jungle__mesopredator__guillotine_trees",
+          "name": "Guillotine trees",
+          "analogue": "ambush_meso",
+          "origin": "native",
+          "origin_subtype": "pre_compliance",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "mesopredator",
+          "primary_biome": "bator_jungle",
+          "locked": false
+        },
+        "bator_jungle__producer": {
+          "slot_id": "bator_jungle__producer",
+          "name": null,
+          "analogue": "canopy_tree",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "producer",
+          "primary_biome": "bator_jungle",
+          "locked": false
+        },
+        "bator_jungle__decomposer": {
+          "slot_id": "bator_jungle__decomposer",
+          "name": null,
+          "analogue": "tropical_fungus",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "small",
+          "size_ceiling": "large",
+          "trophic_slot": "decomposer",
+          "primary_biome": "bator_jungle",
+          "locked": false
+        },
+        "bator_jungle__primary_consumer": {
+          "slot_id": "bator_jungle__primary_consumer",
+          "name": null,
+          "analogue": "arboreal_browser",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "primary_consumer",
+          "primary_biome": "bator_jungle",
+          "locked": false
+        },
+        "bator_jungle__secondary_consumer": {
+          "slot_id": "bator_jungle__secondary_consumer",
+          "name": null,
+          "analogue": "ambush_meso",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "secondary_consumer",
+          "primary_biome": "bator_jungle",
+          "locked": false
+        },
+        "bator_jungle__apex": {
+          "slot_id": "bator_jungle__apex",
+          "name": null,
+          "analogue": "jungle_apex",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "large",
+          "size_ceiling": "large",
+          "trophic_slot": "apex",
+          "primary_biome": "bator_jungle",
+          "locked": false
+        },
+        "bator_jungle__scavenger": {
+          "slot_id": "bator_jungle__scavenger",
+          "name": null,
+          "analogue": "forest_scavenger",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "scavenger",
+          "primary_biome": "bator_jungle",
+          "locked": false
+        },
+        "bator_mono__primary_consumer__grox_prime": {
+          "slot_id": "bator_mono__primary_consumer__grox_prime",
+          "name": "Grox-Prime (irradiated)",
+          "analogue": "herd_tithe_stock",
+          "origin": "exotic",
+          "origin_subtype": "imperial_tithe",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "primary_consumer",
+          "primary_biome": "bator_mono",
+          "locked": false
+        },
+        "bator_mono__producer": {
+          "slot_id": "bator_mono__producer",
+          "name": null,
+          "analogue": "tithe_crop",
+          "origin": "exotic",
+          "origin_subtype": "imperial_tithe",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "producer",
+          "primary_biome": "bator_mono",
+          "locked": false
+        },
+        "bator_mono__decomposer": {
+          "slot_id": "bator_mono__decomposer",
+          "name": null,
+          "analogue": "soil_amendment_fungus",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "small",
+          "size_ceiling": "large",
+          "trophic_slot": "decomposer",
+          "primary_biome": "bator_mono",
+          "locked": false
+        },
+        "bator_mono__mesopredator": {
+          "slot_id": "bator_mono__mesopredator",
+          "name": null,
+          "analogue": "agro_pest_meso",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "mesopredator",
+          "primary_biome": "bator_mono",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [
+    "specimen guillotine_trees slot mesopredator not in richness ladder for bator_jungle; placing anyway (lock wins)"
+  ],
+  "render": {
+    "magos_path": "out/bator-tertius/magos.md",
+    "literary_path": "out/bator-tertius/literary.md"
+  }
+}

@@ -1,0 +1,26 @@
+# Coarse stellar classes: spectral × size band
+spectral:
+  - M
+  - K
+  - G
+  - F
+
+size_bands:
+  - dwarf
+  - subgiant
+  - giant
+
+# Soft defaults for orbit-band occupancy (suggestions only)
+orbit_bands:
+  inner:
+    typical_body_kinds: [rocky, greenhouse, belt]
+    typical_count: [0, 2]
+  habitable:
+    typical_body_kinds: [rocky, ocean, greenhouse]
+    typical_count: [1, 3]
+  outer:
+    typical_body_kinds: [gas_giant, ice, rocky, belt]
+    typical_count: [0, 3]
+  ice:
+    typical_body_kinds: [ice, belt, captured_giant]
+    typical_count: [0, 4]

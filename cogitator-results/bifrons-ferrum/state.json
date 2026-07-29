@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "slug": "bifrons-ferrum",
+    "system_slug": "system-ii-crucible",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:32Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/bifrons-ferrum.yaml",
+      "external/lore/bestiary/biogeographic-matrix-crucible.md"
+    ],
+    "topology": "Broken planet.",
+    "planet_type": "dead_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "bifrons_null",
+        "class": "barren_null",
+        "richness": "barren",
+        "medium": "terrestrial",
+        "overlay": false
+      },
+      {
+        "id": "bifrons_slag",
+        "class": "slag_industrial",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Biological rust vectors",
+      "Ionized dust"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-ii-crucible",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 0.6,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "dead_world",
+      "body_kind": "planet",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 0.6,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Broken planet."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "bifrons_null",
+        "class": "barren_null",
+        "richness": "barren",
+        "medium": "terrestrial",
+        "overlay": false
+      },
+      {
+        "id": "bifrons_slag",
+        "class": "slag_industrial",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "bifrons_null": [
+          {
+            "slot_id": "bifrons_null__microbiota",
+            "slot": "microbiota",
+            "analogue": "residual_spore",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "bifrons_null",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "bifrons_slag": [
+          {
+            "slot_id": "bifrons_slag__producer",
+            "slot": "producer",
+            "analogue": "slag_lichen",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "bifrons_slag",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "bifrons_slag__decomposer",
+            "slot": "decomposer",
+            "analogue": "metal_oxidizing_detritivore",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "bifrons_slag",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "bifrons_null__microbiota": {
+          "slot_id": "bifrons_null__microbiota",
+          "name": null,
+          "analogue": "residual_spore",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "microscopic",
+          "size_ceiling": "large",
+          "trophic_slot": "microbiota",
+          "primary_biome": "bifrons_null",
+          "locked": false
+        },
+        "bifrons_slag__producer": {
+          "slot_id": "bifrons_slag__producer",
+          "name": null,
+          "analogue": "slag_lichen",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "producer",
+          "primary_biome": "bifrons_slag",
+          "locked": false
+        },
+        "bifrons_slag__decomposer": {
+          "slot_id": "bifrons_slag__decomposer",
+          "name": null,
+          "analogue": "metal_oxidizing_detritivore",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "bifrons_slag",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/bifrons-ferrum/magos.md",
+    "literary_path": "out/bifrons-ferrum/literary.md"
+  }
+}

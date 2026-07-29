@@ -1,0 +1,32 @@
+system_slug: system-ii-crucible
+stellar: pinned
+body_kind: moon
+planet_type: death_world
+topology: "Friction-tectonic volcanic moon."
+immaterium_stress: minoris
+risks:
+  - Thermal failure
+  - Ash toxicity
+biomes:
+  - id: ignis_volcanic
+    class: volcanic_thermophile
+    richness: sparse
+    medium: terrestrial
+    overlay: false
+specimens: []
+geology:
+  gravity_g: 0.7
+  crust: rocky
+  volcanism: purgatory
+  connectivity: pangaea
+  tidal_lock: true
+  hydrosphere_pct: 0
+chemistry_climate:
+  atmosphere: thin
+  water: false
+  solvent: sodium_chloride_melt
+  cryosphere: hot
+  climate_belts: [volcanic]
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-crucible.md

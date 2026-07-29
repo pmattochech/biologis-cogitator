@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "slug": "ignis-minor",
+    "system_slug": "system-ii-crucible",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:32Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/ignis-minor.yaml",
+      "external/lore/bestiary/biogeographic-matrix-crucible.md"
+    ],
+    "topology": "Friction-tectonic volcanic moon.",
+    "planet_type": "death_world",
+    "body_kind": "moon",
+    "biomes": [
+      {
+        "id": "ignis_volcanic",
+        "class": "volcanic_thermophile",
+        "richness": "sparse",
+        "medium": "terrestrial",
+        "overlay": false
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Thermal failure",
+      "Ash toxicity"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-ii-crucible",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 0.7,
+      "crust": "rocky",
+      "volcanism": "purgatory",
+      "connectivity": "pangaea",
+      "tidal_lock": true,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "sodium_chloride_melt",
+      "cryosphere": "hot",
+      "climate_belts": [
+        "volcanic"
+      ],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "death_world",
+      "body_kind": "moon",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 0.7,
+      "crust": "rocky",
+      "volcanism": "purgatory",
+      "connectivity": "pangaea",
+      "tidal_lock": true,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Friction-tectonic volcanic moon."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "sodium_chloride_melt",
+      "cryosphere": "hot",
+      "climate_belts": [
+        "volcanic"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "ignis_volcanic",
+        "class": "volcanic_thermophile",
+        "richness": "sparse",
+        "medium": "terrestrial",
+        "overlay": false
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "ignis_volcanic": [
+          {
+            "slot_id": "ignis_volcanic__producer",
+            "slot": "producer",
+            "analogue": "thermophile_mat",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "ignis_volcanic",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "ignis_volcanic__decomposer",
+            "slot": "decomposer",
+            "analogue": "heat_tolerant_detritivore",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "ignis_volcanic",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "ignis_volcanic__producer": {
+          "slot_id": "ignis_volcanic__producer",
+          "name": null,
+          "analogue": "thermophile_mat",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "medium",
+          "size_ceiling": "large",
+          "trophic_slot": "producer",
+          "primary_biome": "ignis_volcanic",
+          "locked": false
+        },
+        "ignis_volcanic__decomposer": {
+          "slot_id": "ignis_volcanic__decomposer",
+          "name": null,
+          "analogue": "heat_tolerant_detritivore",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "small",
+          "size_ceiling": "large",
+          "trophic_slot": "decomposer",
+          "primary_biome": "ignis_volcanic",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/ignis-minor/magos.md",
+    "literary_path": "out/ignis-minor/literary.md"
+  }
+}

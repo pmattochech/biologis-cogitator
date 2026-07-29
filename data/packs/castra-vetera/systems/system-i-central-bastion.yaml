@@ -1,0 +1,40 @@
+system_mode: engineered_mesh
+notes: "Central Bastion — engineered gravity-well mesh; not a natural star system."
+star:
+  spectral: G
+  size_band: dwarf
+  label: G-dwarf
+  note: symbolic/engineered primary
+formations:
+  - steel_belt
+  - debris_field
+bodies:
+  - slug: noviomagus-prime
+    band: habitable
+    kind: engineered
+  - slug: castra-vetera-prime
+    band: habitable
+    kind: engineered
+  - slug: khan-bator-prime
+    band: habitable
+    kind: engineered
+  - slug: horreum-secundus
+    band: habitable
+    kind: engineered
+  - slug: noviomagus-i
+    band: inner
+    kind: rocky
+  - slug: steel-belt
+    band: inner
+    kind: belt
+  - slug: noviomagus-iv
+    band: outer
+    kind: gas_giant
+  - slug: noviomagus-v
+    band: ice
+    kind: gas_giant
+  - slug: bator-tertius
+    band: habitable
+    kind: rocky
+companions:
+  type: none

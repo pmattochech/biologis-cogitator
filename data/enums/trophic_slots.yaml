@@ -1,0 +1,18 @@
+# Ladder order base → apex; richness gates which slots are filled
+ladder_by_richness:
+  null: []
+  barren: [microbiota]
+  sparse: [producer, decomposer]
+  moderate: [producer, decomposer, primary_consumer, mesopredator]
+  rich: [producer, decomposer, primary_consumer, secondary_consumer, apex, scavenger]
+
+slot_order:
+  - microbiota
+  - producer
+  - decomposer
+  - primary_consumer
+  - secondary_consumer
+  - mesopredator
+  - apex
+  - scavenger
+  - parasite

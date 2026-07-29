@@ -1,0 +1,53 @@
+system_slug: system-i-central-bastion
+stellar: pinned
+body_kind: planet
+planet_type: death_world
+local_notes: "Greenhouse / radiation jungle; guillotine trees; Grox-Prime. Atlas-locked; missing from Central Bastion matrix."
+topology: "Radiation jungle greenhouse world (Bator-Sol)."
+gravity_g: 1.0
+immaterium_stress: majoris
+risks:
+  - Bator-Sol radiation
+  - Predatory flora
+biomes:
+  - id: bator_jungle
+    class: jungle
+    richness: rich
+    medium: terrestrial
+    overlay: false
+  - id: bator_mono
+    class: monoculture_plain
+    richness: moderate
+    medium: terrestrial
+    overlay: true
+specimens:
+  - id: guillotine_trees
+    name: Guillotine trees
+    primary_biome: bator_jungle
+    trophic_slot: mesopredator
+    origin: native
+    origin_subtype: pre_compliance
+    analogue: ambush_meso
+  - id: grox_prime
+    name: Grox-Prime (irradiated)
+    primary_biome: bator_mono
+    trophic_slot: primary_consumer
+    origin: exotic
+    origin_subtype: imperial_tithe
+    analogue: herd_tithe_stock
+geology:
+  gravity_g: 1.0
+  crust: rocky
+  volcanism: moderate
+  connectivity: isoterra
+  tidal_lock: false
+  hydrosphere_pct: 40
+chemistry_climate:
+  atmosphere: dense
+  water: true
+  solvent: water
+  cryosphere: hot
+  climate_belts: [radiation_jungle]
+  immaterium_stress: majoris
+sources:
+  - external/lore/bestiary/fauna-flora-named-specimens.md

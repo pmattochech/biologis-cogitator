@@ -1,0 +1,15 @@
+grades:
+  - neutral
+  - minoris
+  - majoris
+  - extremis
+  - terminus
+
+descriptions:
+  neutral: Stable realspace veil; no Warp-driven climate/mutation pressure
+  minoris: Thin omens, rare anomalies; ecology mostly physico-chemical
+  majoris: Recurring veil weather; mutation/psychic pressure shapes niches
+  extremis: Storm-shadow / rift-margin normal; many biomes warp-conditioned
+  terminus: Survival ecology only under extreme veil load; most natural gardens impossible
+
+default: neutral

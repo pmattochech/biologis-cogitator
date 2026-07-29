@@ -1,0 +1,40 @@
+system_slug: system-i-central-bastion
+stellar: pinned
+body_kind: planet
+planet_type: agri_world
+local_notes: "Dense-atmosphere super-oxygenated agri-world; monoculture plains; silo-cities."
+topology: "Monoculture plains, silo cities, heavy agricultural logistics belts."
+gravity_g: 1.0
+immaterium_stress: minoris
+risks:
+  - Crop collapse from contamination
+  - Selective pests
+  - Fertilizer sabotage
+biomes:
+  - id: khan_mono
+    class: monoculture_plain
+    richness: moderate
+    medium: terrestrial
+    overlay: true
+  - id: khan_grass
+    class: grassland
+    richness: sparse
+    medium: terrestrial
+    overlay: false
+specimens: []
+geology:
+  gravity_g: 1.0
+  crust: rocky
+  volcanism: low
+  connectivity: pangaea
+  tidal_lock: false
+  hydrosphere_pct: 40
+chemistry_climate:
+  atmosphere: dense
+  water: true
+  solvent: water
+  cryosphere: warm
+  climate_belts: [super_oxygen_plains]
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-central-bastion.md

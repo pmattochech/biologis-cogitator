@@ -1,0 +1,36 @@
+system_slug: system-iii-threshold
+stellar: pinned
+body_kind: planet
+planet_type: ice_world
+topology: "Armed comet cloud."
+immaterium_stress: minoris
+risks:
+  - Cryogenic breach
+biomes:
+  - id: ice_sentinels_a
+    class: ice_cryogenic
+    richness: barren
+    medium: industrial_void
+    overlay: true
+  - id: ice_sentinels_b
+    class: dock_hull
+    richness: sparse
+    medium: industrial_void
+    overlay: true
+specimens: []
+geology:
+  gravity_g: 1.0
+  crust: rocky
+  volcanism: inert
+  connectivity: archipelago
+  tidal_lock: false
+  hydrosphere_pct: 0
+chemistry_climate:
+  atmosphere: thin
+  water: false
+  solvent: water
+  cryosphere: cold
+  climate_belts: []
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-threshold.md

@@ -1,0 +1,329 @@
+{
+  "meta": {
+    "slug": "noviomagus-prime",
+    "system_slug": "system-i-central-bastion",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:25Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/noviomagus-prime.yaml",
+      "external/lore/bestiary/biogeographic-matrix-central-bastion.md",
+      "external/lore/cultures/ethnography-noviomagus-prime.md"
+    ],
+    "topology": "Hollow industrial crust, North Continent (The Anvil), South Continent (The Hive), Slag Seas.",
+    "planet_type": "forge_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "novio_hive",
+        "class": "hive_stack",
+        "richness": "moderate",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "novio_slag",
+        "class": "slag_industrial",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "novio_null_wild",
+        "class": "barren_null",
+        "richness": null,
+        "medium": "terrestrial",
+        "overlay": false
+      }
+    ],
+    "specimens": [
+      {
+        "id": "industrial_slag_vermin",
+        "name": "Industrial / slag vermin",
+        "primary_biome": "novio_hive",
+        "trophic_slot": "primary_consumer",
+        "origin": "exotic",
+        "origin_subtype": "feral_exotic",
+        "analogue": "hive_vermin_grazer"
+      }
+    ],
+    "risks": [
+      "Chronic atmospheric toxicity",
+      "Mild chemical corrosion",
+      "Occupational respiratory disease"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "Hollow industrial crust; Anvil / Hive continents; Slag Seas; Black Rain.",
+    "system_slug": "system-i-central-bastion",
+    "immaterium_stress": "minoris",
+    "gravity_g": 1.12,
+    "atmosphere": "toxic",
+    "water": false,
+    "cryosphere": "warm",
+    "connectivity": "semi_pangaea",
+    "volcanism": "high",
+    "crust": "hollow_industrial",
+    "tidal_lock": false,
+    "geology": {
+      "gravity_g": 1.12,
+      "crust": "hollow_industrial",
+      "volcanism": "high",
+      "connectivity": "semi_pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 15
+    },
+    "chemistry_climate": {
+      "atmosphere": "toxic",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "warm",
+      "climate_belts": [
+        "black_rain_industrial"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [
+        "nihilus_margin"
+      ]
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "forge_world",
+      "body_kind": "planet",
+      "local_notes": "Hollow industrial crust; Anvil / Hive continents; Slag Seas; Black Rain."
+    },
+    "geology": {
+      "gravity_g": 1.12,
+      "crust": "hollow_industrial",
+      "volcanism": "high",
+      "connectivity": "semi_pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 15,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Hollow industrial crust, North Continent (The Anvil), South Continent (The Hive), Slag Seas."
+    },
+    "chemistry_climate": {
+      "atmosphere": "toxic",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "warm",
+      "climate_belts": [
+        "black_rain_industrial"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [
+        "nihilus_margin"
+      ],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "novio_hive",
+        "class": "hive_stack",
+        "richness": "moderate",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "novio_slag",
+        "class": "slag_industrial",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "novio_null_wild",
+        "class": "barren_null",
+        "richness": null,
+        "medium": "terrestrial",
+        "overlay": false
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "novio_hive": [
+          {
+            "slot_id": "novio_hive__primary_consumer__industrial_slag_vermin",
+            "slot": "primary_consumer",
+            "analogue": "hive_vermin_grazer",
+            "origin": "exotic",
+            "origin_subtype": "feral_exotic",
+            "range": "single",
+            "primary_biome": "novio_hive",
+            "secondary_biomes": [],
+            "medium": "industrial_void",
+            "locked": true,
+            "name": "Industrial / slag vermin",
+            "dossier": null,
+            "notes": ""
+          },
+          {
+            "slot_id": "novio_hive__producer",
+            "slot": "producer",
+            "analogue": "cultivated_fungus",
+            "origin": "exotic",
+            "origin_subtype": "feral_exotic",
+            "range": "single",
+            "primary_biome": "novio_hive",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "novio_hive__decomposer",
+            "slot": "decomposer",
+            "analogue": "waste_detritivore",
+            "origin": "exotic",
+            "origin_subtype": "feral_exotic",
+            "range": "single",
+            "primary_biome": "novio_hive",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "novio_hive__mesopredator",
+            "slot": "mesopredator",
+            "analogue": "hive_predator_pest",
+            "origin": "exotic",
+            "origin_subtype": "feral_exotic",
+            "range": "single",
+            "primary_biome": "novio_hive",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "novio_slag": [
+          {
+            "slot_id": "novio_slag__producer",
+            "slot": "producer",
+            "analogue": "slag_lichen",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "novio_slag",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "novio_slag__decomposer",
+            "slot": "decomposer",
+            "analogue": "metal_oxidizing_detritivore",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "novio_slag",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "novio_null_wild": []
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "novio_hive__primary_consumer__industrial_slag_vermin": {
+          "slot_id": "novio_hive__primary_consumer__industrial_slag_vermin",
+          "name": "Industrial / slag vermin",
+          "analogue": "hive_vermin_grazer",
+          "origin": "exotic",
+          "origin_subtype": "feral_exotic",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "primary_consumer",
+          "primary_biome": "novio_hive",
+          "locked": false
+        },
+        "novio_hive__producer": {
+          "slot_id": "novio_hive__producer",
+          "name": null,
+          "analogue": "cultivated_fungus",
+          "origin": "exotic",
+          "origin_subtype": "feral_exotic",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "producer",
+          "primary_biome": "novio_hive",
+          "locked": false
+        },
+        "novio_hive__decomposer": {
+          "slot_id": "novio_hive__decomposer",
+          "name": null,
+          "analogue": "waste_detritivore",
+          "origin": "exotic",
+          "origin_subtype": "feral_exotic",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "novio_hive",
+          "locked": false
+        },
+        "novio_hive__mesopredator": {
+          "slot_id": "novio_hive__mesopredator",
+          "name": null,
+          "analogue": "hive_predator_pest",
+          "origin": "exotic",
+          "origin_subtype": "feral_exotic",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "mesopredator",
+          "primary_biome": "novio_hive",
+          "locked": false
+        },
+        "novio_slag__producer": {
+          "slot_id": "novio_slag__producer",
+          "name": null,
+          "analogue": "slag_lichen",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "producer",
+          "primary_biome": "novio_slag",
+          "locked": false
+        },
+        "novio_slag__decomposer": {
+          "slot_id": "novio_slag__decomposer",
+          "name": null,
+          "analogue": "metal_oxidizing_detritivore",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "novio_slag",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/noviomagus-prime/magos.md",
+    "literary_path": "out/noviomagus-prime/literary.md"
+  }
+}

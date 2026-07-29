@@ -1,0 +1,178 @@
+{
+  "meta": {
+    "slug": "noviomagus-v",
+    "system_slug": "system-i-central-bastion",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:31Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/noviomagus-v.yaml",
+      "external/lore/bestiary/biogeographic-matrix-central-bastion.md"
+    ],
+    "topology": "Ice refiner giant.",
+    "planet_type": "ice_world",
+    "body_kind": "gas_giant",
+    "biomes": [
+      {
+        "id": "novio_v_ice",
+        "class": "ice_cryogenic",
+        "richness": "barren",
+        "medium": "terrestrial",
+        "overlay": false
+      },
+      {
+        "id": "novio_v_dock",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Cryogenic breach",
+      "Radiation"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-i-central-bastion",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 2.2,
+      "crust": "icy",
+      "volcanism": "inert",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "dense",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [
+        "cryogenic"
+      ],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "ice_world",
+      "body_kind": "gas_giant",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 2.2,
+      "crust": "icy",
+      "volcanism": "inert",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Ice refiner giant."
+    },
+    "chemistry_climate": {
+      "atmosphere": "dense",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [
+        "cryogenic"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "novio_v_ice",
+        "class": "ice_cryogenic",
+        "richness": "barren",
+        "medium": "terrestrial",
+        "overlay": false
+      },
+      {
+        "id": "novio_v_dock",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "novio_v_ice": [
+          {
+            "slot_id": "novio_v_ice__microbiota",
+            "slot": "microbiota",
+            "analogue": "cryophile_microbes",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "novio_v_ice",
+            "medium": "terrestrial",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "novio_v_dock": [
+          {
+            "slot_id": "novio_v_dock__decomposer",
+            "slot": "decomposer",
+            "analogue": "hull_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "novio_v_dock",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "novio_v_ice__microbiota": {
+          "slot_id": "novio_v_ice__microbiota",
+          "name": null,
+          "analogue": "cryophile_microbes",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "terrestrial",
+          "locomotion": "cursorial",
+          "respiration": "pulmonary_analogue",
+          "size_class": "microscopic",
+          "size_ceiling": "large",
+          "trophic_slot": "microbiota",
+          "primary_biome": "novio_v_ice",
+          "locked": false
+        },
+        "novio_v_dock__decomposer": {
+          "slot_id": "novio_v_dock__decomposer",
+          "name": null,
+          "analogue": "hull_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "novio_v_dock",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/noviomagus-v/magos.md",
+    "literary_path": "out/noviomagus-v/literary.md"
+  }
+}

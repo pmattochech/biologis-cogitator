@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "slug": "singularity-point",
+    "system_slug": "system-iii-threshold",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:33Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/singularity-point.yaml",
+      "external/lore/bestiary/biogeographic-matrix-threshold.md"
+    ],
+    "topology": "Localized warp/auspex hazard.",
+    "planet_type": "quarantine_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "singularity_point_a",
+        "class": "station_hab",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "singularity_point_b",
+        "class": "barren_null",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Visual-echo disorientation"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-iii-threshold",
+    "immaterium_stress": "extremis",
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "extremis"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "quarantine_world",
+      "body_kind": "planet",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (K-dwarf)",
+      "topology": "Localized warp/auspex hazard."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "extremis",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Storm-shadow / rift-margin normal; many biomes warp-conditioned"
+    },
+    "biomes": [
+      {
+        "id": "singularity_point_a",
+        "class": "station_hab",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "singularity_point_b",
+        "class": "barren_null",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "singularity_point_a": [
+          {
+            "slot_id": "singularity_point_a__microbiota",
+            "slot": "microbiota",
+            "analogue": "filter_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "singularity_point_a",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "singularity_point_b": []
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "singularity_point_a__microbiota": {
+          "slot_id": "singularity_point_a__microbiota",
+          "name": null,
+          "analogue": "filter_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "microscopic",
+          "size_ceiling": "small",
+          "trophic_slot": "microbiota",
+          "primary_biome": "singularity_point_a",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/singularity-point/magos.md",
+    "literary_path": "out/singularity-point/literary.md"
+  }
+}

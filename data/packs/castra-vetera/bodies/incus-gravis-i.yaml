@@ -1,0 +1,47 @@
+system_slug: system-ii-crucible
+stellar: pinned
+body_kind: planet
+planet_type: penal_world
+local_notes: "Tidally locked scorched penal world; radar-shielded zones."
+topology: "Tidally locked world with extreme heat face and radar-shielded zones."
+gravity_g: 1.0
+crust: rocky
+volcanism: low
+connectivity: pangaea
+tidal_lock: true
+atmosphere: thin
+water: false
+cryosphere: hot
+immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-crucible.md
+risks:
+  - Solar radiation
+  - Thermal failure
+  - Accelerated tissue degradation
+biomes:
+  - id: incus_i_penal
+    class: penal_infrastructure
+    richness: barren
+    medium: industrial_void
+    overlay: true
+  - id: incus_i_null
+    class: barren_null
+    richness: null
+    medium: terrestrial
+    overlay: false
+specimens: []
+geology:
+  gravity_g: 1.0
+  crust: rocky
+  volcanism: low
+  connectivity: pangaea
+  tidal_lock: true
+  hydrosphere_pct: 5
+chemistry_climate:
+  atmosphere: thin
+  water: false
+  solvent: water
+  cryosphere: hot
+  climate_belts: [dayside_scorch, terminator_penal]
+  immaterium_stress: minoris

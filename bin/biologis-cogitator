@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Global entry: biologis-cogitator | cogitator | init-cogitator
+# Default: open the cogitator TUI (wizard). Extra args pass through to ./run.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+ROOT="$(cd "$HERE/.." && pwd)"
+
+if [[ ! -x "$ROOT/run" && ! -f "$ROOT/run" ]]; then
+  echo "error: biologis-cogitator root not found next to launcher ($ROOT)" >&2
+  exit 1
+fi
+
+cd "$ROOT"
+
+# No args → wizard. First arg that matches a ./run command is forwarded as-is.
+if [[ $# -eq 0 ]]; then
+  exec bash "$ROOT/run" wizard
+fi
+
+case "$1" in
+  wizard|packs|generate-system|generate|show|propose-export|layers|help|-h|--help)
+    exec bash "$ROOT/run" "$@"
+    ;;
+  *)
+    # Convenience: biologis-cogitator --pack castra-vetera → wizard with args
+    exec bash "$ROOT/run" wizard "$@"
+    ;;
+esac

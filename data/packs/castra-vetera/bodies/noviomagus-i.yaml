@@ -1,0 +1,44 @@
+system_slug: system-i-central-bastion
+stellar: pinned
+body_kind: planet
+planet_type: mining_world
+topology: "Mineral crucible world."
+immaterium_stress: minoris
+biomes:
+  - id: novio_i_null
+    class: barren_null
+    richness: null
+    medium: terrestrial
+    overlay: false
+  - id: novio_i_dock
+    class: dock_hull
+    richness: sparse
+    medium: industrial_void
+    overlay: true
+specimens:
+  - id: hull_biofilms
+    name: Hull / radiation biofilms
+    primary_biome: novio_i_dock
+    trophic_slot: microbiota
+    origin: exotic
+    origin_subtype: voidborne
+    analogue: radiation_biofilm
+risks:
+  - Radiation exposure
+  - Dock contamination
+geology:
+  gravity_g: 0.9
+  crust: rocky
+  volcanism: high
+  connectivity: pangaea
+  tidal_lock: false
+  hydrosphere_pct: 5
+chemistry_climate:
+  atmosphere: thin
+  water: false
+  solvent: water
+  cryosphere: hot
+  climate_belts: [mineral]
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-central-bastion.md

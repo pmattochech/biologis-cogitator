@@ -1,0 +1,260 @@
+{
+  "meta": {
+    "slug": "incus-gravis-secundus",
+    "system_slug": "system-ii-crucible",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:32Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/incus-gravis-secundus.yaml",
+      "external/lore/bestiary/biogeographic-matrix-crucible.md"
+    ],
+    "topology": "Tunnel-world, habitable geology at depth, crystal mining domes.",
+    "planet_type": "mining_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "igs_cave",
+        "class": "cave_subterranean",
+        "richness": "moderate",
+        "medium": "subterranean",
+        "overlay": false
+      },
+      {
+        "id": "igs_hab",
+        "class": "station_hab",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Chronic light deficiency (white plague)",
+      "Closed-hab outbreaks",
+      "Fungemia"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "Tunnel-world; white plague risk.",
+    "system_slug": "system-ii-crucible",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 1.2,
+      "crust": "rocky",
+      "volcanism": "moderate",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 15
+    },
+    "chemistry_climate": {
+      "atmosphere": "breathable",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "cool",
+      "climate_belts": [
+        "subterranean"
+      ],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "mining_world",
+      "body_kind": "planet",
+      "local_notes": "Tunnel-world; white plague risk."
+    },
+    "geology": {
+      "gravity_g": 1.2,
+      "crust": "rocky",
+      "volcanism": "moderate",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 15,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Tunnel-world, habitable geology at depth, crystal mining domes."
+    },
+    "chemistry_climate": {
+      "atmosphere": "breathable",
+      "water": true,
+      "solvent": "water",
+      "cryosphere": "cool",
+      "climate_belts": [
+        "subterranean"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "igs_cave",
+        "class": "cave_subterranean",
+        "richness": "moderate",
+        "medium": "subterranean",
+        "overlay": false
+      },
+      {
+        "id": "igs_hab",
+        "class": "station_hab",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "igs_cave": [
+          {
+            "slot_id": "igs_cave__producer",
+            "slot": "producer",
+            "analogue": "cave_fungus",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "igs_cave",
+            "medium": "subterranean",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "igs_cave__decomposer",
+            "slot": "decomposer",
+            "analogue": "guano_detritivore",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "igs_cave",
+            "medium": "subterranean",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "igs_cave__primary_consumer",
+            "slot": "primary_consumer",
+            "analogue": "troglobite_grazer",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "igs_cave",
+            "medium": "subterranean",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "igs_cave__mesopredator",
+            "slot": "mesopredator",
+            "analogue": "pit_arthropod_meso",
+            "origin": "native",
+            "origin_subtype": "aboriginal",
+            "range": "single",
+            "primary_biome": "igs_cave",
+            "medium": "subterranean",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "igs_hab": [
+          {
+            "slot_id": "igs_hab__microbiota",
+            "slot": "microbiota",
+            "analogue": "filter_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "igs_hab",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "igs_cave__producer": {
+          "slot_id": "igs_cave__producer",
+          "name": null,
+          "analogue": "cave_fungus",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "subterranean",
+          "locomotion": "crawl",
+          "respiration": "cutaneous",
+          "size_class": "medium",
+          "size_ceiling": "medium",
+          "trophic_slot": "producer",
+          "primary_biome": "igs_cave",
+          "locked": false
+        },
+        "igs_cave__decomposer": {
+          "slot_id": "igs_cave__decomposer",
+          "name": null,
+          "analogue": "guano_detritivore",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "subterranean",
+          "locomotion": "crawl",
+          "respiration": "cutaneous",
+          "size_class": "small",
+          "size_ceiling": "medium",
+          "trophic_slot": "decomposer",
+          "primary_biome": "igs_cave",
+          "locked": false
+        },
+        "igs_cave__primary_consumer": {
+          "slot_id": "igs_cave__primary_consumer",
+          "name": null,
+          "analogue": "troglobite_grazer",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "subterranean",
+          "locomotion": "crawl",
+          "respiration": "cutaneous",
+          "size_class": "medium",
+          "size_ceiling": "medium",
+          "trophic_slot": "primary_consumer",
+          "primary_biome": "igs_cave",
+          "locked": false
+        },
+        "igs_cave__mesopredator": {
+          "slot_id": "igs_cave__mesopredator",
+          "name": null,
+          "analogue": "pit_arthropod_meso",
+          "origin": "native",
+          "origin_subtype": "aboriginal",
+          "medium": "subterranean",
+          "locomotion": "crawl",
+          "respiration": "cutaneous",
+          "size_class": "medium",
+          "size_ceiling": "medium",
+          "trophic_slot": "mesopredator",
+          "primary_biome": "igs_cave",
+          "locked": false
+        },
+        "igs_hab__microbiota": {
+          "slot_id": "igs_hab__microbiota",
+          "name": null,
+          "analogue": "filter_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "microscopic",
+          "size_ceiling": "small",
+          "trophic_slot": "microbiota",
+          "primary_biome": "igs_hab",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/incus-gravis-secundus/magos.md",
+    "literary_path": "out/incus-gravis-secundus/literary.md"
+  }
+}

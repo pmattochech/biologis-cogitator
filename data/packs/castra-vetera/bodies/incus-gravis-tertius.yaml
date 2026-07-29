@@ -1,0 +1,44 @@
+system_slug: system-ii-crucible
+stellar: pinned
+body_kind: planet
+planet_type: death_world
+local_notes: "Super-earth 2.8G; gravel seas; inverted excavated hives."
+topology: "Flat super-earth at 2.8G, gravel seas, inverted excavated hives."
+immaterium_stress: minoris
+risks:
+  - Systemic crushing
+  - Bone failure
+  - Gravitational adaptation syndrome
+biomes:
+  - id: igt_surface
+    class: barren_null
+    richness: sparse
+    medium: terrestrial
+    overlay: false
+  - id: igt_hive
+    class: hive_stack
+    richness: sparse
+    medium: subterranean
+    overlay: true
+  - id: igt_cave
+    class: cave_subterranean
+    richness: sparse
+    medium: subterranean
+    overlay: false
+specimens: []
+geology:
+  gravity_g: 2.8
+  crust: adamantium_ribbed
+  volcanism: low
+  connectivity: pangaea
+  tidal_lock: false
+  hydrosphere_pct: 10
+chemistry_climate:
+  atmosphere: breathable
+  water: false
+  solvent: water
+  cryosphere: moderate
+  climate_belts: [hyper_g_flats]
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-crucible.md

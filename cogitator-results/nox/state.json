@@ -1,0 +1,200 @@
+{
+  "meta": {
+    "slug": "nox",
+    "system_slug": "system-iii-threshold",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:33Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/nox.yaml",
+      "external/lore/bestiary/biogeographic-matrix-threshold.md"
+    ],
+    "topology": "High-gravity obsidian world.",
+    "planet_type": "death_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "nox_a",
+        "class": "cave_subterranean",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "nox_b",
+        "class": "station_hab",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Neuropsychic stress"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-iii-threshold",
+    "immaterium_stress": "extremis",
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "extremis"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "death_world",
+      "body_kind": "planet",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "inert",
+      "connectivity": "archipelago",
+      "tidal_lock": false,
+      "hydrosphere_pct": 0,
+      "insolation_hint": "standard (K-dwarf)",
+      "topology": "High-gravity obsidian world."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "cold",
+      "climate_belts": [],
+      "immaterium_stress": "extremis",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Storm-shadow / rift-margin normal; many biomes warp-conditioned"
+    },
+    "biomes": [
+      {
+        "id": "nox_a",
+        "class": "cave_subterranean",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "nox_b",
+        "class": "station_hab",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "nox_a": [
+          {
+            "slot_id": "nox_a__microbiota",
+            "slot": "microbiota",
+            "analogue": "cave_microbes",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "nox_a",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "nox_b": [
+          {
+            "slot_id": "nox_b__producer",
+            "slot": "producer",
+            "analogue": "recycled_algae",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "nox_b",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          },
+          {
+            "slot_id": "nox_b__decomposer",
+            "slot": "decomposer",
+            "analogue": "life_support_microbe",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "nox_b",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "nox_a__microbiota": {
+          "slot_id": "nox_a__microbiota",
+          "name": null,
+          "analogue": "cave_microbes",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "microscopic",
+          "size_ceiling": "small",
+          "trophic_slot": "microbiota",
+          "primary_biome": "nox_a",
+          "locked": false
+        },
+        "nox_b__producer": {
+          "slot_id": "nox_b__producer",
+          "name": null,
+          "analogue": "recycled_algae",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "medium",
+          "size_ceiling": "small",
+          "trophic_slot": "producer",
+          "primary_biome": "nox_b",
+          "locked": false
+        },
+        "nox_b__decomposer": {
+          "slot_id": "nox_b__decomposer",
+          "name": null,
+          "analogue": "life_support_microbe",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "nox_b",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/nox/magos.md",
+    "literary_path": "out/nox/literary.md"
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "meta": {
+    "slug": "incus-gravis-i",
+    "system_slug": "system-ii-crucible",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:25Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/incus-gravis-i.yaml",
+      "external/lore/bestiary/biogeographic-matrix-crucible.md"
+    ],
+    "topology": "Tidally locked world with extreme heat face and radar-shielded zones.",
+    "planet_type": "penal_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "incus_i_penal",
+        "class": "penal_infrastructure",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "incus_i_null",
+        "class": "barren_null",
+        "richness": null,
+        "medium": "terrestrial",
+        "overlay": false
+      }
+    ],
+    "specimens": [],
+    "risks": [
+      "Solar radiation",
+      "Thermal failure",
+      "Accelerated tissue degradation"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "Tidally locked scorched penal world; radar-shielded zones.",
+    "system_slug": "system-ii-crucible",
+    "immaterium_stress": "minoris",
+    "gravity_g": 1.0,
+    "atmosphere": "thin",
+    "water": false,
+    "cryosphere": "hot",
+    "connectivity": "pangaea",
+    "volcanism": "low",
+    "crust": "rocky",
+    "tidal_lock": true,
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "low",
+      "connectivity": "pangaea",
+      "tidal_lock": true,
+      "hydrosphere_pct": 5
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "hot",
+      "climate_belts": [
+        "dayside_scorch",
+        "terminator_penal"
+      ],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "penal_world",
+      "body_kind": "planet",
+      "local_notes": "Tidally locked scorched penal world; radar-shielded zones."
+    },
+    "geology": {
+      "gravity_g": 1.0,
+      "crust": "rocky",
+      "volcanism": "low",
+      "connectivity": "pangaea",
+      "tidal_lock": true,
+      "hydrosphere_pct": 5,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Tidally locked world with extreme heat face and radar-shielded zones."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "hot",
+      "climate_belts": [
+        "dayside_scorch",
+        "terminator_penal"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "incus_i_penal",
+        "class": "penal_infrastructure",
+        "richness": "barren",
+        "medium": "industrial_void",
+        "overlay": true
+      },
+      {
+        "id": "incus_i_null",
+        "class": "barren_null",
+        "richness": null,
+        "medium": "terrestrial",
+        "overlay": false
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "incus_i_penal": [
+          {
+            "slot_id": "incus_i_penal__microbiota",
+            "slot": "microbiota",
+            "analogue": "hab_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "deliberate_transplant",
+            "range": "single",
+            "primary_biome": "incus_i_penal",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ],
+        "incus_i_null": []
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "incus_i_penal__microbiota": {
+          "slot_id": "incus_i_penal__microbiota",
+          "name": null,
+          "analogue": "hab_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "deliberate_transplant",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "microscopic",
+          "size_ceiling": "small",
+          "trophic_slot": "microbiota",
+          "primary_biome": "incus_i_penal",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "render": {
+    "magos_path": "out/incus-gravis-i/magos.md",
+    "literary_path": "out/incus-gravis-i/literary.md"
+  }
+}

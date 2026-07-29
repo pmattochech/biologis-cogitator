@@ -1,0 +1,39 @@
+system_slug: system-i-central-bastion
+stellar: pinned
+body_kind: planet
+planet_type: hive_world
+local_notes: "Ecumenopolis of judgment, law, and archives; perpetual autumn climate control."
+topology: "Stratified ecumenopolis by judicial and archival districts."
+gravity_g: 1.0
+immaterium_stress: minoris
+risks:
+  - Low biological risk by Imperial standard
+  - Psychosocial risk from hyper-bureaucracy
+biomes:
+  - id: cvp_hive
+    class: hive_stack
+    richness: moderate
+    medium: industrial_void
+    overlay: true
+  - id: cvp_gardens
+    class: archival_garden
+    richness: sparse
+    medium: terrestrial
+    overlay: true
+specimens: []
+geology:
+  gravity_g: 1.0
+  crust: rocky
+  volcanism: low
+  connectivity: pangaea
+  tidal_lock: false
+  hydrosphere_pct: 20
+chemistry_climate:
+  atmosphere: breathable
+  water: true
+  solvent: water
+  cryosphere: cool
+  climate_belts: [perpetual_autumn_control]
+  immaterium_stress: minoris
+sources:
+  - external/lore/bestiary/biogeographic-matrix-central-bastion.md

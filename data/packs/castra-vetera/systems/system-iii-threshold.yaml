@@ -1,0 +1,48 @@
+system_mode: engineered_mesh
+notes: "Threshold — Witness Ford / void-lane sentinel mesh."
+star:
+  spectral: K
+  size_band: dwarf
+  label: K-dwarf
+formations:
+  - ice_sentinel_cloud
+  - debris_field
+bodies:
+  - slug: tempest-v
+    band: outer
+    kind: rocky
+  - slug: great-reef
+    band: outer
+    kind: belt
+  - slug: station-maleventum
+    band: outer
+    kind: asteroid
+  - slug: nox
+    band: outer
+    kind: rocky
+  - slug: abyssal-anchor
+    band: outer
+    kind: station
+  - slug: singularity-point
+    band: ice
+    kind: engineered
+  - slug: station-ix
+    band: outer
+    kind: station
+  - slug: silent-belt
+    band: outer
+    kind: belt
+  - slug: glass-eye
+    band: outer
+    kind: station
+  - slug: marco-de-vetra
+    band: outer
+    kind: rocky
+  - slug: vigil-secundus
+    band: ice
+    kind: rocky
+  - slug: ice-sentinels
+    band: ice
+    kind: belt
+companions:
+  type: none

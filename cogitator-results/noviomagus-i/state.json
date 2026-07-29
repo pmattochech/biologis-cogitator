@@ -1,0 +1,192 @@
+{
+  "meta": {
+    "slug": "noviomagus-i",
+    "system_slug": "system-i-central-bastion",
+    "seed": null,
+    "spark": false,
+    "generated_at": "2026-07-26T16:45:31Z"
+  },
+  "locks": {
+    "sources": [
+      "data/locks/bodies/noviomagus-i.yaml",
+      "external/lore/bestiary/biogeographic-matrix-central-bastion.md"
+    ],
+    "topology": "Mineral crucible world.",
+    "planet_type": "mining_world",
+    "body_kind": "planet",
+    "biomes": [
+      {
+        "id": "novio_i_null",
+        "class": "barren_null",
+        "richness": null,
+        "medium": "terrestrial",
+        "overlay": false
+      },
+      {
+        "id": "novio_i_dock",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "specimens": [
+      {
+        "id": "hull_biofilms",
+        "name": "Hull / radiation biofilms",
+        "primary_biome": "novio_i_dock",
+        "trophic_slot": "microbiota",
+        "origin": "exotic",
+        "origin_subtype": "voidborne",
+        "analogue": "radiation_biofilm"
+      }
+    ],
+    "risks": [
+      "Radiation exposure",
+      "Dock contamination"
+    ],
+    "notes": "",
+    "stellar": "pinned",
+    "local_notes": "",
+    "system_slug": "system-i-central-bastion",
+    "immaterium_stress": "minoris",
+    "geology": {
+      "gravity_g": 0.9,
+      "crust": "rocky",
+      "volcanism": "high",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 5
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "hot",
+      "climate_belts": [
+        "mineral"
+      ],
+      "immaterium_stress": "minoris"
+    }
+  },
+  "layers": {
+    "planet_type": {
+      "planet_type": "mining_world",
+      "body_kind": "planet",
+      "local_notes": ""
+    },
+    "geology": {
+      "gravity_g": 0.9,
+      "crust": "rocky",
+      "volcanism": "high",
+      "connectivity": "pangaea",
+      "tidal_lock": false,
+      "hydrosphere_pct": 5,
+      "insolation_hint": "standard (G-dwarf)",
+      "topology": "Mineral crucible world."
+    },
+    "chemistry_climate": {
+      "atmosphere": "thin",
+      "water": false,
+      "solvent": "water",
+      "cryosphere": "hot",
+      "climate_belts": [
+        "mineral"
+      ],
+      "immaterium_stress": "minoris",
+      "immaterium_flavor_tags": [],
+      "immaterium_description": "Thin omens, rare anomalies; ecology mostly physico-chemical"
+    },
+    "biomes": [
+      {
+        "id": "novio_i_null",
+        "class": "barren_null",
+        "richness": null,
+        "medium": "terrestrial",
+        "overlay": false
+      },
+      {
+        "id": "novio_i_dock",
+        "class": "dock_hull",
+        "richness": "sparse",
+        "medium": "industrial_void",
+        "overlay": true
+      }
+    ],
+    "trophic": {
+      "by_biome": {
+        "novio_i_null": [],
+        "novio_i_dock": [
+          {
+            "slot_id": "novio_i_dock__microbiota__hull_biofilms",
+            "slot": "microbiota",
+            "analogue": "radiation_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "novio_i_dock",
+            "secondary_biomes": [],
+            "medium": "industrial_void",
+            "locked": true,
+            "name": "Hull / radiation biofilms",
+            "dossier": null,
+            "notes": ""
+          },
+          {
+            "slot_id": "novio_i_dock__decomposer",
+            "slot": "decomposer",
+            "analogue": "hull_biofilm",
+            "origin": "exotic",
+            "origin_subtype": "voidborne",
+            "range": "single",
+            "primary_biome": "novio_i_dock",
+            "medium": "industrial_void",
+            "locked": false,
+            "name": null
+          }
+        ]
+      }
+    },
+    "bauplan": {
+      "by_slot": {
+        "novio_i_dock__microbiota__hull_biofilms": {
+          "slot_id": "novio_i_dock__microbiota__hull_biofilms",
+          "name": "Hull / radiation biofilms",
+          "analogue": "radiation_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "microscopic",
+          "size_ceiling": "small",
+          "trophic_slot": "microbiota",
+          "primary_biome": "novio_i_dock",
+          "locked": false
+        },
+        "novio_i_dock__decomposer": {
+          "slot_id": "novio_i_dock__decomposer",
+          "name": null,
+          "analogue": "hull_biofilm",
+          "origin": "exotic",
+          "origin_subtype": "voidborne",
+          "medium": "industrial_void",
+          "locomotion": "crawl",
+          "respiration": "filter",
+          "size_class": "small",
+          "size_ceiling": "small",
+          "trophic_slot": "decomposer",
+          "primary_biome": "novio_i_dock",
+          "locked": false
+        }
+      }
+    }
+  },
+  "warnings": [
+    "specimen hull_biofilms slot microbiota not in richness ladder for novio_i_dock; placing anyway (lock wins)"
+  ],
+  "render": {
+    "magos_path": "out/noviomagus-i/magos.md",
+    "literary_path": "out/noviomagus-i/literary.md"
+  }
+}

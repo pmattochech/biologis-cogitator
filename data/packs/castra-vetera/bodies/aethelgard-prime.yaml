@@ -1,0 +1,87 @@
+system_slug: system-ii-crucible
+stellar: pinned
+filing_id: AETH
+planet_type: death_world
+body_kind: moon
+topology: Snowy mountains, taiga, interior swamps, shoreline Needles/cliffs and intertidal
+  spires.
+local_notes: Cyclopean tide moon — Needles shoreline, swamps, taiga, snowy mountains.
+notes: ''
+immaterium_stress: majoris
+risks:
+- Extreme osmotic pressure at tide line
+- Territorial predation (Batav Wolf)
+- Chemical burn in swamp belts
+specimens:
+- id: AETH-SHR-002
+  name: Canis Batavorum (Batav Wolf)
+  primary_biome: aethelgard_shoreline
+  secondary_biomes:
+  - aethelgard_swamp
+  range: multi
+  trophic_slot: apex
+  origin: native
+  origin_subtype: neo_endemic
+  analogue: wetland_ambush_apex
+  dossier: external/lore/bestiary/batav-wolf-canis-batavorum.md
+  notes: Evolved on Aethelgard from colonizer canids; shoreline Spire drops and interior
+    swamp stalking.
+- id: AETH-SHR-001
+  name: Leviathans (young)
+  primary_biome: aethelgard_shoreline
+  trophic_slot: secondary_consumer
+  origin: native
+  origin_subtype: aboriginal
+  analogue: tidal_piscivore
+  notes: Batav prey in Great Tide folklore.
+sources:
+- data/packs/castra-vetera/bodies/aethelgard-prime.yaml
+- external/lore/bestiary/biogeographic-matrix-crucible.md
+- external/lore/cultures/geography-aethelgard-prime.md
+biomes:
+- id: aethelgard_shoreline
+  filing_id: AETH-SHR
+  class: shoreline_intertidal
+  richness: rich
+  medium: marine
+  overlay: false
+- id: aethelgard_swamp
+  filing_id: AETH-SWP
+  class: swamp_wetland
+  richness: rich
+  medium: freshwater
+  overlay: false
+- id: aethelgard_taiga
+  filing_id: AETH-TAI
+  class: taiga
+  richness: moderate
+  medium: terrestrial
+  overlay: false
+- id: aethelgard_montane
+  filing_id: AETH-MON
+  class: montane
+  richness: moderate
+  medium: terrestrial
+  overlay: false
+geology:
+  gravity_g: 1.0
+  crust: rocky
+  volcanism: moderate
+  connectivity: semi_archipelago
+  tidal_lock: false
+  hydrosphere_pct: 70
+  topology: Snowy mountains, taiga, interior swamps, shoreline Needles/cliffs and
+    intertidal spires.
+chemistry_climate:
+  atmosphere: breathable
+  water: true
+  solvent: water
+  cryosphere: cool
+  climate_belts:
+  - polar_montane
+  - taiga
+  - swamp
+  - shoreline
+  immaterium_stress: majoris
+  immaterium_flavor_tags:
+  - storm_shadow

@@ -1,0 +1,255 @@
+# Biome-indexed Earth niche analogues (broad generic)
+# Keys match biome class ids from biome_classes.yaml
+shoreline_intertidal:
+  producer: [intertidal_algae, salt_marsh_reed]
+  decomposer: [coastal_detritivore_crab]
+  primary_consumer: [intertidal_grazer, shorebird_analogue]
+  secondary_consumer: [tidal_piscivore]
+  mesopredator: [wetland_ambush_meso]
+  apex: [wetland_ambush_apex, spire_drop_predator]
+  scavenger: [beach_scavenger]
+  microbiota: [tidal_biofilm]
+
+swamp_wetland:
+  producer: [peat_reed, swamp_canopy]
+  decomposer: [bog_fungus]
+  primary_consumer: [wetland_browser, amphibious_grazer]
+  secondary_consumer: [swamp_stalker]
+  mesopredator: [reed_ambush_meso]
+  apex: [swamp_apex_ambush]
+  scavenger: [carrion_wader]
+  microbiota: [anoxic_mud_microbes]
+
+taiga:
+  producer: [conifer_analogue, understory_shrub]
+  decomposer: [needle_litter_fungus]
+  primary_consumer: [taiga_browser, seed_forager]
+  secondary_consumer: [mustelid_analogue]
+  mesopredator: [taiga_meso_carnivore]
+  apex: [taiga_pack_apex]
+  scavenger: [corvid_analogue]
+  microbiota: [soil_mycelium]
+
+montane:
+  producer: [alpine_herb, scrub]
+  decomposer: [highland_detritivore]
+  primary_consumer: [montane_browser, cliff_grazer]
+  secondary_consumer: [raptor_analogue]
+  mesopredator: [mountain_meso]
+  apex: [montane_apex]
+  scavenger: [cliff_scavenger]
+  microbiota: [cold_soil_microbes]
+
+desert:
+  producer: [xerophyte, cryptobiotic_crust]
+  decomposer: [arid_detritivore]
+  primary_consumer: [desert_browser]
+  secondary_consumer: [desert_meso]
+  mesopredator: [sand_stalker]
+  apex: [desert_apex]
+  scavenger: [vulture_analogue]
+  microbiota: [endolithic_microbes]
+
+grassland:
+  producer: [graminoid, forb]
+  decomposer: [dung_detritivore]
+  primary_consumer: [herd_grazer]
+  secondary_consumer: [cursorial_meso]
+  mesopredator: [pack_meso]
+  apex: [open_plain_apex]
+  scavenger: [plain_scavenger]
+  microbiota: [rhizosphere]
+
+jungle:
+  producer: [canopy_tree, understory]
+  decomposer: [tropical_fungus]
+  primary_consumer: [arboreal_browser, frugivore]
+  secondary_consumer: [ambush_meso]
+  mesopredator: [canopy_meso]
+  apex: [jungle_apex]
+  scavenger: [forest_scavenger]
+  microbiota: [leaf_litter_microbes]
+
+temperate_forest:
+  producer: [deciduous_analogue, understory]
+  decomposer: [wood_rot_fungus]
+  primary_consumer: [forest_browser]
+  secondary_consumer: [forest_meso]
+  mesopredator: [canid_meso]
+  apex: [forest_apex]
+  scavenger: [forest_scavenger]
+  microbiota: [humus_microbes]
+
+tundra:
+  producer: [tundra_lichen, sedge]
+  decomposer: [cold_detritivore]
+  primary_consumer: [tundra_grazer]
+  secondary_consumer: [tundra_meso]
+  mesopredator: [arctic_meso]
+  apex: [tundra_apex]
+  scavenger: [cold_scavenger]
+  microbiota: [permafrost_microbes]
+
+oceanic_abyssal:
+  producer: [chemosynthetic_mat, marine_snow_consumer]
+  decomposer: [abyssal_detritivore]
+  primary_consumer: [benthic_filter]
+  secondary_consumer: [deep_meso]
+  mesopredator: [sonar_meso]
+  apex: [sonar_leviathan_analogue]
+  scavenger: [whale_fall_scavenger]
+  microbiota: [chemosynthetic_microbes]
+
+oceanic_pelagic:
+  producer: [phytoplankton]
+  decomposer: [marine_microbe]
+  primary_consumer: [zooplankton_analogue, filter_feeder]
+  secondary_consumer: [pelagic_piscivore]
+  mesopredator: [open_ocean_meso]
+  apex: [pelagic_apex]
+  scavenger: [oceanic_scavenger]
+  microbiota: [surface_microfilm]
+
+freshwater_river:
+  producer: [riparian_plant, river_algae]
+  decomposer: [freshwater_detritivore]
+  primary_consumer: [river_grazer]
+  secondary_consumer: [river_piscivore]
+  mesopredator: [riparian_meso]
+  apex: [river_apex]
+  scavenger: [river_scavenger]
+  microbiota: [biofilm]
+
+cave_subterranean:
+  producer: [cave_fungus, chemotroph_mat]
+  decomposer: [guano_detritivore]
+  primary_consumer: [troglobite_grazer]
+  secondary_consumer: [cave_meso]
+  mesopredator: [pit_arthropod_meso]
+  apex: [cave_apex]
+  scavenger: [cave_scavenger]
+  microbiota: [cave_microbes]
+
+volcanic_thermophile:
+  producer: [thermophile_mat, mineral_flora]
+  decomposer: [heat_tolerant_detritivore]
+  primary_consumer: [basalt_grazer]
+  secondary_consumer: [lava_margin_meso]
+  mesopredator: [thermophile_meso]
+  apex: [basalt_megafauna]
+  scavenger: [ash_scavenger]
+  microbiota: [extremophile_microbes]
+
+acid_swamp:
+  producer: [acid_tolerant_flora, iron_fungus]
+  decomposer: [acid_detritivore]
+  primary_consumer: [acid_grazer]
+  secondary_consumer: [armored_amphibian_meso]
+  mesopredator: [acid_meso]
+  apex: [armored_swamp_apex]
+  scavenger: [acid_scavenger]
+  microbiota: [acidophile_microbes]
+
+ice_cryogenic:
+  producer: [radiotrophic_lichen, cryo_algae]
+  decomposer: [cryo_detritivore]
+  primary_consumer: [ice_grazer]
+  secondary_consumer: [cryo_meso]
+  mesopredator: [vibration_meso]
+  apex: [cryo_sonar_apex]
+  scavenger: [ice_scavenger]
+  microbiota: [cryophile_microbes]
+
+aerial_open:
+  producer: [aeroplankton]
+  decomposer: [airborne_microbe]
+  primary_consumer: [aerial_filter]
+  secondary_consumer: [aerial_meso]
+  mesopredator: [sky_meso]
+  apex: [aerial_apex]
+  scavenger: [aerial_scavenger]
+  microbiota: [aerosol_microbes]
+
+barren_null:
+  microbiota: [residual_spore]
+
+hive_stack:
+  producer: [cultivated_fungus, recycled_algae]
+  decomposer: [waste_detritivore]
+  primary_consumer: [hive_vermin_grazer]
+  secondary_consumer: [vermin_meso]
+  mesopredator: [hive_predator_pest]
+  apex: [sanitation_apex_pest]
+  scavenger: [gutter_scavenger]
+  microbiota: [hab_biofilm]
+  parasite: [vector_insect]
+
+monoculture_plain:
+  producer: [tithe_crop]
+  decomposer: [soil_amendment_fungus]
+  primary_consumer: [herd_tithe_stock, crop_pest]
+  secondary_consumer: [pest_meso]
+  mesopredator: [agro_pest_meso]
+  apex: [containment_predator]
+  scavenger: [field_scavenger]
+  microbiota: [agrochem_microbes]
+
+hydroponic:
+  producer: [combat_algae, protein_culture]
+  decomposer: [filter_culture]
+  primary_consumer: [contained_grazer]
+  secondary_consumer: [containment_meso]
+  mesopredator: [tank_meso]
+  apex: [containment_predator]
+  scavenger: [bloom_scavenger]
+  microbiota: [culture_microbes]
+
+slag_industrial:
+  producer: [slag_lichen, technical_moss]
+  decomposer: [metal_oxidizing_detritivore]
+  primary_consumer: [slag_grazer]
+  secondary_consumer: [industrial_meso]
+  mesopredator: [slag_pest_meso]
+  apex: [industrial_pest_apex]
+  scavenger: [scrap_scavenger]
+  microbiota: [corrosive_biofilm]
+
+archival_garden:
+  producer: [ornamental_cultivar]
+  decomposer: [garden_detritivore]
+  primary_consumer: [domesticated_pollinator]
+  secondary_consumer: [sanitation_meso]
+  mesopredator: [controlled_pest]
+  apex: []
+  scavenger: [garden_scavenger]
+  microbiota: [climate_control_microbes]
+
+penal_infrastructure:
+  producer: [ration_fungus]
+  decomposer: [waste_microbe]
+  primary_consumer: [infra_vermin]
+  secondary_consumer: []
+  mesopredator: []
+  apex: []
+  scavenger: [cell_scavenger]
+  microbiota: [hab_biofilm]
+
+dock_hull:
+  producer: []
+  decomposer: [hull_biofilm]
+  primary_consumer: [vacuum_vermin]
+  secondary_consumer: []
+  mesopredator: []
+  apex: []
+  scavenger: []
+  microbiota: [radiation_biofilm]
+
+station_hab:
+  producer: [recycled_algae]
+  decomposer: [life_support_microbe]
+  primary_consumer: [hab_vermin]
+  secondary_consumer: []
+  mesopredator: []
+  apex: []
+  scavenger: [duct_scavenger]
+  microbiota: [filter_biofilm]

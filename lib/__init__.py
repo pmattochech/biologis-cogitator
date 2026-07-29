@@ -1,0 +1,3 @@
+"""
+biologis-cogitator library package.
+"""

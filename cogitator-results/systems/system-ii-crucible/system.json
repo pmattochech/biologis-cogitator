@@ -1,0 +1,233 @@
+{
+  "meta": {
+    "slug": "system-ii-crucible",
+    "seed": 42,
+    "spark": false,
+    "generated_at": "2026-07-28T22:59:21Z"
+  },
+  "locks": {
+    "system_mode": "engineered_mesh",
+    "star": {
+      "spectral": "G",
+      "size_band": "dwarf",
+      "label": "G-dwarf"
+    },
+    "bodies": [
+      {
+        "slug": "incus-gravis-tertius",
+        "band": "habitable",
+        "kind": "rocky"
+      },
+      {
+        "slug": "incus-gravis-secundus",
+        "band": "habitable",
+        "kind": "rocky"
+      },
+      {
+        "slug": "incus-gravis-i",
+        "band": "inner",
+        "kind": "rocky"
+      },
+      {
+        "slug": "bifrons-ferrum",
+        "band": "outer",
+        "kind": "rocky"
+      },
+      {
+        "slug": "vitreus",
+        "band": "outer",
+        "kind": "rocky"
+      },
+      {
+        "slug": "logus-ring",
+        "band": "outer",
+        "kind": "belt"
+      },
+      {
+        "slug": "aethelgard-prime",
+        "band": "habitable",
+        "kind": "rocky"
+      },
+      {
+        "slug": "ignis-minor",
+        "band": "inner",
+        "kind": "rocky"
+      },
+      {
+        "slug": "tempestas-major-vii",
+        "band": "habitable",
+        "kind": "rocky"
+      }
+    ],
+    "formations": [
+      "accretion_disk",
+      "debris_field"
+    ],
+    "notes": "Crucible macro-system — training and trial worlds.",
+    "companions": {
+      "type": "none"
+    },
+    "orbit_bands": {
+      "inner": {
+        "typical_body_kinds": [
+          "rocky",
+          "greenhouse",
+          "belt"
+        ],
+        "typical_count": [
+          0,
+          2
+        ]
+      },
+      "habitable": {
+        "typical_body_kinds": [
+          "rocky",
+          "ocean",
+          "greenhouse"
+        ],
+        "typical_count": [
+          1,
+          3
+        ]
+      },
+      "outer": {
+        "typical_body_kinds": [
+          "gas_giant",
+          "ice",
+          "rocky",
+          "belt"
+        ],
+        "typical_count": [
+          0,
+          3
+        ]
+      },
+      "ice": {
+        "typical_body_kinds": [
+          "ice",
+          "belt",
+          "captured_giant"
+        ],
+        "typical_count": [
+          0,
+          4
+        ]
+      }
+    },
+    "sources": [
+      "data/packs/castra-vetera/systems/system-ii-crucible.yaml"
+    ]
+  },
+  "layers": {
+    "star": {
+      "spectral": "G",
+      "size_band": "dwarf",
+      "label": "G-dwarf"
+    },
+    "orbit_bands": {
+      "inner": {
+        "typical_body_kinds": [
+          "rocky",
+          "greenhouse",
+          "belt"
+        ],
+        "typical_count": [
+          0,
+          2
+        ]
+      },
+      "habitable": {
+        "typical_body_kinds": [
+          "rocky",
+          "ocean",
+          "greenhouse"
+        ],
+        "typical_count": [
+          1,
+          3
+        ]
+      },
+      "outer": {
+        "typical_body_kinds": [
+          "gas_giant",
+          "ice",
+          "rocky",
+          "belt"
+        ],
+        "typical_count": [
+          0,
+          3
+        ]
+      },
+      "ice": {
+        "typical_body_kinds": [
+          "ice",
+          "belt",
+          "captured_giant"
+        ],
+        "typical_count": [
+          0,
+          4
+        ]
+      }
+    },
+    "companions": {
+      "type": "none"
+    },
+    "formations": [
+      "accretion_disk",
+      "debris_field"
+    ],
+    "body_slots": [
+      {
+        "slug": "incus-gravis-tertius",
+        "band": "habitable",
+        "kind": "rocky"
+      },
+      {
+        "slug": "incus-gravis-secundus",
+        "band": "habitable",
+        "kind": "rocky"
+      },
+      {
+        "slug": "incus-gravis-i",
+        "band": "inner",
+        "kind": "rocky"
+      },
+      {
+        "slug": "bifrons-ferrum",
+        "band": "outer",
+        "kind": "rocky"
+      },
+      {
+        "slug": "vitreus",
+        "band": "outer",
+        "kind": "rocky"
+      },
+      {
+        "slug": "logus-ring",
+        "band": "outer",
+        "kind": "belt"
+      },
+      {
+        "slug": "aethelgard-prime",
+        "band": "habitable",
+        "kind": "rocky"
+      },
+      {
+        "slug": "ignis-minor",
+        "band": "inner",
+        "kind": "rocky"
+      },
+      {
+        "slug": "tempestas-major-vii",
+        "band": "habitable",
+        "kind": "rocky"
+      }
+    ],
+    "system_mode": "engineered_mesh",
+    "pinned": true
+  },
+  "warnings": [],
+  "_saved": "cogitator-results/systems/system-ii-crucible/system.json"
+}
