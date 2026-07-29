@@ -59,6 +59,7 @@ def list_species_artifacts(slug: str) -> list[str]:
             "profile.yaml",
             "questionnaire.yaml",  # legacy
             "midjourney.md",
+            "profile.png",
             "filing-reminders.md",
         ):
             if (sid_dir / name).is_file():
@@ -92,11 +93,31 @@ def artifact_path(kind: Kind, slug: str, filename: str) -> Path:
 def read_out_artifact(kind: Kind, slug: str, filename: str) -> str:
     """
     Return text for display. JSON is pretty-printed.
+    Binary images get a short dossier note (open externally).
     Raises FileNotFoundError if missing.
     """
     path = artifact_path(kind, slug, filename)
     if not path.is_file():
         raise FileNotFoundError(f"no {kind} artifact {slug}/{filename}")
+    suffix = path.suffix.lower()
+    if suffix in {".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp"}:
+        size = path.stat().st_size
+        dims = ""
+        try:
+            from PIL import Image
+
+            with Image.open(path) as im:
+                dims = f"{im.width}×{im.height} "
+        except Exception:
+            pass
+        return (
+            f"[profile image — binary]\n"
+            f"path: {path}\n"
+            f"format: {dims}{suffix.lstrip('.').upper()} ({size} bytes)\n"
+            f"\n"
+            f"Consultation cannot paint rasters in-pane.\n"
+            f"Open the file path above in a system image viewer.\n"
+        )
     raw = path.read_text(encoding="utf-8")
     if filename.endswith(".json"):
         try:

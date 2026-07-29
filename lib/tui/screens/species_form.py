@@ -374,10 +374,19 @@ def format_profile_readonly(
     schema: dict[str, Any] | None = None,
     *,
     trophic_slots: list[str] | None = None,
+    body_slug: str | None = None,
 ) -> str:
     """Plain-text mirror of profile fields for Specimens read-only pane."""
     sch = schema or qschema.load_schema()
     lines: list[str] = []
+    if body_slug:
+        from ... import species_media as media
+
+        sid = str(profile.get("id") or "").strip()
+        lines.append("— Profile picture —")
+        lines.append(media.profile_status_label(body_slug, sid))
+        lines.append(f"  {media.resolve_profile_image(body_slug, sid)}")
+        lines.append("")
     for step in qschema.steps(sch):
         title = str(step.get("title") or step.get("id") or "")
         lines.append(f"— {title} —")

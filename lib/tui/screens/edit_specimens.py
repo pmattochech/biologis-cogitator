@@ -6,6 +6,7 @@ from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Button, Label, ListItem, ListView, Static
 
+from ... import species_media as media
 from ... import species_profile as speciesmod
 from ...wizard_session import WizardSession
 from ..widgets.header import CogitatorHeader
@@ -42,6 +43,7 @@ class EditSpecimensScreen(Screen):
                 yield Button("New", id="btn-new", variant="primary")
                 yield Button("Edit", id="btn-edit")
                 yield Button("Add subspecies", id="btn-subspecies")
+                yield Button("Open pic", id="btn-open-pic")
                 yield Button("Remove", id="btn-remove")
                 yield Button("Back", id="btn-back")
             yield Static(
@@ -110,7 +112,9 @@ class EditSpecimensScreen(Screen):
             )
             return
         text = form.format_profile_readonly(
-            profile, trophic_slots=session.trophic_slots()
+            profile,
+            trophic_slots=session.trophic_slots(),
+            body_slug=session.body_slug(),
         )
         self.query_one("#spec-ro", Static).update(text)
 
@@ -157,6 +161,20 @@ class EditSpecimensScreen(Screen):
                 log.push("select a specimen from the list first")
                 return
             self._open_editor(species_id=sid, create=False)
+            return
+        if event.button.id == "btn-open-pic":
+            sid = self._selected_id
+            if not sid:
+                log.push("select a specimen first")
+                return
+            slug = session.body_slug() or ""
+            try:
+                media.open_image_external(media.resolve_profile_image(slug, sid))
+                log.push(
+                    f"opened {media.profile_status_label(slug, sid)}"
+                )
+            except Exception as exc:
+                log.push(str(exc))
             return
         if event.button.id == "btn-subspecies":
             sid = self._selected_id

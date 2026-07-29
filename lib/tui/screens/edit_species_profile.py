@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+from pathlib import Path
 
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical, VerticalScroll
@@ -9,6 +10,7 @@ from textual.screen import Screen
 from textual.widgets import Button, Input, Static
 
 from ... import profile_schema as qschema
+from ... import species_media as media
 from ... import species_profile as speciesmod
 from ...wizard_session import WizardSession
 from ..widgets.header import CogitatorHeader
@@ -32,6 +34,10 @@ class EditSpeciesProfileScreen(Screen):
         margin: 0 0 1 0;
         border: solid #2a8040;
     }
+    #sp-pic-status { height: auto; color: #3aa060; margin: 0 0 1 0; }
+    #sp-pic-row { height: 3; margin: 0 0 1 0; }
+    #sp-pic-row Input { width: 1fr; margin: 0 1 0 0; }
+    #sp-pic-row Button { margin: 0 1 0 0; min-width: 8; height: 3; }
     """
 
     def __init__(
@@ -48,6 +54,9 @@ class EditSpeciesProfileScreen(Screen):
         self._seed_profile = copy.deepcopy(profile) if profile else None
         self._schema: dict = {}
         self._profile: dict = {}
+        # Staged until Save: ingest source path, or clear custom plate.
+        self._pending_image: Path | None = None
+        self._clear_image: bool = False
 
     def compose(self) -> ComposeResult:
         self._schema = qschema.load_schema(force=True)
@@ -61,6 +70,21 @@ class EditSpeciesProfileScreen(Screen):
                 yield Button("Back", id="btn-back")
             yield Static(form.min_gate_hint(), id="sp-min-hint", classes="litany")
             with VerticalScroll(id="sp-scroll"):
+                yield Static("— Profile picture —", classes="title")
+                yield Static(
+                    f"Optional. Plate is always {media.PROFILE_WIDTH}×"
+                    f"{media.PROFILE_HEIGHT} {media.PROFILE_FORMAT} "
+                    f"(contain + letterbox). Missing → default cog placeholder.",
+                    id="sp-pic-hint",
+                    classes="litany",
+                )
+                yield Static(id="sp-pic-status")
+                with Horizontal(id="sp-pic-row"):
+                    yield Input(placeholder="path to image…", id="sp-pic-path")
+                    yield Button("Browse", id="btn-pic-browse")
+                    yield Button("Import", id="btn-pic-import")
+                    yield Button("Clear", id="btn-pic-clear")
+                    yield Button("Open", id="btn-pic-open")
                 biomes = self._body_biomes_safe()
                 biome_opts = speciesmod.origin_place_options(biomes)
                 secondary_opts = speciesmod.secondary_biome_options(biomes)
@@ -131,9 +155,50 @@ class EditSpeciesProfileScreen(Screen):
         )
         form.refresh_dependent_selects(self, self._profile, self._schema)
         self._lock_entry_id_widget()
+        self._refresh_pic_status()
 
     def _session(self) -> WizardSession:
         return self.app.session  # type: ignore[attr-defined]
+
+    def _refresh_pic_status(self) -> None:
+        try:
+            status = self.query_one("#sp-pic-status", Static)
+        except Exception:
+            return
+        slug = self._session().body_slug() or ""
+        sid = str(self.species_id or (self._profile or {}).get("id") or "")
+        if self._clear_image:
+            status.update(
+                "status: will clear custom plate on Save → default placeholder"
+            )
+            return
+        if self._pending_image is not None:
+            status.update(f"status: staged for Save ← {self._pending_image}")
+            return
+        if slug and sid:
+            status.update(f"status: {media.profile_status_label(slug, sid)}")
+        else:
+            status.update(
+                f"status: default placeholder "
+                f"({media.PROFILE_WIDTH}×{media.PROFILE_HEIGHT} {media.PROFILE_FORMAT})"
+            )
+
+    def _apply_pending_image(self, sid: str) -> str | None:
+        """Write/clear staged profile plate. Returns warn log line or None."""
+        slug = self._session().body_slug() or ""
+        if not slug or not sid:
+            return None
+        if self._clear_image:
+            removed = media.clear_profile_image(slug, sid)
+            self._clear_image = False
+            self._pending_image = None
+            return "cleared profile picture" if removed else "profile picture already default"
+        if self._pending_image is not None:
+            media.write_profile_image(slug, sid, self._pending_image)
+            path = self._pending_image
+            self._pending_image = None
+            return f"profile picture → {media.profile_image_path(slug, sid)} (from {path})"
+        return None
 
     def flush_unsaved(self) -> str | None:
         _, secondary_opts = self._biome_option_pairs()
@@ -156,6 +221,8 @@ class EditSpeciesProfileScreen(Screen):
             self._profile = profile
             self.species_id = profile["id"]
             self.create = False
+            self._apply_pending_image(self.species_id)
+            self._refresh_pic_status()
             self._session().clear_dirty()
         except Exception as exc:
             return str(exc)
@@ -184,10 +251,61 @@ class EditSpeciesProfileScreen(Screen):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         log = self.query_one(WarnLog)
-        if event.button.id == "btn-back":
+        bid = event.button.id
+        if bid == "btn-back":
             self.app.request_back()  # type: ignore[attr-defined]
             return
-        if event.button.id == "btn-subspecies":
+        if bid == "btn-pic-browse":
+            chosen = media.browse_image_path()
+            if chosen is None:
+                log.push("browse cancelled (or tkinter unavailable — paste a path)")
+                return
+            self.query_one("#sp-pic-path", Input).value = str(chosen)
+            log.push(f"path set ← {chosen}")
+            return
+        if bid == "btn-pic-import":
+            raw = self.query_one("#sp-pic-path", Input).value.strip()
+            if not raw:
+                log.push("set an image path first (Browse or type)")
+                return
+            try:
+                # Validate decode now; write on Save.
+                src = media.validate_image_file(raw)
+            except Exception as exc:
+                log.push(f"cannot read image: {exc}")
+                return
+            self._pending_image = src
+            self._clear_image = False
+            self._session().mark_dirty()
+            self._refresh_pic_status()
+            log.push(
+                f"staged profile import ({media.PROFILE_WIDTH}×"
+                f"{media.PROFILE_HEIGHT} {media.PROFILE_FORMAT} on Save)"
+            )
+            return
+        if bid == "btn-pic-clear":
+            self._pending_image = None
+            self._clear_image = True
+            self.query_one("#sp-pic-path", Input).value = ""
+            self._session().mark_dirty()
+            self._refresh_pic_status()
+            log.push("staged clear of custom profile picture (applies on Save)")
+            return
+        if bid == "btn-pic-open":
+            slug = self._session().body_slug() or ""
+            sid = str(self.species_id or (self._profile or {}).get("id") or "")
+            try:
+                if self._pending_image is not None and self._pending_image.is_file():
+                    media.open_image_external(self._pending_image)
+                elif slug and sid and not self._clear_image:
+                    media.open_image_external(media.resolve_profile_image(slug, sid))
+                else:
+                    media.open_image_external(media.DEFAULT_PROFILE)
+                log.push("opened profile image in system viewer")
+            except Exception as exc:
+                log.push(str(exc))
+            return
+        if bid == "btn-subspecies":
             # Prefill clone in memory only — disk write on Save of the new screen
             session = self._session()
             parent = self._collect()
@@ -214,7 +332,7 @@ class EditSpeciesProfileScreen(Screen):
                 )
             )
             return
-        if event.button.id == "btn-reload":
+        if bid == "btn-reload":
             self._profile = self._collect()
             self.app.pop_screen()
             self.app.push_screen(
@@ -228,7 +346,7 @@ class EditSpeciesProfileScreen(Screen):
             )
             log.push(f"reloaded schema v{qschema.load_schema().get('version')}")
             return
-        if event.button.id != "btn-save":
+        if bid != "btn-save":
             return
         session = self._session()
         profile = self._collect()
@@ -244,7 +362,11 @@ class EditSpeciesProfileScreen(Screen):
             self._profile = profile
             self.species_id = profile["id"]
             self.create = False
+            pic_note = self._apply_pending_image(self.species_id)
+            self._refresh_pic_status()
             session.clear_dirty()
             log.push(f"saved species → {path}")
+            if pic_note:
+                log.push(pic_note)
         except Exception as exc:
             log.push(str(exc))
