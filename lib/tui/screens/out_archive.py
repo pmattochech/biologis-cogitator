@@ -97,7 +97,7 @@ class OutArchiveScreen(Screen):
         self._suppress_select = False
 
     def compose(self) -> ComposeResult:
-        yield CogitatorHeader("ARCHIVE / RESULTS/")
+        yield CogitatorHeader("RITE OF CONSULTATION")
         with Vertical(id="archive-main"):
             with Horizontal(id="archive-toolbar"):
                 yield Button("Bodies", id="btn-bodies", variant="primary")

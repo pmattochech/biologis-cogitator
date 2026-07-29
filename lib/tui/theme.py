@@ -72,6 +72,16 @@ Button.-primary {
     border: heavy #40c070;
 }
 
+.rite-doors {
+    margin: 1 0 1 0;
+}
+
+Button.rite-door {
+    min-width: 28;
+    width: 1fr;
+    height: 5;
+}
+
 .panel {
     border: solid #2a8040;
     background: #081008;

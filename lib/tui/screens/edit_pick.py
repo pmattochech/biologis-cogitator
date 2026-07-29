@@ -22,13 +22,18 @@ class EditPickScreen(Screen):
     """
 
     def compose(self) -> ComposeResult:
-        yield CogitatorHeader("EDIT / SELECT BODY")
+        yield CogitatorHeader("RITE OF AMENDMENT")
         with Vertical(id="edit-pick-main"):
             with Horizontal(id="edit-pick-toolbar"):
                 yield Button("From pack", id="btn-mode-pack", variant="primary")
                 yield Button("From results", id="btn-mode-results")
                 yield Button("Open editor", id="btn-open", variant="primary")
                 yield Button("Back", id="btn-back")
+            yield Static(
+                "Select a body to amend. New biomes and species upon it are "
+                "registered within this rite.",
+                classes="litany",
+            )
             yield Label("Pack:")
             yield Select([], id="pack-select", allow_blank=True, prompt="Pack")
             yield Label("Bodies:")

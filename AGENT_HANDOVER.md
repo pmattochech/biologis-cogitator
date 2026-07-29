@@ -42,7 +42,7 @@ Re-run only if re-copying from Codex; scrape **must not** rewrite `scripts/migra
 2. **Keep `cogitator-results/`** so `castra-vetera` remains a known-good test pack.
 3. **Product changes still ahead:**
    - ~~**Setup phase:**~~ Linux `./install.sh` + XDG config + Tk/CLI folder setup (`biologis-cogitator setup`).
-   - **Refactor the main / boot screen** (hub UX).
+   - ~~**Refactor the main / boot screen** (hub UX).~~ Three rites: Registration / Amendment / Consultation (`BootScreen` + `RegistrationScreen`).
 4. Future Codex retirement is a **separate** Codex PR (delete or stub `tools/castra-biogen/`) — not done yet.
 
 ---
