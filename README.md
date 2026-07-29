@@ -53,7 +53,7 @@ biologis-cogitator
 | Pin a branch/tag | `BIOLOGIS_REF=master curl -fsSL … \| bash` |
 | Classic terminal (no GTK window) | `BIOLOGIS_NO_WINDOW=1 biologis-cogitator` |
 | Disable auto-update | `BIOLOGIS_NO_AUTOUPDATE=1 biologis-cogitator` |
-| Update check interval (seconds) | `BIOLOGIS_UPDATE_CHECK_SECONDS=300` (min 60) |
+| Update check interval (seconds) | `BIOLOGIS_UPDATE_CHECK_SECONDS=30` (default 30, min 10) |
 
 **Auto-update:** on every launch the cogitator fetches `origin` (`BIOLOGIS_REF`, default `master`) and fast-forwards a clean install checkout. While open, a **green** banner confirms you are on the latest build (then fades); if the remote moves ahead, an **amber** banner asks you to save, Terminate, and reopen. Dirty developer working trees are never force-updated.
 

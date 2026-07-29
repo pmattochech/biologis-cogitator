@@ -9,7 +9,8 @@ from pathlib import Path
 from .util import ROOT
 
 DEFAULT_REF = "master"
-DEFAULT_POLL_SECONDS = 300
+DEFAULT_POLL_SECONDS = 30
+MIN_POLL_SECONDS = 10
 BANNER_TEXT = (
     "UPDATE AVAILABLE — a newer cogitator build was detected on the remote. "
     "Save all unsaved work, then Terminate this session and open the cogitator again "
@@ -61,7 +62,7 @@ def poll_interval_seconds() -> float:
         val = float(raw)
     except ValueError:
         return float(DEFAULT_POLL_SECONDS)
-    return max(60.0, val)
+    return max(float(MIN_POLL_SECONDS), val)
 
 
 def is_git_checkout(root: Path | None = None) -> bool:
