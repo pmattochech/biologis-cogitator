@@ -18,10 +18,21 @@ class SystemFlowScreen(Screen):
         yield CogitatorHeader("LAYER L-1 / STELLAR RITE")
         with VerticalScroll(id="main"):
             yield Static("SYSTEM PARAMETERS", classes="title")
+            yield Static(
+                "Mode chooses inventory law. Star is spectral × size band. "
+                "Orbit hints are soft — mismatches warn, they do not hard-fail.",
+                classes="litany",
+            )
             yield Static(id="sys-summary", classes="panel")
             yield Label("System mode:")
             yield Select(
-                [("natural", "natural"), ("engineered_mesh", "engineered_mesh")],
+                [
+                    ("natural — soft astrophysics fiction; orbit bands suggest rolls", "natural"),
+                    (
+                        "engineered_mesh — authored mesh (CV-style); bodies from locks",
+                        "engineered_mesh",
+                    ),
+                ],
                 id="mode-select",
                 value="natural",
             )
@@ -29,6 +40,7 @@ class SystemFlowScreen(Screen):
             with Horizontal():
                 yield Select([], id="spectral-select")
                 yield Select([], id="size-select")
+            yield Static(id="star-lexicon", classes="panel")
             with Horizontal(classes="-toolbar"):
                 yield Button("Roll star", id="btn-roll")
                 yield Button("Pick star", id="btn-pick", variant="primary")
@@ -45,8 +57,8 @@ class SystemFlowScreen(Screen):
         session: WizardSession = self.app.session  # type: ignore[attr-defined]
         spec = self.query_one("#spectral-select", Select)
         size = self.query_one("#size-select", Select)
-        spec.set_options([(s, s) for s in session.star_spectrals()])
-        size.set_options([(s, s) for s in session.star_sizes()])
+        spec.set_options(session.star_spectral_options())
+        size.set_options(session.star_size_options())
         if session.star_spectrals():
             spec.value = session.star_spectrals()[0]
         if session.star_sizes():
@@ -54,6 +66,7 @@ class SystemFlowScreen(Screen):
         mode = (session.system or {}).get("layers", {}).get("system_mode") or "natural"
         self.query_one("#mode-select", Select).value = mode
         self._refresh_summary()
+        self._refresh_lexicon()
         for w in session.warnings[-5:]:
             log.push(w)
 
@@ -73,10 +86,31 @@ class SystemFlowScreen(Screen):
         )
         self.query_one("#sys-summary", Static).update(text)
 
+    def _refresh_lexicon(self) -> None:
+        session = self._session()
+        try:
+            spectral = str(self.query_one("#spectral-select", Select).value)
+        except Exception:
+            spectral = None
+        try:
+            size_band = str(self.query_one("#size-select", Select).value)
+        except Exception:
+            size_band = None
+        if spectral in {"Select.BLANK", "None"}:
+            spectral = None
+        if size_band in {"Select.BLANK", "None"}:
+            size_band = None
+        self.query_one("#star-lexicon", Static).update(
+            session.star_lexicon_text(spectral, size_band)
+        )
+
+    def on_select_changed(self, event: Select.Changed) -> None:
+        if event.select.id in {"spectral-select", "size-select"}:
+            self._refresh_lexicon()
+
     def _flush_warns(self) -> None:
         log = self.query_one(WarnLog)
         session = self._session()
-        # show latest system warnings
         for w in (session.system or {}).get("warnings") or []:
             if w not in session.warnings:
                 session.warnings.append(w)
@@ -108,6 +142,7 @@ class SystemFlowScreen(Screen):
             log.push(f"picked star {star.get('label')} ({session.provenance.get('star')})")
             self._flush_warns()
             self._refresh_summary()
+            self._refresh_lexicon()
             return
         if event.button.id == "btn-skip":
             star = session.skip_system_star()

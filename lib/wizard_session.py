@@ -341,14 +341,30 @@ class WizardSession:
         return self.current_biomes()
 
     def finalize(self) -> dict[str, Any]:
+        """Seal body: sync species profiles → specimen locks → trophic → Magos/literary."""
         assert self.body is not None
         from . import entry_id as entryid
+        from .layers import trophic
 
         entryid.ensure_world_filing_ids(self.body)
         if self.system is not None:
             self.save_system_out()
+
+        # Merge disk profiles with session so Seal always sees every created/edited form.
+        slug = self.body_slug()
+        merged: dict[str, dict[str, Any]] = {}
+        if slug:
+            merged.update(speciesmod.load_all_profiles(slug))
+        merged.update(copy.deepcopy(self.species_profiles))
+        self.species_profiles = merged
+
+        # Named profiles drive thin locks (name/notes/biomes) before webs rebuild.
+        for sid, prof in merged.items():
+            self.upsert_specimen(speciesmod.profile_to_specimen_lock(prof))
+        trophic.apply(self.body)
+
         world = pipeline.finalize_body(
-            self.body, species_profiles=self.species_profiles or None
+            self.body, species_profiles=merged or None
         )
         self.clear_dirty()
         return world
@@ -575,7 +591,9 @@ class WizardSession:
         slug = self.body_slug()
         if not slug:
             raise ValueError("body slug required")
-        errors = speciesmod.validate_minimum(profile)
+        errors = speciesmod.validate_minimum(
+            profile, body_biomes=self.current_biomes()
+        )
         if errors:
             raise ValueError("; ".join(errors))
         profile = copy.deepcopy(profile)
@@ -628,6 +646,51 @@ class WizardSession:
 
     def star_sizes(self) -> list[str]:
         return list(load_yaml(ENUMS / "star_classes.yaml").get("size_bands") or [])
+
+    def star_spectral_options(self) -> list[tuple[str, str]]:
+        """Select options: (label_with_gloss, value)."""
+        data = load_yaml(ENUMS / "star_classes.yaml")
+        gloss = dict(data.get("spectral_gloss") or {})
+        out: list[tuple[str, str]] = []
+        for s in data.get("spectral") or []:
+            g = gloss.get(s)
+            out.append((f"{s} — {g}" if g else str(s), str(s)))
+        return out
+
+    def star_size_options(self) -> list[tuple[str, str]]:
+        data = load_yaml(ENUMS / "star_classes.yaml")
+        gloss = dict(data.get("size_band_gloss") or {})
+        out: list[tuple[str, str]] = []
+        for s in data.get("size_bands") or []:
+            g = gloss.get(s)
+            out.append((f"{s} — {g}" if g else str(s), str(s)))
+        return out
+
+    def star_lexicon_text(self, spectral: str | None = None, size_band: str | None = None) -> str:
+        """Short Magos panel for the stellar rite."""
+        data = load_yaml(ENUMS / "star_classes.yaml")
+        sg = dict(data.get("spectral_gloss") or {})
+        zg = dict(data.get("size_band_gloss") or {})
+        lines = [
+            "STAR LEXICON (L-1) — fiction-grade, not HR-diagram physics.",
+            "Letters are Harvard spectral classes (temperature), not English words.",
+            "Classic hot→cool ladder: O B A F G K M — this altar exposes M K G F only.",
+            "Label = {spectral}-{size_band}  (e.g. G-dwarf ≈ Sol-like main sequence).",
+            "",
+            "Spectral (cool → warmer):",
+        ]
+        for s in data.get("spectral") or []:
+            mark = "►" if s == spectral else " "
+            lines.append(f"  {mark} {s} — {sg.get(s, '')}")
+        lines.append("")
+        lines.append("Size band (how big / evolved / bright):")
+        for s in data.get("size_bands") or []:
+            mark = "►" if s == size_band else " "
+            lines.append(f"  {mark} {s} — {zg.get(s, '')}")
+        if spectral and size_band:
+            lines.append("")
+            lines.append(f"Current pick → {spectral}-{size_band}")
+        return "\n".join(lines)
 
     def trophic_slots(self) -> list[str]:
         return list(load_yaml(ENUMS / "trophic_slots.yaml").get("slot_order") or [])

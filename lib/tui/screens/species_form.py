@@ -5,7 +5,8 @@ from typing import Any, Callable
 
 from textual.app import ComposeResult
 from textual.widget import Widget
-from textual.widgets import Input, Label, Select, Static
+from textual.widgets import Input, Label, Select, SelectionList, Static
+from textual.widgets.selection_list import Selection
 
 from ... import profile_schema as qschema
 from ... import species_profile as speciesmod
@@ -16,7 +17,6 @@ def _is_select_blank(value: object) -> bool:
         return True
     if value is Select.BLANK:
         return True
-    # Newer Textual: Select.NULL sentinel
     null = getattr(Select, "NULL", None)
     if null is not None and value is null:
         return True
@@ -28,7 +28,6 @@ def _clear_select(sel: Select) -> None:
     try:
         sel.clear()
     except Exception:
-        # Fallback: pick first option if clear unsupported
         try:
             options = list(getattr(sel, "_options", []) or [])
             if options:
@@ -38,28 +37,60 @@ def _clear_select(sel: Select) -> None:
             pass
 
 
+def _field_type(field: dict[str, Any]) -> str:
+    return str(field.get("type") or "text").strip()
+
+
+def _selection_list_from_opts(
+    wid: str,
+    opts: list[tuple[str, str]],
+    *,
+    selected: set[str] | None = None,
+) -> SelectionList[str] | Static:
+    picked = selected or set()
+    if not opts:
+        return Static(
+            "(no planetary biomes on this body — secondary range empty)",
+            classes="litany",
+            id=f"{wid}-empty",
+        )
+    return SelectionList[str](
+        *[Selection(lab, val, val in picked) for lab, val in opts],
+        id=wid,
+        classes="biome-multi",
+    )
+
+
 def yield_step_fields(
     step: dict[str, Any],
     *,
     trophic_slots: list[str] | None = None,
+    biome_options: list[tuple[str, str]] | None = None,
+    secondary_biome_options: list[tuple[str, str]] | None = None,
 ) -> ComposeResult:
-    """Yield Label + Input/Select widgets for one schema step."""
+    """Yield Label + Input/Select/SelectionList widgets for one schema step."""
     if step.get("hint"):
         yield Static(str(step["hint"]), classes="litany")
     for field in step.get("fields") or []:
         wid = qschema.widget_id(field)
         label = str(field.get("label") or field.get("id") or wid)
         yield Label(label)
-        ftype = str(field.get("type") or "text")
-        if ftype in ("select", "yes_no", "trophic_slot"):
+        ftype = _field_type(field)
+        if ftype == "biome_multi":
+            yield _selection_list_from_opts(wid, secondary_biome_options or [])
+            continue
+        if ftype in ("select", "yes_no", "trophic_slot", "biome_select"):
             if ftype == "yes_no":
                 opts = [("no", "no"), ("yes", "yes")]
             elif ftype == "trophic_slot":
                 slots = trophic_slots or ["apex"]
                 opts = [(s, s) for s in slots]
+            elif ftype == "biome_select":
+                opts = biome_options or list(speciesmod.SPECIAL_ORIGIN_PLACES)
+                if not opts:
+                    opts = list(speciesmod.SPECIAL_ORIGIN_PLACES)
             else:
                 opts = qschema.option_pairs(field) or [("—", "")]
-                # Placeholder until depends_on resolves
                 if field.get("depends_on") and not opts:
                     opts = [("(pick parent first)", "")]
             yield Select(
@@ -84,15 +115,27 @@ def apply_profile_to_widgets(
     schema: dict[str, Any] | None = None,
     *,
     trophic_slots: list[str] | None = None,
+    biome_options: list[tuple[str, str]] | None = None,
+    secondary_biome_options: list[tuple[str, str]] | None = None,
 ) -> None:
     sch = schema or qschema.load_schema()
     for field in qschema.all_fields(sch):
         wid = qschema.widget_id(field)
         store = str(field.get("store") or "")
         raw = qschema.get_store(profile, store)
-        ftype = str(field.get("type") or "text")
+        ftype = _field_type(field)
         try:
-            if ftype in ("select", "yes_no", "trophic_slot"):
+            if ftype == "biome_multi":
+                selected = {
+                    str(x).strip()
+                    for x in (raw if isinstance(raw, list) else [])
+                    if str(x).strip()
+                }
+                opts = list(secondary_biome_options or [])
+                # Replace stale Input / empty Static with a SelectionList when needed.
+                ensure_secondary_biome_widget(root, wid, opts, selected=selected)
+                continue
+            if ftype in ("select", "yes_no", "trophic_slot", "biome_select"):
                 sel = root.query_one(f"#{wid}", Select)
                 if ftype == "yes_no":
                     sel.set_options([("no", "no"), ("yes", "yes")])
@@ -102,8 +145,20 @@ def apply_profile_to_widgets(
                     sel.set_options([(s, s) for s in slots])
                     val = str(raw or "apex")
                     sel.value = val if val in slots else slots[0]
+                elif ftype == "biome_select":
+                    opts = list(biome_options or speciesmod.SPECIAL_ORIGIN_PLACES)
+                    if not opts:
+                        opts = list(speciesmod.SPECIAL_ORIGIN_PLACES)
+                    val = str(raw or "").strip()
+                    values = {v for _, v in opts}
+                    if val and val not in values:
+                        opts = [(f"{val} (not on this body)", val), *opts]
+                    sel.set_options(opts)
+                    if val:
+                        sel.value = val
+                    else:
+                        sel.value = opts[0][1]
                 else:
-                    # Refresh dependent options from current profile
                     pairs = qschema.option_pairs(field, profile)
                     if not pairs:
                         pairs = [("(none)", "")]
@@ -127,11 +182,84 @@ def apply_profile_to_widgets(
             pass
 
 
+def ensure_secondary_biome_widget(
+    root: Widget,
+    wid: str,
+    opts: list[tuple[str, str]],
+    *,
+    selected: set[str] | None = None,
+) -> None:
+    """Mount or refresh the secondary-biomes SelectionList (fixes stale Input)."""
+    picked = selected or set()
+    try:
+        parent = root.query_one("#sp-scroll", Widget)
+    except Exception:
+        return
+
+    existing_sl = None
+    existing_input = None
+    existing_empty = None
+    try:
+        existing_sl = root.query_one(f"#{wid}", SelectionList)
+    except Exception:
+        pass
+    try:
+        existing_input = root.query_one(f"#{wid}", Input)
+    except Exception:
+        pass
+    try:
+        existing_empty = root.query_one(f"#{wid}-empty", Static)
+    except Exception:
+        pass
+
+    # Already a SelectionList — just sync ticks.
+    if existing_sl is not None and existing_input is None:
+        try:
+            existing_sl.deselect_all()
+            for val in picked:
+                try:
+                    existing_sl.select(val)
+                except Exception:
+                    continue
+        except Exception:
+            pass
+        return
+
+    # Stale Input / empty Static: schedule replace after remove settles.
+    if existing_input is None and existing_empty is None and existing_sl is None:
+        # Nothing to fix; compose should have created the control.
+        return
+
+    anchor = None
+    for label in parent.query(Label):
+        text = getattr(label, "content", None) or str(label.render())
+        if "secondary" in str(text).lower():
+            anchor = label
+            break
+
+    stale = [w for w in (existing_input, existing_empty, existing_sl) if w is not None]
+    for w in stale:
+        w.remove()
+
+    def _mount() -> None:
+        widget = _selection_list_from_opts(wid, opts, selected=picked)
+        if anchor is not None and anchor in parent.children:
+            parent.mount(widget, after=anchor)
+        else:
+            parent.mount(widget)
+
+    try:
+        root.app.call_after_refresh(_mount)
+    except Exception:
+        _mount()
+
+
 def collect_profile_from_widgets(
     root: Widget,
     schema: dict[str, Any] | None = None,
     *,
     base: dict[str, Any] | None = None,
+    secondary_biome_options: list[tuple[str, str]] | None = None,
 ) -> dict[str, Any]:
     sch = schema or qschema.load_schema()
     profile = base or speciesmod.empty_profile()
@@ -140,13 +268,24 @@ def collect_profile_from_widgets(
     for field in qschema.all_fields(sch):
         wid = qschema.widget_id(field)
         store = str(field.get("store") or "")
-        ftype = str(field.get("type") or "text")
+        ftype = _field_type(field)
         try:
-            if ftype in ("select", "yes_no", "trophic_slot"):
+            if ftype == "biome_multi":
+                try:
+                    sl = root.query_one(f"#{wid}", SelectionList)
+                    value: Any = [str(v) for v in (sl.selected or [])]
+                except Exception:
+                    # Legacy Input fallback (comma ids) if restart not yet done
+                    try:
+                        text = root.query_one(f"#{wid}", Input).value.strip()
+                        value = [x.strip() for x in text.split(",") if x.strip()]
+                    except Exception:
+                        value = []
+            elif ftype in ("select", "yes_no", "trophic_slot", "biome_select"):
                 sel = root.query_one(f"#{wid}", Select)
                 val = sel.value
                 if _is_select_blank(val):
-                    value: Any = False if ftype == "yes_no" else ""
+                    value = False if ftype == "yes_no" else ""
                 elif ftype == "yes_no":
                     value = str(val) == "yes"
                 else:
@@ -160,10 +299,10 @@ def collect_profile_from_widgets(
             qschema.set_store(profile, store, value)
         except Exception:
             continue
-    # Mirror G dossier into profile.dossier for lock convenience
-    g_path = qschema.get_store(profile, "answers.G.dossier_path")
-    if g_path:
-        profile["dossier"] = str(g_path)
+    # Auto multi-range when secondaries are selected.
+    secondaries = list(profile.get("secondary_biomes") or [])
+    if secondaries and str(profile.get("range") or "single") == "single":
+        profile["range"] = "multi"
     return profile
 
 
@@ -174,7 +313,6 @@ def refresh_dependent_selects(
 ) -> None:
     """When a parent select changes, refresh child options_by selects."""
     sch = schema or qschema.load_schema()
-    # Merge current widgets into profile first for accurate depends_on
     live = collect_profile_from_widgets(root, sch, base=profile)
     for field in qschema.all_fields(sch):
         if not field.get("depends_on"):
@@ -217,7 +355,6 @@ def on_select_changed_refresh(
 ) -> None:
     """Call from screen.on_select_changed to refresh depends_on children."""
     sch = schema or qschema.load_schema()
-    # Only refresh if this select is a dependency parent
     parents = {
         str(f.get("depends_on") or "")
         for f in qschema.all_fields(sch)
@@ -248,10 +385,10 @@ def format_profile_readonly(
             label = str(field.get("label") or field.get("id") or "")
             store = str(field.get("store") or "")
             raw = qschema.get_store(profile, store)
-            ftype = str(field.get("type") or "text")
+            ftype = _field_type(field)
             if ftype == "yes_no":
                 text = "yes" if raw else "no"
-            elif ftype == "comma_list":
+            elif ftype in ("comma_list", "biome_multi"):
                 if isinstance(raw, list):
                     text = ", ".join(str(x) for x in raw)
                 else:

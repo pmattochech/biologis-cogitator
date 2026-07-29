@@ -35,7 +35,8 @@ class EditProseScreen(Screen):
                 yield Button("Clear override", id="btn-clear")
                 yield Button("Back", id="btn-back")
             yield Static(
-                "Saved prose is stored in pack locks and preferred on Seal.",
+                "Saved prose overrides Seal generation. Clear overrides to rebuild "
+                "Magos / literary from biomes, specimens, and species profiles.",
                 classes="litany",
             )
             yield TextArea("", id="prose-editor", show_line_numbers=False)

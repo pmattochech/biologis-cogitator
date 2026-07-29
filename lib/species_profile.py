@@ -17,6 +17,48 @@ REMINDERS_FILE = "filing-reminders.md"
 
 MIN_ORIGIN = frozenset({"native", "exotic"})
 
+# Non-planetary origin places when a form has no surface biome (or as explicit choice).
+SPECIAL_ORIGIN_PLACES: list[tuple[str, str]] = [
+    ("void — no planetary surface", "void"),
+    ("warp — immaterium / non-materium", "warp"),
+    ("outer_space — vacuum / voidborne", "outer_space"),
+]
+SPECIAL_ORIGIN_IDS = {v for _, v in SPECIAL_ORIGIN_PLACES}
+
+
+def origin_place_options(
+    biomes: list[dict[str, Any]] | None,
+    *,
+    include_special: bool = True,
+) -> list[tuple[str, str]]:
+    """Select options for primary origin place: body biomes + void/warp/outer_space."""
+    opts: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for b in biomes or []:
+        bid = str(b.get("id") or "").strip()
+        if not bid or bid in seen:
+            continue
+        seen.add(bid)
+        klass = str(b.get("class") or "").strip()
+        label = f"{bid}" + (f" ({klass})" if klass else "")
+        opts.append((label, bid))
+    if include_special:
+        for label, val in SPECIAL_ORIGIN_PLACES:
+            if val not in seen:
+                opts.append((label, val))
+                seen.add(val)
+    return opts
+
+
+def secondary_biome_options(
+    biomes: list[dict[str, Any]] | None,
+) -> list[tuple[str, str]]:
+    """Secondary range is planetary biomes only (not void/warp/outer_space)."""
+    return [
+        (lab, val)
+        for lab, val in origin_place_options(biomes, include_special=False)
+    ]
+
 
 def species_root(body_slug: str) -> Path:
     return body_out_dir(body_slug) / "species"
@@ -57,12 +99,42 @@ def display_name(profile: dict[str, Any]) -> str:
     return str(profile.get("id") or "unnamed")
 
 
-def validate_minimum(profile: dict[str, Any]) -> list[str]:
+def validate_minimum(
+    profile: dict[str, Any],
+    *,
+    body_biomes: list[dict[str, Any]] | None = None,
+) -> list[str]:
     errors = list(qschema.validate_minimum(profile))
     sid = entryid.normalize_entry_id(str(profile.get("id") or ""))
     for err in entryid.validate_entry_id(sid):
         if err not in errors:
             errors.append(err)
+    origin = str(profile.get("world_biome") or "").strip()
+    if not origin:
+        msg = "Origin place (primary biome / void / warp / outer_space) required"
+        if msg not in errors:
+            errors.append(msg)
+    elif body_biomes is not None:
+        allowed = {v for _, v in origin_place_options(body_biomes)}
+        if origin not in allowed:
+            errors.append(
+                f"origin place {origin!r} is not on this body "
+                "(pick a registered biome, or void / warp / outer_space)"
+            )
+    secondaries = profile.get("secondary_biomes") or []
+    if isinstance(secondaries, list) and body_biomes is not None:
+        planet_only = {v for _, v in secondary_biome_options(body_biomes)}
+        for bid in secondaries:
+            b = str(bid or "").strip()
+            if not b:
+                continue
+            if b in SPECIAL_ORIGIN_IDS:
+                errors.append(
+                    f"secondary biome {b!r} must be a planetary biome "
+                    "(not void / warp / outer_space)"
+                )
+            elif b not in planet_only:
+                errors.append(f"secondary biome {b!r} is not registered on this body")
     return errors
 
 
@@ -208,7 +280,6 @@ def _origin_from_profile(profile: dict[str, Any]) -> str:
 
 
 def profile_to_specimen_lock(profile: dict[str, Any]) -> dict[str, Any]:
-    answers = profile.get("answers") or {}
     origin = _origin_from_profile(profile)
     secondary = list(profile.get("secondary_biomes") or [])
     rng = str(profile.get("range") or "single").strip() or "single"
@@ -230,11 +301,8 @@ def profile_to_specimen_lock(profile: dict[str, Any]) -> dict[str, Any]:
     if analogue:
         spec["analogue"] = analogue
     dossier = str(profile.get("dossier") or "").strip()
-    g_path = str((answers.get("G") or {}).get("dossier_path") or "").strip()
     if dossier:
         spec["dossier"] = dossier
-    elif g_path:
-        spec["dossier"] = g_path
     return {k: v for k, v in spec.items() if v is not None and v != []}
 
 
@@ -259,8 +327,6 @@ def specimen_lock_to_profile_seed(spec: dict[str, Any]) -> dict[str, Any]:
     if name:
         # Seed as vernacular working label; formal registry filled later
         profile["working_common_name"] = name
-    if profile["dossier"]:
-        qschema.set_store(profile, "answers.G.dossier_path", profile["dossier"])
     return profile
 
 
@@ -313,29 +379,16 @@ def build_midjourney_prompt(profile: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def build_filing_reminders(profile: dict[str, Any]) -> str:
-    g = (profile.get("answers") or {}).get("G") or {}
-    lines = [
-        f"# Filing reminders — {profile.get('id')}",
-        "",
-        "Cogitator does **not** write `external/lore/`. Use these as a manual checklist.",
-        "",
-        f"- Suggested dossier path: `{g.get('dossier_path') or '(unset)'}`",
-        f"- Update `fauna-flora-named-specimens.md`: {'yes' if g.get('update_named_specimens') else 'no'}",
-        f"- Update bestiary `INDEX.md`: {'yes' if g.get('update_index') else 'no'}",
-        f"- Cross-link geography / Magos food web: {'yes' if g.get('cross_link_geography') else 'no'}",
-        "",
-        f"(Schema: templates/{qschema.SCHEMA_PATH.name})",
-        "",
-    ]
-    return "\n".join(lines)
-
-
 def save_species_profile(body_slug: str, profile: dict[str, Any]) -> Path:
     profile = dict(profile)
     sid = entryid.normalize_entry_id(str(profile.get("id") or ""))
     profile["id"] = sid
     profile["magos_scaffold_id"] = sid  # legacy alias; UI label is Entry ID
+    # Drop retired Codex filing-reminder answers (section G) — not used by this tool.
+    answers = dict(profile.get("answers") or {})
+    if "G" in answers:
+        answers.pop("G", None)
+        profile["answers"] = answers
     errors = validate_minimum(profile)
     if errors:
         raise ValueError("; ".join(errors))
@@ -349,7 +402,10 @@ def save_species_profile(body_slug: str, profile: dict[str, Any]) -> Path:
     if legacy.is_file():
         legacy.unlink()
     (d / MIDJOURNEY_FILE).write_text(build_midjourney_prompt(profile), encoding="utf-8")
-    (d / REMINDERS_FILE).write_text(build_filing_reminders(profile), encoding="utf-8")
+    # Remove legacy filing-reminders.md if present (Codex external/lore checklist).
+    reminders = d / REMINDERS_FILE
+    if reminders.is_file():
+        reminders.unlink()
     return d
 
 
@@ -404,6 +460,26 @@ def write_profiles_for_body(body_slug: str, profiles: dict[str, dict[str, Any]])
     return written
 
 
+def _alias_names(profile: dict[str, Any]) -> list[str]:
+    """Other names besides display_name (formal, F.common_name, etc.)."""
+    primary = display_name(profile)
+    answers = profile.get("answers") or {}
+    a = answers.get("A") or {}
+    f = answers.get("F") or {}
+    seen = {primary.lower()}
+    out: list[str] = []
+    for src in (a, f):
+        for key in ("formal_name", "common_name", "vernacular", "high_gothic"):
+            val = str(src.get(key) or "").strip()
+            if val and val.lower() not in seen:
+                seen.add(val.lower())
+                out.append(val)
+    w = str(profile.get("working_common_name") or "").strip()
+    if w and w.lower() not in seen:
+        out.append(w)
+    return out
+
+
 def magos_species_section(profiles: dict[str, dict[str, Any]]) -> list[str]:
     if not profiles:
         return []
@@ -450,6 +526,15 @@ def magos_species_section(profiles: dict[str, dict[str, Any]]) -> list[str]:
             f"- **Filing:** biome `{p.get('world_biome') or '—'}`, "
             f"slot `{p.get('trophic_slot') or '—'}`"
         )
+        secondary = list(p.get("secondary_biomes") or [])
+        if secondary:
+            lines.append(
+                "- **Secondary biomes:** "
+                + ", ".join(f"`{x}`" for x in secondary)
+            )
+        rng = str(p.get("range") or "").strip()
+        if rng:
+            lines.append(f"- **Range:** `{rng}`")
         tax = ", ".join(
             x
             for x in (
@@ -485,6 +570,12 @@ def magos_species_section(profiles: dict[str, dict[str, Any]]) -> list[str]:
         if skull:
             lines.append(f"- **Skull seams / weak points:** {skull}")
         lines.append(f"- **Origin:** `{origin or '—'}`")
+        subtype = str(p.get("origin_subtype") or "").strip()
+        if subtype:
+            lines.append(f"- **Origin subtype:** `{subtype}`")
+        analogue = str(p.get("analogue") or "").strip()
+        if analogue:
+            lines.append(f"- **Analogue:** `{analogue}`")
         if d.get("diet"):
             lines.append(f"- **Diet:** {d.get('diet')}")
         if d.get("lifespan"):
@@ -495,6 +586,8 @@ def magos_species_section(profiles: dict[str, dict[str, Any]]) -> list[str]:
             lines.append(f"- **Temperament:** {d.get('temperament')}")
         if e.get("skin_armor_color"):
             lines.append(f"- **Appearance:** {e.get('skin_armor_color')}")
+        if e.get("head_must_haves"):
+            lines.append(f"- **Head must-haves:** {e.get('head_must_haves')}")
         if e.get("iconic_wrong"):
             lines.append(f"- **Iconic / wrong silhouette:** {e.get('iconic_wrong')}")
         names = []
@@ -504,20 +597,73 @@ def magos_species_section(profiles: dict[str, dict[str, Any]]) -> list[str]:
         vern = str(p.get("working_common_name") or f.get("vernacular") or "").strip()
         if vern:
             names.append(f"vernacular `{vern}`")
+        for alias in _alias_names(p):
+            if formal and alias == str(formal).strip():
+                continue
+            if vern and alias == vern:
+                continue
+            names.append(f"also `{alias}`")
         if names:
             lines.append(f"- **Names:** {'; '.join(names)}")
         conf = a.get("confusions") or f.get("confusions")
         if conf:
             lines.append(f"- **Avoid confusing with:** {conf}")
-        g = answers.get("G") or {}
-        if g.get("dossier_path"):
-            lines.append(
-                f"- **Filing reminder (manual):** dossier path `{g.get('dossier_path')}`"
-            )
+        notes = str(p.get("notes") or "").strip()
+        if notes:
+            lines.append(f"- **Notes:** {notes}")
+        if p.get("dossier"):
+            lines.append(f"- **Dossier:** `{p.get('dossier')}`")
         lines.append(
             f"- **Artifacts:** `species/{sid}/{PROFILE_FILE}`, "
             f"`species/{sid}/{MIDJOURNEY_FILE}`"
         )
+        lines.append("")
+    return lines
+
+
+def magos_lock_specimens_section(
+    specimens: list[dict[str, Any]],
+    profiles: dict[str, dict[str, Any]],
+) -> list[str]:
+    """Specimens present as locks but without a full species profile yet."""
+    profile_ids = {str(s) for s in profiles}
+    orphans = [
+        s
+        for s in specimens
+        if str(s.get("id") or "").strip()
+        and str(s.get("id") or "").strip() not in profile_ids
+    ]
+    if not orphans:
+        return []
+    lines = ["## Specimen locks (no profile yet)", ""]
+    for spec in orphans:
+        sid = str(spec.get("id") or "").strip()
+        name = str(spec.get("name") or sid).strip()
+        lines.append(f"### {name} (`{sid}`)")
+        lines.append("")
+        lines.append(
+            f"- **Filing:** biome `{spec.get('primary_biome') or '—'}`, "
+            f"slot `{spec.get('trophic_slot') or '—'}`"
+        )
+        secondary = list(spec.get("secondary_biomes") or [])
+        if secondary:
+            lines.append(
+                "- **Secondary biomes:** "
+                + ", ".join(f"`{x}`" for x in secondary)
+            )
+        if spec.get("range"):
+            lines.append(f"- **Range:** `{spec.get('range')}`")
+        lines.append(
+            f"- **Origin:** `{spec.get('origin') or '—'}` / "
+            f"`{spec.get('origin_subtype') or '—'}`"
+        )
+        if spec.get("analogue"):
+            lines.append(f"- **Analogue:** `{spec.get('analogue')}`")
+        if spec.get("dossier"):
+            lines.append(f"- **Dossier:** `{spec.get('dossier')}`")
+        notes = str(spec.get("notes") or "").strip()
+        if notes:
+            lines.append(f"- **Notes:** {notes}")
         lines.append("")
     return lines
 
@@ -534,19 +680,90 @@ def literary_species_paragraphs(profiles: dict[str, dict[str, Any]]) -> list[str
         e = answers.get("E") or {}
         c = answers.get("C") or {}
         a = answers.get("A") or {}
+        f = answers.get("F") or {}
         name = display_name(p)
         shape = str(b.get("bodyshape") or "an unnamed shape").strip()
         origin = str(c.get("origin") or a.get("origin") or "unknown").strip()
+        formal = str(a.get("formal_name") or f.get("formal_name") or "").strip()
+        aliases = _alias_names(p)
         diet = str(d.get("diet") or "").strip()
         temper = str(d.get("temperament") or "").strip()
         look = str(e.get("skin_armor_color") or e.get("iconic_wrong") or "").strip()
-        bits = [f"The {name} ({shape}) is filed as {origin} to this world."]
+        notes = str(p.get("notes") or "").strip()
+        biome = str(p.get("world_biome") or "").strip()
+        secondary = list(p.get("secondary_biomes") or [])
+        size_min = str(b.get("size_min") or "").strip()
+        size_max = str(b.get("size_max") or "").strip()
+
+        head = f"The {name}"
+        if formal and formal.lower() != name.lower():
+            head += f" ({formal})"
+        head += f" is a {shape} form filed as {origin} to this world"
+        if biome:
+            head += f", primary to `{biome}`"
+        head += "."
+        bits = [head]
+        extra_aliases = [
+            x
+            for x in aliases
+            if x.lower() != name.lower() and x.lower() != formal.lower()
+        ]
+        if extra_aliases:
+            bits.append(
+                "Also known as " + ", ".join(extra_aliases) + "."
+            )
+        if size_min and size_max and size_min != size_max:
+            # Profiles sometimes store full ranges in a single field.
+            if any(tok in size_min for tok in ("→", "->", " - ", " to ")):
+                bits.append(f"Size: {size_min}.")
+                if any(tok in size_max for tok in ("→", "->", " - ", " to ")):
+                    bits.append(f"Upper filing: {size_max}.")
+            else:
+                bits.append(f"Size ranges from {size_min} to {size_max}.")
+        elif size_min or size_max:
+            bits.append(f"Size: {size_min or size_max}.")
+        if secondary:
+            bits.append(
+                "Secondary range: " + ", ".join(f"`{x}`" for x in secondary) + "."
+            )
         if diet:
             bits.append(f"It feeds on {diet}.")
         if temper:
             bits.append(f"Temperament: {temper}.")
         if look:
             bits.append(look if look.endswith(".") else look + ".")
+        if notes:
+            bits.append(notes if notes.endswith(".") else notes + ".")
         lines.append(" ".join(bits))
+        lines.append("")
+    return lines
+
+
+def literary_lock_specimen_paragraphs(
+    specimens: list[dict[str, Any]],
+    profiles: dict[str, dict[str, Any]],
+) -> list[str]:
+    profile_ids = {str(s) for s in profiles}
+    orphans = [
+        s
+        for s in specimens
+        if str(s.get("id") or "").strip()
+        and str(s.get("id") or "").strip() not in profile_ids
+    ]
+    if not orphans:
+        return []
+    lines = ["## Other filed specimens", ""]
+    for spec in orphans:
+        name = str(spec.get("name") or spec.get("id") or "unnamed").strip()
+        biome = str(spec.get("primary_biome") or "").strip()
+        origin = str(spec.get("origin") or "unknown").strip()
+        notes = str(spec.get("notes") or "").strip()
+        sentence = f"The {name} is filed as {origin}"
+        if biome:
+            sentence += f" upon `{biome}`"
+        sentence += "."
+        if notes:
+            sentence += " " + (notes if notes.endswith(".") else notes + ".")
+        lines.append(sentence)
         lines.append("")
     return lines

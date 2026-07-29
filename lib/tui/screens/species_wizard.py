@@ -1,4 +1,4 @@
-"""New species — pick primary biome, then open profile with allocated Entry ID."""
+"""New species — pick primary origin place, then open profile with allocated Entry ID."""
 from __future__ import annotations
 
 from textual.app import ComposeResult
@@ -13,7 +13,7 @@ from ..widgets.warn_log import WarnLog
 
 
 class NewSpeciesBiomeScreen(Screen):
-    """Gate: choose primary biome on the current body, then open the profile."""
+    """Gate: choose origin place on the current body, then open the profile."""
 
     TRACK_DIRTY = False
 
@@ -36,12 +36,14 @@ class NewSpeciesBiomeScreen(Screen):
                 yield Button("Continue", id="btn-continue", variant="primary")
                 yield Button("Cancel", id="btn-cancel")
             yield Static(
-                "World is the body already open. Pick the primary biome — "
+                "World is the body already open. Pick the origin place — "
+                "registered biomes on this body, or void / warp / outer_space "
+                "when there is no planetary surface. "
                 "Entry ID is allocated next (file created only when you Save).",
                 id="new-hint",
                 classes="litany",
             )
-            yield Static("Primary biome")
+            yield Static("Origin place")
             yield Select([("(none)", "")], id="new-biome", allow_blank=False)
             yield Static("Entry ID preview: —", id="new-preview")
         yield WarnLog()
@@ -50,22 +52,18 @@ class NewSpeciesBiomeScreen(Screen):
         self.query_one(WarnLog).boot()
         session = self._session()
         biomes = session.current_biomes()
-        opts = []
-        for b in biomes:
-            bid = str(b.get("id") or "")
-            if not bid:
-                continue
-            klass = str(b.get("class") or "")
-            label = f"{bid}" + (f" ({klass})" if klass else "")
-            opts.append((label, bid))
+        opts = speciesmod.origin_place_options(biomes)
         sel = self.query_one("#new-biome", Select)
         if not opts:
-            sel.set_options([("(no biomes on body — add biomes first)", "")])
-            self.query_one(WarnLog).push("no biomes on this body")
-            return
+            sel.set_options(list(speciesmod.SPECIAL_ORIGIN_PLACES))
+            opts = list(speciesmod.SPECIAL_ORIGIN_PLACES)
         sel.set_options(opts)
         sel.value = opts[0][1]
         self._biome_id = opts[0][1]
+        if not biomes:
+            self.query_one(WarnLog).push(
+                "no planetary biomes on this body — use void / warp / outer_space"
+            )
         self._refresh_preview()
 
     def _session(self) -> WizardSession:
@@ -84,8 +82,8 @@ class NewSpeciesBiomeScreen(Screen):
         slug = session.body_slug() or "(no body)"
         text = (
             f"Body: {slug}\n"
-            f"Primary biome: {self._biome_id or '—'}\n"
-            f"Entry ID preview: {sid or '(register body/biome in data/enums/filing_ids.csv)'}"
+            f"Origin place: {self._biome_id or '—'}\n"
+            f"Entry ID preview: {sid or '(register body in data/enums/filing_ids.csv)'}"
         )
         self.query_one("#new-preview", Static).update(text)
 
@@ -114,7 +112,13 @@ class NewSpeciesBiomeScreen(Screen):
             return
         session = self._session()
         if not self._biome_id:
-            log.push("select a primary biome")
+            log.push("select an origin place")
+            return
+        allowed = {
+            v for _, v in speciesmod.origin_place_options(session.current_biomes())
+        }
+        if self._biome_id not in allowed:
+            log.push(f"origin place {self._biome_id!r} is not allowed on this body")
             return
         sid = speciesmod.suggest_id_for_session(
             session.body_slug(),

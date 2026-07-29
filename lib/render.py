@@ -118,6 +118,9 @@ def _magos(
                 f"- **{s['slot']}** — {name}{link_note} | Origin: `{s['origin']}` / "
                 f"`{s['origin_subtype']}` | analogue: `{s.get('analogue')}`"
             )
+            notes = str(s.get("notes") or "").strip()
+            if notes:
+                lines.append(f"  - Notes: {notes}")
             if bp.get("dossier"):
                 lines.append(f"  - Locked dossier: `{bp['dossier']}` (bauplan not rewritten)")
             elif not bp.get("locked"):
@@ -129,6 +132,9 @@ def _magos(
         lines.append("")
 
     lines += speciesmod.magos_species_section(profiles or {})
+    lines += speciesmod.magos_lock_specimens_section(
+        list(locks.get("specimens") or []), profiles or {}
+    )
 
     risks = locks.get("risks") or []
     lines += ["## Biological risks (locked)", ""]
@@ -212,9 +218,15 @@ def _literary(
                 f"In the {biome['class'].replace('_', ' ')}, the {s['slot'].replace('_', ' ')} "
                 f"niche is held by {name}{link} — {provenance}."
             )
+            notes = str(s.get("notes") or "").strip()
+            if notes:
+                lines.append(notes if notes.endswith(".") else notes + ".")
         lines.append("")
 
     lines += speciesmod.literary_species_paragraphs(profiles or {})
+    lines += speciesmod.literary_lock_specimen_paragraphs(
+        list(locks.get("specimens") or []), profiles or {}
+    )
 
     if locks.get("notes") or locks.get("local_notes"):
         lines.append("## Filed note")

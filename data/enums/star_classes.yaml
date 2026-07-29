@@ -1,16 +1,32 @@
-# Coarse stellar classes: spectral × size band
+# Coarse stellar classes: spectral × size band (fiction-grade L-1).
+# Spectral letters are Harvard temperature classes (not English acronyms).
+# Full classic ladder hot→cool: O B A F G K M — this tool exposes M K G F only.
+# Label form: {spectral}-{size_band} (e.g. G-dwarf ≈ Sol-like main sequence).
+
 spectral:
   - M
   - K
   - G
   - F
 
+# Cool → warmer. Gloss for Magos / UI (not physics SoT).
+spectral_gloss:
+  M: "Red / deep orange — coolest; dim; habitable belt close in"
+  K: "Orange — cooler than Sol; long-lived 'orange sun'"
+  G: "Yellow-white — Sol class (Sol is G2); broad temperate band"
+  F: "White / yellow-white — hotter than Sol; more heat/UV at range"
+
 size_bands:
   - dwarf
   - subgiant
   - giant
 
-# Soft defaults for orbit-band occupancy (suggestions only)
+size_band_gloss:
+  dwarf: "Main-sequence 'normal' star (Sol = G-dwarf)"
+  subgiant: "Leaving main sequence — brighter, aging"
+  giant: "Expanded / luminous — strong insolation; harsh for close worlds"
+
+# Soft defaults for orbit-band occupancy (suggestions only; mismatches → warnings[])
 orbit_bands:
   inner:
     typical_body_kinds: [rocky, greenhouse, belt]

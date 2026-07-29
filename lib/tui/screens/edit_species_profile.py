@@ -26,6 +26,12 @@ class EditSpeciesProfileScreen(Screen):
     #sp-min-hint { height: auto; color: #3aa060; margin: 0 0 1 0; }
     #sp-scroll { height: 1fr; }
     #sp-scroll Label { margin-top: 1; }
+    #sp-scroll SelectionList.biome-multi {
+        height: auto;
+        max-height: 12;
+        margin: 0 0 1 0;
+        border: solid #2a8040;
+    }
     """
 
     def __init__(
@@ -55,15 +61,34 @@ class EditSpeciesProfileScreen(Screen):
                 yield Button("Back", id="btn-back")
             yield Static(form.min_gate_hint(), id="sp-min-hint", classes="litany")
             with VerticalScroll(id="sp-scroll"):
+                biomes = self._body_biomes_safe()
+                biome_opts = speciesmod.origin_place_options(biomes)
+                secondary_opts = speciesmod.secondary_biome_options(biomes)
                 for step in qschema.steps(self._schema):
                     yield Static(
                         f"— {step.get('title') or step.get('id')} —",
                         classes="title",
                     )
                     yield from form.yield_step_fields(
-                        step, trophic_slots=self._trophic_slots_safe()
+                        step,
+                        trophic_slots=self._trophic_slots_safe(),
+                        biome_options=biome_opts,
+                        secondary_biome_options=secondary_opts,
                     )
         yield WarnLog()
+
+    def _body_biomes_safe(self) -> list[dict]:
+        try:
+            return list(self._session().current_biomes() or [])
+        except Exception:
+            return []
+
+    def _biome_option_pairs(self) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
+        biomes = self._body_biomes_safe()
+        return (
+            speciesmod.origin_place_options(biomes),
+            speciesmod.secondary_biome_options(biomes),
+        )
 
     def _trophic_slots_safe(self) -> list[str]:
         try:
@@ -95,11 +120,14 @@ class EditSpeciesProfileScreen(Screen):
             self._profile = speciesmod.empty_profile(self.species_id)
         else:
             self._profile = speciesmod.empty_profile()
+        biome_opts, secondary_opts = self._biome_option_pairs()
         form.apply_profile_to_widgets(
             self,
             self._profile,
             self._schema,
             trophic_slots=session.trophic_slots(),
+            biome_options=biome_opts,
+            secondary_biome_options=secondary_opts,
         )
         form.refresh_dependent_selects(self, self._profile, self._schema)
         self._lock_entry_id_widget()
@@ -108,13 +136,19 @@ class EditSpeciesProfileScreen(Screen):
         return self.app.session  # type: ignore[attr-defined]
 
     def flush_unsaved(self) -> str | None:
+        _, secondary_opts = self._biome_option_pairs()
         profile = form.collect_profile_from_widgets(
-            self, self._schema, base=self._profile
+            self,
+            self._schema,
+            base=self._profile,
+            secondary_biome_options=secondary_opts,
         )
         # Keep locked Entry ID from profile if widget disabled/empty
         if self.species_id and not str(profile.get("id") or "").strip():
             profile["id"] = self.species_id
-        errors = speciesmod.validate_minimum(profile)
+        errors = speciesmod.validate_minimum(
+            profile, body_biomes=self._body_biomes_safe()
+        )
         if errors:
             return "; ".join(errors)
         try:
@@ -136,8 +170,12 @@ class EditSpeciesProfileScreen(Screen):
         )
 
     def _collect(self) -> dict:
+        _, secondary_opts = self._biome_option_pairs()
         profile = form.collect_profile_from_widgets(
-            self, self._schema, base=self._profile
+            self,
+            self._schema,
+            base=self._profile,
+            secondary_biome_options=secondary_opts,
         )
         if self.species_id:
             profile["id"] = self.species_id
@@ -194,7 +232,9 @@ class EditSpeciesProfileScreen(Screen):
             return
         session = self._session()
         profile = self._collect()
-        errors = speciesmod.validate_minimum(profile)
+        errors = speciesmod.validate_minimum(
+            profile, body_biomes=self._body_biomes_safe()
+        )
         form.show_min_errors(self, errors)
         if errors:
             log.push("minimum gate failed: " + "; ".join(errors))

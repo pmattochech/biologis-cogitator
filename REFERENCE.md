@@ -29,7 +29,7 @@ Lexicon for tags, categories, and fields used by the generator, packs, Magos dos
 | Path | Role |
 |------|------|
 | `cogitator-results/` | **Sealed finals** — Magos / literary / state (Archive + Seal target) |
-| `cogitator-results/<body>/species/<Entry-ID>/` | Per-species profile + Midjourney + filing reminders |
+| `cogitator-results/<body>/species/<Entry-ID>/` | Per-species profile + Midjourney prompt |
 | `data/enums/filing_ids.csv` | Universal filing registry (body `AAAA`, biome `AAAA-BBB`) |
 | `out/` | Scratch / working only (gitignored) |
 | `templates/greenfield/` | Demo / greenfield stub layout (not mesh finals) |
@@ -76,14 +76,52 @@ CSV columns: `kind,filing_id,slug,parent_filing_id,label`. New body/biome creati
 
 ## Star class (L-1)
 
-Coarse fiction table — not HR-diagram physics.
+Coarse fiction table — **not** Hertzsprung–Russell physics.
 
-| Field | Values | Meaning |
-|-------|--------|---------|
-| **spectral** | `M` `K` `G` `F` | Cool → warmer main-sequence letters |
-| **size_band** | `dwarf` `subgiant` `giant` | Luminosity / size band for HZ / insolation hints |
+**Label form:** `{spectral}-{size_band}` (e.g. `G-dwarf` ≈ Sol-like main sequence).
 
-Label form: `{spectral}-{size_band}` (e.g. `G-dwarf`).
+### Spectral letters — not English words
+
+Letters are **Harvard spectral-class** labels (old line-strength catalog, later sorted by temperature). They are **not** acronyms. Mnemonic only: “Oh Be A Fine Girl/Guy, Kiss Me.”
+
+**Full classic ladder (hot → cool):** `O B A F G K M`  
+**Cogitator enum (cool → warmer):** `M K G F` only — do not invent O/B/A unless the enum is extended on purpose.
+
+| Letter | Color (rough) | vs Sol | Picture |
+|--------|---------------|--------|---------|
+| **M** | Red / deep orange | Coolest | Red dwarfs; dim; habitable belt close in |
+| **K** | Orange | Cooler | “Orange sun”; long-lived |
+| **G** | Yellow-white | Sun class | Sol is a G (G2); broad temperate band |
+| **F** | White / yellow-white | Hotter | Brighter; more heat/UV at same distance |
+
+### Size bands
+
+| Band | Meaning in-tool |
+|------|-----------------|
+| **dwarf** | Main-sequence “normal” star (Sol = G-dwarf) |
+| **subgiant** | Leaving main sequence — brighter, aging |
+| **giant** | Expanded / luminous — strong insolation; harsh for close worlds |
+
+**Spectral** = how hot is the light? **Size band** = how big / evolved / bright?
+
+Examples: `G-dwarf` (Sun-like), `M-dwarf` (cool small MS), `K-giant` (cool spectrum, giant luminosity).
+
+### Soft orbit bands (warnings, not rejects)
+
+| Band | Soft typical body kinds |
+|------|-------------------------|
+| **inner** | rocky, greenhouse, belt |
+| **habitable** | rocky, ocean, greenhouse |
+| **outer** | gas_giant, ice, rocky, belt |
+| **ice** | ice, belt, captured_giant |
+
+Violating a suggestion → `warnings[]`. Do **not** hard-block generation.
+
+**Formations (examples):** asteroid belt, steel belt, debris field, ring system, captured giant, ice sentinel cloud, accretion disk.
+
+**Modes:** `natural` — soft rolls from orbit hints; `engineered_mesh` — body inventory from locks (Castra Vetera style). Locked star/bodies/mode win; user override → warning + provenance.
+
+SoT: `data/enums/star_classes.yaml`, `lib/layers/stellar.py`.
 
 ---
 

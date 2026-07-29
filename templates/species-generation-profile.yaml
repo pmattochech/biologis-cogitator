@@ -2,17 +2,19 @@
 # Edit this file, then restart the cogitator OR re-open the species screen / Reload schema.
 # Human chat copy: species-generation-profile.md (keep roughly aligned).
 #
-# Registry order: A taxonomy+names → B body/morphology → C origin → D ecology → E look → G filing
-# Field types: text | select | yes_no | trophic_slot | comma_list
+# Registry order: A taxonomy+names → B body/morphology → C origin → D ecology → E look
+# Field types: text | select | yes_no | trophic_slot | comma_list | biome_select | biome_multi
 
 id: species
 title: Species generation profile
-version: 7
+version: 9
 
 minimum:
   required:
     - store: profile.id
       label: Entry ID
+    - store: profile.world_biome
+      label: Origin place (primary biome / void / warp / outer_space)
     - store: answers.C.origin
       label: C17 origin (native or exotic)
     - store: answers.B.bodyshape
@@ -54,17 +56,20 @@ steps:
         placeholder: "AAAA-BBB-NNN (e.g. AETH-SHR-001)"
       - id: world_biome
         store: profile.world_biome
-        label: "World / primary biome id"
-        type: text
+        label: "Origin place (biome on this body, or void / warp / outer_space)"
+        type: biome_select
       - id: secondary_biomes
         store: profile.secondary_biomes
-        label: "Secondary biomes (comma ids)"
-        type: comma_list
+        label: "Secondary biomes on this body (optional; planetary only)"
+        type: biome_multi
       - id: range
         store: profile.range
-        label: "Range (single|multi)"
-        type: text
+        label: "Range"
+        type: select
         default: single
+        options:
+          - { value: single, label: "single — primary place only" }
+          - { value: multi, label: "multi — also appears in secondary biomes" }
       - id: trophic_slot
         store: profile.trophic_slot
         label: "Trophic slot"
@@ -328,27 +333,3 @@ steps:
         store: answers.E.iconic_wrong
         label: "24. Iconic / wrong silhouette"
         type: text
-
-  - id: G
-    title: "G — Filing reminders (no codex writes)"
-    hint: "Reminders only — cogitator never writes external/lore/."
-    fields:
-      - id: dossier_path
-        store: answers.G.dossier_path
-        label: "Suggested dossier path under bestiary/"
-        type: text
-      - id: update_named_specimens
-        store: answers.G.update_named_specimens
-        label: "Update fauna-flora-named-specimens.md?"
-        type: yes_no
-        default: false
-      - id: update_index
-        store: answers.G.update_index
-        label: "Update bestiary INDEX.md?"
-        type: yes_no
-        default: false
-      - id: cross_link_geography
-        store: answers.G.cross_link_geography
-        label: "Cross-link geography / Magos food web?"
-        type: yes_no
-        default: false

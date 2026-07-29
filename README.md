@@ -1,139 +1,199 @@
-# Biologis Cogitator
+<p align="center">
+  <img src="assets/app-icon-256.png" alt="Biologis Cogitator" width="128" height="128" />
+</p>
 
-Reusable *Warhammer 40,000* **mesh workshop** — system + biosphere generator. Standalone fork of the former Codex-Batavi `castra-biogen` tool (Castra Vetera remains an optional example pack).
+<h1 align="center">Biologis Cogitator</h1>
 
-- **Interactive:** cogitator TUI — `biologis-cogitator` / `cogitator` / `init-cogitator` (or `./run wizard`)
-- **Scriptable CLI:** `generate-system` / `generate` / `show` / …
-- **Packs:** scenarios under `data/packs/` (Castra Vetera is an **optional example**, not the core)
+<p align="center">
+  <strong>A Magos Biologis mesh workshop</strong><br/>
+  Generate stellar systems, biospheres, biomes, and species<br/>
+  for <em>Warhammer 40,000</em> — then seal them as Magos &amp; literary archives.
+</p>
 
-Hardlocks / pack pins can be **overridden** in the wizard (warnings recorded). **Sealed** Magos + literary + `state.json` land under your configured **results** directory (default suggestion `~/BiologisCogitator/results`; until setup runs, the repo `cogitator-results/` path is used). Scratch/working copies use the configured **out** dir. Greenfield demo **templates** live under `templates/greenfield/`. `propose-export` is dry-run only (explicit apply is end-state, not yet).
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#what-it-is">What it is</a> ·
+  <a href="#how-it-started">Origin</a> ·
+  <a href="#dependencies">Dependencies</a> ·
+  <a href="REFERENCE.md">Lexicon</a>
+</p>
 
-**Term lexicon:** [`REFERENCE.md`](REFERENCE.md) — layers, enums, origins, biomes, provenance, paths.
+---
 
-**Now:** Archive reads sealed packs under the configured results dir. No dependency on a Codex-Batavi checkout.
+## Install
 
-## Install (Linux)
+**Linux.** One command — no manual `git clone` required:
 
 ```bash
-cd /path/to/biologis-cogitator
-./install.sh
+curl -fsSL https://raw.githubusercontent.com/pmattochech/biologis-cogitator/master/scripts/remote-install.sh | bash
 ```
 
-The installer **checks dependencies first** (`python3`, `pip`, PyYAML, textual, tkinter), then:
+That script will:
 
-1. Links `biologis-cogitator` / `cogitator` / `init-cogitator` into `~/.local/bin`
-2. Installs **bash** and **zsh** tab completion
-3. Installs a **desktop entry** that opens the **GTK app window** (embedded terminal + background art)
-4. Opens a **setup window** to pick Results + Scratch folders (Tk folder picker; needs `python3-tkinter`)
+1. Clone the repo into `~/.local/share/biologis-cogitator` (or update it if already present)
+2. Check / install Python deps
+3. Put `biologis-cogitator`, `cogitator`, and `init-cogitator` on your PATH (`~/.local/bin`)
+4. Install shell completions + a desktop launcher
+5. Open the first-run folder picker (results + scratch)
 
-Graphical window needs system packages: `python3-gobject` + `vte291` (Fedora usually has these).  
-Force plain terminal: `BIOLOGIS_NO_WINDOW=1 biologis-cogitator`
-
-Flags: `--yes` (auto pip install), `--skip-setup` (PATH/desktop only).
-
-Reconfigure folders anytime: `biologis-cogitator setup`  
-Config file: `~/.config/biologis-cogitator/config.yaml`
-
-Fedora tip if the GUI folder picker is missing:
+Then launch:
 
 ```bash
-sudo dnf install python3-tkinter
+biologis-cogitator
 ```
 
-After install, open a new shell (or `source ~/.bashrc`) so **Tab** completes subcommands.
+| Want… | Do this |
+|--------|---------|
+| Skip the folder picker for now | `BIOLOGIS_NO_SETUP=1 curl -fsSL … \| bash` then later `biologis-cogitator setup` |
+| Install somewhere else | `BIOLOGIS_HOME=~/src/biologis-cogitator curl -fsSL … \| bash` |
+| Pin a branch/tag | `BIOLOGIS_REF=master curl -fsSL … \| bash` |
+| Classic terminal (no GTK window) | `BIOLOGIS_NO_WINDOW=1 biologis-cogitator` |
 
-## Quick start
+Already have the tree locally?
 
 ```bash
-cd /path/to/biologis-cogitator
-./install.sh
-# then from any terminal or the app menu:
-biologis-cogitator          # also: cogitator / init-cogitator
+./install.sh          # interactive pip prompt
+./install.sh --yes    # auto-install missing pip packages
+```
+
+> Open a **new shell** after install (or `source ~/.bashrc`) so Tab completion and `~/.local/bin` are live.
+
+---
+
+## What it is
+
+Biologis Cogitator is a **standalone cogitator** — a green-phosphor TUI in a custom Mechanicus GTK window — for building and filing 40k biospheres as structured data, then rendering them as in-universe Magos reports and literary prose.
+
+Three rites on the boot screen:
+
+| Rite | Purpose |
+|------|---------|
+| **Registration** | Birth a stellar system, hang a biosphere on a known system, or invoke a pack template |
+| **Amendment** | Open a body, register biomes & species, reshape the mesh |
+| **Consultation** | Read sealed archives only — Magos, literary, state, species files |
+
+Under the chassis sits a layered generator: star & orbit bands → planet type → geology → climate → biomes → trophic web → bauplan → species profiles → **Seal** into your results folder.
+
+Species are **place-born**: every entry needs an origin (a biome on the body, or **void / warp / outer_space**). Filing IDs follow `AAAA-BBB-NNN` (and subspecies `…-AA`).
+
+**Optional example pack:** [Castra Vetera](data/packs/castra-vetera/) — a full Nine Phalanx mesh for demos and regression. The engine does not depend on it.
+
+Deep glossary of layers, enums, biomes, and paths: **[REFERENCE.md](REFERENCE.md)**.
+
+---
+
+## How it started
+
+This project began life inside **Codex-Batavi** as `tools/castra-biogen` — a Castra Vetera–oriented biosphere generator for a larger lore mesh. It grew into a full workshop: packs, locks, trophic rolls, Magos/literary seal, and a Textual wizard.
+
+It was then **cut free** into its own public home:
+
+- Clean standalone tree (no runtime dependency on a Codex checkout)
+- Product name **Biologis Cogitator** (`cogitator` / `init-cogitator` aliases)
+- Linux installer, XDG config, GTK host window, boot splash, and a three-rite hub
+- Castra Vetera kept only as an **optional pack**, not the core identity
+
+In short: a Magos’s desk that outgrew the fortress it was forged in.
+
+---
+
+## Dependencies
+
+### Required
+
+| Dependency | Why |
+|------------|-----|
+| **Linux** | Supported desktop release |
+| **git** | Remote install / updates |
+| **python3** + **pip** | Runtime + packaging |
+| **PyYAML** ≥ 6 | Packs, enums, profiles, schema |
+| **textual** ≥ 0.47 | Cogitator TUI |
+
+Python packages are pulled from [`requirements.txt`](requirements.txt) by the installer.
+
+### Recommended (graphical app)
+
+| Dependency | Why |
+|------------|-----|
+| **python3-gobject** + **vte291** (GTK3 + VTE) | Embedded terminal window + splash |
+| **python3-tkinter** | First-run folder picker GUI |
+
+Fedora examples:
+
+```bash
+sudo dnf install python3 python3-pip git python3-tkinter python3-gobject vte291
+```
+
+Debian / Ubuntu examples:
+
+```bash
+sudo apt install python3 python3-pip git python3-tk python3-gi gir1.2-gtk-3.0 gir1.2-vte-2.91
+```
+
+Without GTK/VTE the cogitator still runs in a normal terminal (`BIOLOGIS_NO_WINDOW=1` or automatic fallback).
+
+### Optional
+
+| Dependency | Why |
+|------------|-----|
+| **Pillow** | Smoother boot-GIF decode in the GTK window (pre-baked `assets/cogitator-boot.gif` still works via GdkPixbuf alone) |
+
+```bash
+python3 -m pip install Pillow
+```
+
+---
+
+## After install
+
+```bash
+biologis-cogitator                 # window + wizard (or terminal fallback)
+biologis-cogitator setup           # re-pick results & scratch folders
 cogitator --pack castra-vetera --seed 42
-
-# Local entry (no global install) — still uses XDG config if present
-./run wizard
-./run wizard --pack castra-vetera --seed 42
-
-# CLI greenfield
-./run generate-system demo-system --seed 42 --spark
-
-# CLI with Castra Vetera pack
-./run packs
-./run generate-system system-ii-crucible --existing --pack castra-vetera
-./run generate aethelgard-prime --existing-system system-ii-crucible --pack castra-vetera
-./run propose-export aethelgard-prime
 ```
 
-On Windows use `run.cmd` (forces WSL). Linux is the supported desktop release for now.
-
-## Output layout
+Config lives at `~/.config/biologis-cogitator/config.yaml`.
 
 | Path | Role |
 |------|------|
-| Configured **results** dir (or repo `cogitator-results/`) | **Sealed finals** — Archive + L7 seal target |
-| Configured **out** dir (or repo `out/`) | Scratch / working only |
-| `templates/greenfield/` | Demo / greenfield template stubs (not mesh finals) |
-| `data/packs/` | Scenario locks (e.g. `castra-vetera`) |
+| **Results** dir (you choose; often `~/BiologisCogitator/results`) | Sealed Magos / literary / `state.json` / species |
+| **Scratch** / out dir | Working copies |
+| `data/packs/` | Scenario locks (templates you can invoke or save) |
 
-## Wizard
+### CLI (same install)
 
-Green-phosphor full-screen TUI hosted in a **custom GTK window** (embedded VTE + Mechanicus background). Boot splash is a GIF built from your Aquila + Mechanicus stills (`python3 scripts/bake_boot_from_logos.py`). Skip: `--no-splash`. Classic terminal: `BIOLOGIS_NO_WINDOW=1 biologis-cogitator`.
-
-1. **Boot** — **Rite of Registration** | **Rite of Amendment** | **Rite of Consultation** (`q` / header **Terminate** quits)  
-   - **Registration** — Register stellar system · Register biosphere upon known system · **Invoke template litany** (packs as templates)  
-   - **Amendment** — open a body (pack / sealed) to amend; biomes & species are registered here  
-   - **Consultation** — sealed archive only (read-only)  
-2. **System (L-1)** — mode; star **Roll / Pick / Skip** (overrides warn) — skipped on biosphere registration  
-3. **Body** — init from slug/pack; pick planet type & immaterium; reroll  
-4. **Biomes (L4)** — add/remove class+richness; **Roll / Skip**; trophic rebuilds from the list  
-5. **Review** — **Seal to results**, **Open in Archive**, Save as pack, propose-export; **Return to menu** (does not exit)
-
-**Amendment:** load from pack or sealed results → edit… → **Save pack** + **Seal results**.
-
-**Chrome (every screen):** **Menu** (main menu) · **Reload** (schema + last body from disk) · **Terminate** (exit). Unsaved changes prompt Save / Don’t save / Cancel — also on **Back** / Return to menu.
-
-**Species profile:** Specimens screen is **read-only**. **New** → pick primary biome → profile with auto Entry ID (`AAAA-BBB-NNN`); **Edit** opens the selected specimen; **Add subspecies** clones answers into `…-AA` / `…-AB` (disk write only on Save). Schema: `templates/species-generation-profile.yaml`.
-
-**Consultation (archive):** bodies and systems under sealed results — view `magos.md` / `literary.md` / `state.json` / `species/...` (systems: `system.json` / `system.md`). Read-only; does not load into the active rite yet.
-
-Biosphere registration: pick a system from sealed `systems/` or a pack, then continue at body → biomes → review.
-
-## Packs
-
-```text
-data/packs/<id>/
-  pack.yaml
-  systems/*.yaml
-  bodies/*.yaml
+```bash
+biologis-cogitator packs
+biologis-cogitator generate-system demo-system --seed 42 --spark
+biologis-cogitator generate aethelgard-prime --existing-system system-ii-crucible --pack castra-vetera
+biologis-cogitator show aethelgard-prime
+biologis-cogitator layers
 ```
 
-| Pack | Role |
-|------|------|
-| `castra-vetera` | Optional Nine Phalanx / mesh example |
-| *(your export)* | Created via wizard **Save as pack** |
+Local checkout without global install: `./run wizard`.
 
-Core enums/matrices stay generic under `data/enums/` and `data/matrices/`.
+---
 
-## Pipeline
-
-| Layer | Role |
-|-------|------|
-| **L-1** | Star, orbit bands, formations, body slots |
-| **L0** | Pack/YAML pins |
-| **L1–L6** | Planet type → geology → climate (+ immaterium grade) → biomes → trophic → bauplan |
-| **L7** | Magos + literary Markdown + `state.json` |
-
-Species are **biome-born**: `biome → trophic slot → bauplan`.
-
-## CLI
+## Pipeline (short)
 
 ```text
-./run wizard [--seed N] [--pack NAME]
-./run packs
-./run generate-system <slug> [--seed N] [--spark] [--mode natural|engineered_mesh] [--existing] [--pack NAME]
-./run generate <body> [--seed N] [--spark] [--from-lock path] [--system slug] [--existing-system slug] [--pack NAME]
-./run show <slug> [--json] [--as-system]
-./run propose-export <body>
-./run layers
+L-1  Star / bands / body slots
+L0   Pack pins
+L1–L6  Planet → geology → climate → biomes → trophic → bauplan
+L7   Magos.md + literary.md + state.json   ← Seal
 ```
+
+Species schema (edit freely, then Reload schema / re-open the screen):  
+[`templates/species-generation-profile.yaml`](templates/species-generation-profile.yaml)
+
+---
+
+## License & lore
+
+Warhammer 40,000 is © Games Workshop. This is a **fan workshop tool** for generating structured fiction and filing aids — not a commercial product and not affiliated with Games Workshop.
+
+---
+
+<p align="center">
+  <sub>THE FLESH IS WEAK · THE ARCHIVE ENDURES</sub>
+</p>
