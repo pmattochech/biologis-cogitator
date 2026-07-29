@@ -9,7 +9,7 @@ Output:
   assets/cogitator-boot.gif
 
 Default canvas matches a maximized 1080p window so the splash stays sharp.
-Boot copy scrolls like a cogitator bring-up, with per-line timing so it can be read.
+Lines type in character-by-character; icons ease in smoothly after Machine Spirit awake.
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ import argparse
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageEnhance, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
@@ -25,31 +25,33 @@ OUT = ASSETS / "cogitator-boot.gif"
 
 DEFAULT_SIZE = (1920, 1080)
 
-# (line, hold_ms) — hold is how long the line stays before the next appears.
-# Icons begin fading in on the frame after MACHINE SPIRIT — AWAKE.
+# (line, hold_ms) — pause after the line finishes typing, before the next begins.
 BOOT_SCRIPT: list[tuple[str, int]] = [
-    ("++ BIOLOGIS COGITATOR // MAGOS-CLASS ALTAR", 900),
-    ("++++++++", 250),
-    ("++ INITIALIZING MACHINE SPIRIT AWAKEN PROTOCOL", 1000),
-    ("++ MACHINE SPIRIT - AWAKE", 700),
-    ("+++++++++++++++++++++++++++++++++++++++++++++++", 350),
-    ("++ RECITING LITANY OF IGNITION", 550),
-    ("++++ 01001101 01000001 01000011 01001000 01001001 01001110 01000101", 450),
-    ("++++ 01010011 01010000 01001001 01010010 01001001 01010100 00101110", 450),
-    ("++ LITANY OF IGNITION RECITED", 650),
-    ("++ INVOKE THE MOTIVE FORCE", 500),
-    ("++ MOTIVE FORCE ANSWERS IN THE NOOSPHERE", 600),
-    ("++ AUTHORISATION: MAGOS BIOLOGIS", 700),
-    ("++ BY THE OMNISSIAH'S WILL - PROCEED", 700),
-    ("++ GENE-VAULT UNSEALED IN HIS NAME", 600),
-    ("++ COMPILING THE SPECIES MESH", 600),
-    ("++ MOTIVE FORCE STABLE ACROSS ALL LOOMS", 650),
-    ("++ RITE CHANNEL OPEN", 600),
-    ("++ AWAITING THE MAGOS' COMMAND", 900),
+    ("++ BIOLOGIS COGITATOR // MAGOS-CLASS ALTAR", 700),
+    ("++++++++", 200),
+    ("++ INITIALIZING MACHINE SPIRIT AWAKEN PROTOCOL", 900),
+    ("++ MACHINE SPIRIT - AWAKE", 500),
+    ("+++++++++++++++++++++++++++++++++++++++++++++++", 280),
+    ("++ RECITING LITANY OF IGNITION", 450),
+    ("++++ 01001101 01000001 01000011 01001000 01001001 01001110 01000101", 350),
+    ("++++ 01010011 01010000 01001001 01010010 01001001 01010100 00101110", 350),
+    ("++ LITANY OF IGNITION RECITED", 500),
+    ("++ INVOKE THE MOTIVE FORCE", 400),
+    ("++ MOTIVE FORCE ANSWERS IN THE NOOSPHERE", 500),
+    ("++ AUTHORISATION: MAGOS BIOLOGIS", 550),
+    ("++ BY THE OMNISSIAH'S WILL - PROCEED", 550),
+    ("++ GENE-VAULT UNSEALED IN HIS NAME", 450),
+    ("++ COMPILING THE SPECIES MESH", 450),
+    ("++ MOTIVE FORCE STABLE ACROSS ALL LOOMS", 500),
+    ("++ RITE CHANNEL OPEN", 450),
+    ("++ AWAITING THE MAGOS' COMMAND", 700),
 ]
 
 AWAKE_LINE = "++ MACHINE SPIRIT - AWAKE"
-ICON_FADE_STEPS = 5  # frames after awake until icons are fully present
+
+# Smooth icon reveal (ms of wall-clock in the animation timeline).
+ICON_FADE_MS = 1400
+ICON_TICK_MS = 55
 
 GLORY_LINES = (
     "BY THE WILL OF THE MACHINE GOD",
@@ -104,14 +106,13 @@ def fit_on_canvas(
     return canvas
 
 
-def scanlines(base: Image.Image, strength: float = 0.22) -> Image.Image:
+def scanlines(base: Image.Image, strength: float = 0.18) -> Image.Image:
     arr = np.asarray(base.convert("RGBA")).astype(np.float32)
     arr[::2, :, :3] *= 1.0 - strength
     return Image.fromarray(arr.astype(np.uint8), "RGBA")
 
 
 def _font_candidates(kind: str) -> list[str]:
-    """Bold mono/sans paths that exist on typical Fedora / nerd-font installs."""
     if kind == "mono":
         return [
             "/usr/share/fonts/liberation-mono-fonts/LiberationMono-Bold.ttf",
@@ -147,7 +148,6 @@ def _truetype(px: int, kind: str) -> ImageFont.FreeTypeFont:
         except OSError as exc:
             last_err = exc
             continue
-    # Pillow 10+ default bitmap is tiny and ignores our spacing math — fail loud.
     raise SystemExit(
         f"No bold {kind} font found for boot GIF (need Liberation/Noto/DejaVu). "
         f"Last error: {last_err}"
@@ -163,10 +163,8 @@ def _sans_font(px: int) -> ImageFont.FreeTypeFont:
 
 
 def _metrics(size: tuple[int, int]) -> tuple[int, int, int, ImageFont.FreeTypeFont]:
-    """Bold mono log type — readable at maximize without dominating the frame."""
-    font_px = 36
+    font_px = 28
     font = _mono_font(font_px)
-    # Line height from real glyph metrics so spacing cannot drift from font size.
     probe = ImageDraw.Draw(Image.new("RGB", (8, 8)))
     bbox = probe.textbbox((0, 0), "Hg", font=font)
     glyph_h = max(1, bbox[3] - bbox[1])
@@ -182,17 +180,16 @@ def render_boot_log(
     font: ImageFont.ImageFont,
     line_h: int,
     margin: int,
+    cursor: bool = False,
 ) -> Image.Image:
     """Draw accumulated boot lines; scroll up when they exceed the text area."""
     canvas = Image.new("RGBA", size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(canvas)
-    # Leave room at bottom for glory / crest breathing room
     text_bottom = size[1] - max(120, int(90 * size[1] / 480))
     max_rows = max(8, (text_bottom - margin) // line_h)
     visible = lines[-max_rows:]
     y = margin
-    for line in visible:
-        # Bold face + light stroke for extra weight on phosphor green
+    for i, line in enumerate(visible):
         draw.text(
             (margin, y),
             line,
@@ -201,6 +198,14 @@ def render_boot_log(
             stroke_width=1,
             stroke_fill=(20, 90, 40, 255),
         )
+        # Blinking block cursor on the active (last) line while typing.
+        if cursor and i == len(visible) - 1:
+            bbox = draw.textbbox((margin, y), line, font=font)
+            cx = bbox[2] + 2
+            draw.rectangle(
+                [cx, y + 2, cx + max(8, line_h // 2), y + line_h - 4],
+                fill=(90, 255, 130, 220),
+            )
         y += line_h
     return canvas
 
@@ -224,7 +229,7 @@ def glory_frame(base: Image.Image, size: tuple[int, int]) -> Image.Image:
             font=font,
         )
         y += font_px + gap
-    return scanlines(im, 0.2)
+    return scanlines(im, 0.18)
 
 
 def composite(size: tuple[int, int], *layers: Image.Image | None) -> Image.Image:
@@ -235,22 +240,30 @@ def composite(size: tuple[int, int], *layers: Image.Image | None) -> Image.Image
     return out
 
 
-def _awake_index() -> int:
-    for i, (line, _) in enumerate(BOOT_SCRIPT):
-        if line == AWAKE_LINE:
-            return i
-    return 3
+def _smoothstep(t: float) -> float:
+    t = max(0.0, min(1.0, t))
+    return t * t * (3.0 - 2.0 * t)
 
 
-def _icon_opacity_after_awake(step: int, awake_i: int, *, full: float = 1.0) -> float:
-    """Icons begin loading on the frame after MACHINE SPIRIT — AWAKE."""
-    start = awake_i + 1
-    if step < start:
-        return 0.0
-    end = start + ICON_FADE_STEPS
-    if step >= end:
-        return full
-    return full * (step - start + 1) / ICON_FADE_STEPS
+def _type_chunk_size(line: str) -> int:
+    """Glyphs per typing frame — fewer frames, still reads as typed."""
+    stripped = line.replace(" ", "")
+    if stripped and set(stripped) <= {"+"}:
+        return max(8, len(line) // 3)
+    if line.startswith("++++ "):
+        return 8
+    # Aim for ~8 reveal steps on a typical status line.
+    return max(3, (len(line) + 7) // 8)
+
+
+def _with_alpha(layer: Image.Image, opacity: float) -> Image.Image | None:
+    if opacity <= 0.01:
+        return None
+    if opacity >= 0.999:
+        return layer
+    arr = np.asarray(layer).astype(np.float32)
+    arr[..., 3] *= opacity
+    return Image.fromarray(arr.astype(np.uint8), "RGBA")
 
 
 def main() -> int:
@@ -263,12 +276,20 @@ def main() -> int:
         "--timing-scale",
         type=float,
         default=1.45,
-        help="Multiply all line holds (default 1.45 ≈ readable Magos boot)",
+        help="Multiply holds / typing cadence (default 1.45)",
+    )
+    ap.add_argument(
+        "--type-ms",
+        type=int,
+        default=32,
+        help="Milliseconds per typing chunk (before timing-scale)",
     )
     args = ap.parse_args()
     size = (args.width, args.height)
     scale = max(0.4, args.timing_scale)
-    awake_i = _awake_index()
+    type_ms = max(12, int(args.type_ms * scale))
+    fade_ms = int(ICON_FADE_MS * scale)
+    tick_ms = max(30, int(ICON_TICK_MS * min(scale, 1.2)))
 
     aquila_path = _find(
         "aquila-green.jpeg",
@@ -314,46 +335,70 @@ def main() -> int:
 
     frames: list[Image.Image] = []
     durations: list[int] = []
-    accumulated: list[str] = []
+    elapsed_ms = 0
+    icon_fade_start: int | None = None
 
-    # Brief black breath before first line
-    frames.append(scanlines(composite(size), 0.22).convert("RGB"))
-    durations.append(int(400 * scale))
+    def icon_opacity(at_ms: int) -> float:
+        if icon_fade_start is None:
+            return 0.0
+        return _smoothstep((at_ms - icon_fade_start) / fade_ms)
 
-    for step, (line, hold_ms) in enumerate(BOOT_SCRIPT):
-        accumulated.append(line)
-        a_op = _icon_opacity_after_awake(step, awake_i, full=0.9)
-        c_op = _icon_opacity_after_awake(step, awake_i, full=1.0)
+    def push(
+        lines: list[str],
+        duration_ms: int,
+        *,
+        typing: bool = False,
+        scan: float = 0.14,
+    ) -> None:
+        nonlocal elapsed_ms
+        remaining = max(20, int(duration_ms))
+        while remaining > 0:
+            op = icon_opacity(elapsed_ms)
+            # While icons are mid-fade, emit short ticks so the ease looks fluid.
+            fading = icon_fade_start is not None and 0.0 < op < 0.999
+            dt = min(remaining, tick_ms if fading else remaining)
+            aquila_layer = _with_alpha(aquila_full, op * 0.9)
+            crest_layer = _with_alpha(crest_full, op * 0.72)
+            log = render_boot_log(
+                lines,
+                size,
+                font=font,
+                line_h=line_h,
+                margin=margin,
+                cursor=typing,
+            )
+            frame = composite(size, aquila_layer, crest_layer, log)
+            frames.append(scanlines(frame, scan).convert("RGB"))
+            durations.append(dt)
+            elapsed_ms += dt
+            remaining -= dt
 
-        aquila_layer = None
-        if a_op > 0.01:
-            arr = np.asarray(aquila_full).astype(np.float32)
-            arr[..., 3] *= a_op
-            aquila_layer = Image.fromarray(arr.astype(np.uint8), "RGBA")
+    # Black breath
+    push([], int(350 * scale), typing=False, scan=0.2)
 
-        crest_layer = None
-        if c_op > 0.01:
-            arr = np.asarray(crest_full).astype(np.float32)
-            arr[..., 3] *= c_op * 0.75  # keep text readable over crest
-            crest_layer = ImageEnhance.Brightness(
-                Image.fromarray(arr.astype(np.uint8), "RGBA")
-            ).enhance(0.9 + 0.1 * ((step % 2)))
+    completed: list[str] = []
+    for line, hold_ms in BOOT_SCRIPT:
+        chunk = _type_chunk_size(line)
+        for end in range(chunk, len(line) + chunk, chunk):
+            partial = line[: min(end, len(line))]
+            push(completed + [partial], type_ms, typing=True)
+            if end >= len(line):
+                break
+        completed.append(line)
+        if line == AWAKE_LINE:
+            icon_fade_start = elapsed_ms
+        push(completed, int(hold_ms * scale), typing=False)
 
-        log = render_boot_log(
-            accumulated, size, font=font, line_h=line_h, margin=margin
-        )
-        frame = composite(size, aquila_layer, crest_layer, log)
-        frames.append(scanlines(frame, 0.2).convert("RGB"))
-        durations.append(max(80, int(hold_ms * scale)))
-
-    # Final stable frame with full log + icons, then glory
-    final_log = render_boot_log(
-        accumulated, size, font=font, line_h=line_h, margin=margin
+    # Settle, then glory
+    push(completed, int(700 * scale), typing=False, scan=0.16)
+    final = composite(
+        size,
+        _with_alpha(aquila_full, 0.9),
+        _with_alpha(crest_full, 0.72),
+        render_boot_log(
+            completed, size, font=font, line_h=line_h, margin=margin, cursor=False
+        ),
     )
-    final = composite(size, aquila_full, crest_full, final_log)
-    frames.append(scanlines(final, 0.2).convert("RGB"))
-    durations.append(int(800 * scale))
-
     glory = glory_frame(final, size)
     frames.append(glory.convert("RGB"))
     durations.append(int(args.glory_ms * scale))

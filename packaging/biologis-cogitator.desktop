@@ -9,3 +9,4 @@ Terminal=false
 Categories=Education;Science;
 Keywords=warhammer;biosphere;generator;tui;cogitator;
 StartupNotify=true
+StartupWMClass=biologis-cogitator

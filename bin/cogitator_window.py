@@ -29,30 +29,41 @@ def _rgba(r: float, g: float, b: float, a: float = 1.0) -> Gdk.RGBA:
     return c
 
 
-def _load_gif_frames(path: Path) -> tuple[list[GdkPixbuf.Pixbuf], list[int]]:
-    """Load GIF frames as GdkPixbufs + durations (ms)."""
-    from PIL import Image, ImageSequence
+def _load_gif_meta(path: Path) -> tuple[object, list[int], int]:
+    """Open GIF for sequential playback; return (pil_image, durations_ms, n_frames).
 
-    frames: list[GdkPixbuf.Pixbuf] = []
+    Frames are decoded on demand so a long typewriter splash stays memory-light.
+    """
+    from PIL import Image
+
+    im = Image.open(path)
+    n = int(getattr(im, "n_frames", 1) or 1)
     durations: list[int] = []
-    with Image.open(path) as im:
-        for frame in ImageSequence.Iterator(im):
-            rgba = frame.convert("RGBA")
-            data = rgba.tobytes()
-            w, h = rgba.size
-            pix = GdkPixbuf.Pixbuf.new_from_data(
-                data,
-                GdkPixbuf.Colorspace.RGB,
-                True,
-                8,
-                w,
-                h,
-                w * 4,
-            )
-            # Copy so buffer outlives PIL frame
-            frames.append(pix.copy())
-            durations.append(max(20, int(frame.info.get("duration") or 100)))
-    return frames, durations
+    for i in range(n):
+        im.seek(i)
+        durations.append(max(20, int(im.info.get("duration") or 100)))
+    im.seek(0)
+    return im, durations, n
+
+
+def _pil_frame_to_pixbuf(im: object, index: int) -> GdkPixbuf.Pixbuf:
+    from PIL import Image
+
+    assert isinstance(im, Image.Image)
+    im.seek(index)
+    rgba = im.convert("RGBA")
+    data = rgba.tobytes()
+    w, h = rgba.size
+    pix = GdkPixbuf.Pixbuf.new_from_data(
+        data,
+        GdkPixbuf.Colorspace.RGB,
+        True,
+        8,
+        w,
+        h,
+        w * 4,
+    )
+    return pix.copy()
 
 
 def _scale_pixbuf(
@@ -104,9 +115,16 @@ def _find_app_python() -> str:
 class CogitatorWindow(Gtk.Window):
     def __init__(self, argv: list[str], *, play_splash: bool = True) -> None:
         super().__init__(title=TITLE)
+        # Keep taskbar grouping with packaging/biologis-cogitator.desktop
+        # (StartupWMClass=biologis-cogitator).
+        try:
+            self.set_wmclass("biologis-cogitator", "biologis-cogitator")
+        except Exception:
+            pass
         self.set_default_size(1180, 780)
         self.set_position(Gtk.WindowPosition.CENTER)
         self.maximize()
+        self.set_icon_name("biologis-cogitator")
         if ICON_PATH.is_file():
             try:
                 self.set_icon_from_file(str(ICON_PATH))
@@ -118,10 +136,12 @@ class CogitatorWindow(Gtk.Window):
         self._splash_done = False
         self._spawned = False
         self._splash_timeout_id = 0
-        self._splash_frames: list[GdkPixbuf.Pixbuf] = []
+        self._splash_pil = None
         self._splash_durations: list[int] = []
+        self._splash_n_frames = 0
         self._splash_frame_i = 0
         self._splash_tick_id = 0
+        self._splash_pix: GdkPixbuf.Pixbuf | None = None
 
         self._overlay = Gtk.Overlay()
         self.add(self._overlay)
@@ -235,18 +255,19 @@ class CogitatorWindow(Gtk.Window):
 
     def _start_splash(self) -> None:
         try:
-            self._splash_frames, self._splash_durations = _load_gif_frames(BOOT_GIF)
+            self._splash_pil, self._splash_durations, self._splash_n_frames = (
+                _load_gif_meta(BOOT_GIF)
+            )
         except Exception as exc:
             print(f"note: boot GIF failed ({exc}); skipping splash", file=sys.stderr)
             self._finish_splash()
             return
-        if not self._splash_frames:
+        if self._splash_n_frames < 1:
             self._finish_splash()
             return
 
         self._splash_frame_i = 0
         self._show_splash_frame()
-        # Advance on per-frame durations
         delay = self._splash_durations[0]
         self._splash_tick_id = GLib.timeout_add(delay, self._on_splash_tick)
 
@@ -255,7 +276,7 @@ class CogitatorWindow(Gtk.Window):
             self._splash_tick_id = 0
             return False
         self._splash_frame_i += 1
-        if self._splash_frame_i >= len(self._splash_frames):
+        if self._splash_frame_i >= self._splash_n_frames:
             self._splash_tick_id = 0
             self._finish_splash()
             return False
@@ -265,22 +286,33 @@ class CogitatorWindow(Gtk.Window):
         return False  # we re-armed manually with next delay
 
     def _show_splash_frame(self) -> None:
-        if not self._splash_frames or self._splash_done:
+        if self._splash_pil is None or self._splash_done:
             return
-        pix = self._splash_frames[self._splash_frame_i]
+        try:
+            self._splash_pix = _pil_frame_to_pixbuf(
+                self._splash_pil, self._splash_frame_i
+            )
+        except Exception as exc:
+            print(f"note: splash frame decode failed ({exc})", file=sys.stderr)
+            self._finish_splash()
+            return
         alloc = self._splash_image.get_allocation()
-        # Prefer image allocation; fall back to window size minus hint strip
         max_w = max(alloc.width, self.get_allocated_width() - 24)
         max_h = max(alloc.height, self.get_allocated_height() - 48)
         if max_w < 32 or max_h < 32:
             max_w = max(self.get_allocated_width() - 24, 640)
             max_h = max(self.get_allocated_height() - 48, 480)
-        scaled = _scale_pixbuf(pix, max_w, max_h)
+        scaled = _scale_pixbuf(self._splash_pix, max_w, max_h)
         self._splash_image.set_from_pixbuf(scaled)
 
     def _on_size_allocate(self, _widget: Gtk.Widget, _alloc: Gdk.Rectangle) -> None:
-        if not self._splash_done and self._splash_frames:
-            self._show_splash_frame()
+        if not self._splash_done and self._splash_pix is not None:
+            alloc = self._splash_image.get_allocation()
+            max_w = max(alloc.width, self.get_allocated_width() - 24)
+            max_h = max(alloc.height, self.get_allocated_height() - 48)
+            if max_w >= 32 and max_h >= 32:
+                scaled = _scale_pixbuf(self._splash_pix, max_w, max_h)
+                self._splash_image.set_from_pixbuf(scaled)
 
     def _on_splash_timeout(self) -> bool:
         self._finish_splash()
@@ -311,6 +343,13 @@ class CogitatorWindow(Gtk.Window):
         self._splash_box.hide()
         self._term_frame.show_all()
         self.term.grab_focus()
+        if self._splash_pil is not None:
+            try:
+                self._splash_pil.close()
+            except Exception:
+                pass
+            self._splash_pil = None
+        self._splash_pix = None
         # Defer spawn + resize nudge until after this event finishes so VTE
         # sees the final maximized allocation (not the pre-show stub size).
         GLib.idle_add(self._after_splash_layout)
@@ -422,6 +461,10 @@ def main(argv: list[str] | None = None) -> int:
     argv = list(argv if argv is not None else sys.argv[1:])
     if argv and argv[0] == "wizard":
         argv = argv[1:]
+
+    # Must run before any Gtk.Window so the shell can match StartupWMClass.
+    GLib.set_prgname("biologis-cogitator")
+    Gdk.set_program_class("biologis-cogitator")
 
     play_splash = True
     cleaned: list[str] = []
