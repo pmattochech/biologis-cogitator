@@ -15,6 +15,10 @@ BANNER_TEXT = (
     "Save all unsaved work, then Terminate this session and open the cogitator again "
     "to load the update."
 )
+CURRENT_BANNER_TEXT = (
+    "COGITATOR CURRENT — this session is running the latest build from origin. "
+    "Veil link synchronized."
+)
 
 
 @dataclass
@@ -232,3 +236,12 @@ def banner_text(status: UpdateStatus | None = None) -> str:
             "to load the update."
         )
     return BANNER_TEXT
+
+
+def current_banner_text(status: UpdateStatus | None = None) -> str:
+    if status and status.short_local:
+        return (
+            f"COGITATOR CURRENT — latest {status.ref} ({status.short_local}). "
+            "Veil link synchronized with origin."
+        )
+    return CURRENT_BANNER_TEXT

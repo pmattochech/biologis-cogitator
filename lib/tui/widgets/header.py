@@ -1,4 +1,4 @@
-"""Persistent cogitator header: update banner + title + Menu / Reload / Terminate."""
+"""Persistent cogitator header: status banner + title + Menu / Reload / Terminate."""
 from __future__ import annotations
 
 from textual.app import ComposeResult
@@ -21,14 +21,21 @@ class CogitatorHeader(Vertical):
         height: auto;
         min-height: 3;
         max-height: 6;
-        background: #3a2010;
-        color: #ffd080;
-        border-bottom: solid #c07020;
         padding: 1 1;
         text-style: bold;
     }
     CogitatorHeader #update-banner.-show {
         display: block;
+    }
+    CogitatorHeader #update-banner.-update {
+        background: #3a2010;
+        color: #ffd080;
+        border-bottom: solid #c07020;
+    }
+    CogitatorHeader #update-banner.-current {
+        background: #0a2818;
+        color: #b8ffd0;
+        border-bottom: solid #2a8040;
     }
     CogitatorHeader #header-bar {
         height: 5;
@@ -71,14 +78,22 @@ class CogitatorHeader(Vertical):
                 yield Button("Reload", id="hdr-reload")
                 yield Button("Terminate", id="hdr-terminate")
 
-    def show_update_notice(self, text: str) -> None:
+    def show_status_banner(self, text: str, *, kind: str = "update") -> None:
+        """kind: 'update' (amber) or 'current' (green)."""
         banner = self.query_one("#update-banner", Static)
         banner.update(text)
-        banner.add_class("-show")
+        banner.remove_class("-update", "-current")
+        banner.add_class("-show", f"-{kind}" if kind in {"update", "current"} else "-update")
+
+    def show_update_notice(self, text: str) -> None:
+        self.show_status_banner(text, kind="update")
+
+    def show_current_notice(self, text: str) -> None:
+        self.show_status_banner(text, kind="current")
 
     def hide_update_notice(self) -> None:
         banner = self.query_one("#update-banner", Static)
-        banner.remove_class("-show")
+        banner.remove_class("-show", "-update", "-current")
         banner.update("")
 
     def on_button_pressed(self, event: Button.Pressed) -> None:

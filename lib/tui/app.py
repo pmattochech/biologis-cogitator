@@ -36,51 +36,89 @@ class CogitatorApp(App[None]):
         self._dirty_armed: bool = True
         self._dirty_was_before_push: bool = False
         self._update_notice_shown: bool = False
+        self._current_notice_shown: bool = False
+        self._update_banner_kind: str = "update"
         self._update_banner_text: str = updatemod.BANNER_TEXT
 
     def on_mount(self) -> None:
-        # Background poll — do not apply while running; banner tells user to restart.
+        # Background poll — apply only on next launch; banners report status live.
         if updatemod.auto_update_enabled() and updatemod.is_git_checkout():
             self.set_interval(
                 updatemod.poll_interval_seconds(),
                 self._poll_for_updates,
                 name="biologis-update-poll",
             )
-            self.set_timer(8.0, self._poll_for_updates)
+            self.set_timer(3.0, self._poll_for_updates)
         if self._show_splash:
             self.push_screen(SplashScreen())
         else:
             self.push_screen(BootScreen())
 
     def _poll_for_updates(self) -> None:
-        if self._update_notice_shown:
-            return
         if not updatemod.auto_update_enabled():
             return
         try:
             status = updatemod.check_for_update(fetch=True)
         except Exception:
             return
-        if not status.available:
+        if status.available:
+            self._update_notice_shown = True
+            self._current_notice_shown = False
+            self._update_banner_kind = "update"
+            self._update_banner_text = updatemod.banner_text(status)
+            self._show_status_banner(self._update_banner_text, kind="update")
             return
-        self._update_notice_shown = True
-        self._update_banner_text = updatemod.banner_text(status)
-        self._show_update_banner(self._update_banner_text)
+        # Up to date — show once, then auto-hide (update banner stays sticky).
+        if self._update_notice_shown:
+            return
+        if self._current_notice_shown:
+            return
+        if not status.local or status.error:
+            return
+        self._current_notice_shown = True
+        self._update_banner_kind = "current"
+        self._update_banner_text = updatemod.current_banner_text(status)
+        self._show_status_banner(self._update_banner_text, kind="current")
+        self.set_timer(12.0, self._hide_current_banner)
 
-    def _show_update_banner(self, text: str) -> None:
+    def _hide_current_banner(self) -> None:
+        if self._update_notice_shown:
+            return
+        if self._update_banner_kind != "current":
+            return
         try:
             for hdr in self.screen.query(CogitatorHeader):
-                hdr.show_update_notice(text)
+                hdr.hide_update_notice()
         except Exception:
             pass
+
+    def _show_status_banner(self, text: str, *, kind: str) -> None:
         try:
-            self.notify(
-                "Update available — save work, Terminate, and reopen.",
-                severity="warning",
-                timeout=12,
-            )
+            for hdr in self.screen.query(CogitatorHeader):
+                hdr.show_status_banner(text, kind=kind)
         except Exception:
             pass
+        if kind == "update":
+            try:
+                self.notify(
+                    "Update available — save work, Terminate, and reopen.",
+                    severity="warning",
+                    timeout=12,
+                )
+            except Exception:
+                pass
+        elif kind == "current" and not self._update_notice_shown:
+            try:
+                self.notify(
+                    "Cogitator current — latest build.",
+                    severity="information",
+                    timeout=6,
+                )
+            except Exception:
+                pass
+
+    def _show_update_banner(self, text: str) -> None:
+        self._show_status_banner(text, kind="update")
 
     def push_screen(self, screen, *args, **kwargs):  # type: ignore[no-untyped-def]
         """Disarm dirty tracking while the new screen hydrates widgets."""
@@ -88,11 +126,14 @@ class CogitatorApp(App[None]):
         self._dirty_armed = False
         result = super().push_screen(screen, *args, **kwargs)
         self.call_after_refresh(self._arm_dirty_tracking)
-        if self._update_notice_shown:
+        if self._update_notice_shown or (
+            self._current_notice_shown and self._update_banner_kind == "current"
+        ):
             text = self._update_banner_text
+            kind = self._update_banner_kind
 
             def _reapply() -> None:
-                self._show_update_banner(text)
+                self._show_status_banner(text, kind=kind)
 
             self.call_after_refresh(_reapply)
         return result
