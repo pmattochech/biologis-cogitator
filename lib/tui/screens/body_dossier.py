@@ -6,12 +6,11 @@ from pathlib import Path
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import Screen
-from textual.widgets import Button, Input, Label, Select, Static
+from textual.widgets import Button, Input, Select, Static
 
 from ... import dossier_media as dmedia
 from ... import packs as packsmod
 from ...wizard_session import WizardSession
-from ..features import CONSULTATION_ENABLED
 from ..widgets.dossier_chrome import DossierChrome
 from ..widgets.header import CogitatorHeader
 from ..widgets.warn_log import WarnLog
@@ -34,22 +33,53 @@ class BodyDossierScreen(Screen):
         padding: 0 1;
     }
     #bd-main-title {
-        margin: 0 0 1 0;
+        margin: 0 0 0 0;
+        height: 1;
         color: #66ff99;
         text-style: bold;
     }
-    #bd-hint { color: #3a9960; height: auto; margin: 0 0 1 0; }
+    #bd-hint {
+        color: #3a9960;
+        height: 1;
+        margin: 0 0 1 0;
+    }
+    #bd-pack-label {
+        height: 1;
+        color: #40c070;
+        margin: 0;
+    }
+    #bd-pack-select {
+        height: 1 !important;
+        min-height: 1 !important;
+        max-height: 1 !important;
+        margin: 0 0 0 0;
+        width: 1fr;
+    }
+    #bd-pack-select > SelectCurrent {
+        height: 1 !important;
+        min-height: 1 !important;
+        max-height: 1 !important;
+        padding: 0 1;
+    }
+    #bd-pack-id {
+        height: 1 !important;
+        min-height: 1 !important;
+        max-height: 1 !important;
+        margin: 0 0 1 0;
+        width: 1fr;
+        padding: 0 1;
+    }
     #bd-sections { height: 1fr; }
     #bd-sections Button {
         width: 1fr;
-        height: 3;
-        margin: 0 0 1 0;
+        height: 1;
+        min-height: 1;
+        max-height: 1;
+        margin: 0 0 0 0;
+        padding: 0 1;
         content-align: left middle;
         text-align: left;
     }
-    #bd-pack-row { height: auto; margin: 0 0 1 0; }
-    #bd-pack-row Label { height: 1; color: #40c070; margin-top: 1; }
-    #bd-pack-select, #bd-pack-id { width: 1fr; margin: 0 0 1 0; }
     """
 
     def __init__(self, *, read_only: bool = False, **kwargs) -> None:
@@ -81,13 +111,12 @@ class BodyDossierScreen(Screen):
                 with Vertical(id="bd-main-col"):
                     yield Static("World sections", id="bd-main-title")
                     yield Static(
-                        "This is the body page. Plate stays visible while you "
-                        "open classification, biomes, specimens, and prose.",
+                        "Plate stays visible while you open sections.",
                         id="bd-hint",
                         classes="litany",
                     )
                     if not self.read_only:
-                        yield Label("Pack target")
+                        yield Static("Pack target", id="bd-pack-label")
                         yield Select(
                             [("…", "__init__")],
                             id="bd-pack-select",

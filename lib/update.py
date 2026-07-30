@@ -17,14 +17,9 @@ MIN_POLL_SECONDS = 10
 # Safe subset of git ref names (branches/tags with optional /).
 _REF_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/\-]*$")
 BANNER_TEXT = (
-    "UPDATE AVAILABLE — a newer cogitator build was detected on the remote. "
-    "Save all unsaved work, then Terminate this session and open the cogitator again "
-    "to load the update."
+    "UPDATE AVAILABLE — save work, Terminate, and reopen to load it."
 )
-CURRENT_BANNER_TEXT = (
-    "COGITATOR CURRENT — this session is running the latest build from origin. "
-    "Veil link synchronized."
-)
+CURRENT_BANNER_TEXT = "COGITATOR CURRENT — veil link synchronized."
 
 RefSource = Literal["env", "config", "default"]
 
@@ -384,17 +379,13 @@ def switch_to_ref(
 def banner_text(status: UpdateStatus | None = None) -> str:
     if status and status.short_remote and status.short_local:
         return (
-            f"UPDATE AVAILABLE ({status.short_local} → {status.short_remote}). "
-            "Save all unsaved work, then Terminate and open the cogitator again "
-            "to load the update."
+            f"UPDATE ({status.short_local} → {status.short_remote}) — "
+            "save, Terminate, reopen."
         )
     return BANNER_TEXT
 
 
 def current_banner_text(status: UpdateStatus | None = None) -> str:
     if status and status.short_local:
-        return (
-            f"COGITATOR CURRENT — latest {status.ref} ({status.short_local}). "
-            "Veil link synchronized with origin."
-        )
+        return f"CURRENT — {status.ref} ({status.short_local})"
     return CURRENT_BANNER_TEXT

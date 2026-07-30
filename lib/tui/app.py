@@ -85,7 +85,7 @@ class CogitatorApp(App[None]):
         self._show_status_banner(
             self._update_banner_text, kind="current", toast=True
         )
-        self.set_timer(12.0, self._hide_current_banner)
+        self.set_timer(6.0, self._hide_current_banner)
 
     def _hide_current_banner(self) -> None:
         if self._update_notice_shown:
