@@ -67,7 +67,13 @@ class CogitatorApp(App[None]):
             self._update_notice_shown = True
             self._current_notice_shown = False
             self._update_banner_kind = "update"
-            self._update_banner_text = updatemod.banner_text(status)
+            if status.dirty:
+                self._update_banner_text = (
+                    f"UPDATE BLOCKED ({status.short_local} → {status.short_remote}) — "
+                    "install tree dirty; clean checkout then Terminate + reopen."
+                )
+            else:
+                self._update_banner_text = updatemod.banner_text(status)
             self._show_status_banner(
                 self._update_banner_text, kind="update", toast=first
             )
