@@ -49,22 +49,22 @@ class BodyDossierScreen(Screen):
         margin: 0;
     }
     #bd-pack-select {
-        height: 1 !important;
-        min-height: 1 !important;
-        max-height: 1 !important;
+        height: 3 !important;
+        min-height: 3 !important;
+        max-height: 3 !important;
         margin: 0 0 0 0;
         width: 1fr;
     }
     #bd-pack-select > SelectCurrent {
-        height: 1 !important;
-        min-height: 1 !important;
-        max-height: 1 !important;
+        height: 3 !important;
+        min-height: 3 !important;
+        max-height: 3 !important;
         padding: 0 1;
     }
     #bd-pack-id {
-        height: 1 !important;
-        min-height: 1 !important;
-        max-height: 1 !important;
+        height: 3 !important;
+        min-height: 3 !important;
+        max-height: 3 !important;
         margin: 0 0 1 0;
         width: 1fr;
         padding: 0 1;
@@ -72,13 +72,19 @@ class BodyDossierScreen(Screen):
     #bd-sections { height: 1fr; }
     #bd-sections Button {
         width: 1fr;
-        height: 1;
-        min-height: 1;
-        max-height: 1;
-        margin: 0 0 0 0;
+        height: 3;
+        min-height: 3;
+        max-height: 3;
+        margin: 0 0 1 0;
         padding: 0 1;
         content-align: left middle;
         text-align: left;
+    }
+    /* Disabled section rows still show their labels */
+    #bd-sections Button:disabled {
+        color: #2a8040;
+        border: solid #1a5028;
+        opacity: 1;
     }
     """
 
