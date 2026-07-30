@@ -402,6 +402,30 @@ def format_profile_readonly(
                     text = ", ".join(str(x) for x in raw)
                 else:
                     text = str(raw or "").strip()
+            elif ftype in ("select", "biome_select"):
+                code = str(raw or "").strip()
+                if not code:
+                    text = ""
+                elif ftype == "select":
+                    text = qschema.resolve_option_label(field, code, profile)
+                else:
+                    # biome_select: prefer body biome labels when available
+                    text = code
+                    if body_slug:
+                        try:
+                            from ...species_profile import biomes_for_body_slug
+
+                            opts = speciesmod.origin_place_options(
+                                biomes_for_body_slug(body_slug)
+                            )
+                            for lab, val in opts:
+                                if val == code:
+                                    text = lab
+                                    break
+                        except Exception:
+                            pass
+            elif ftype == "trophic_slot":
+                text = str(raw or "").strip()
             else:
                 text = str(raw or "").strip()
             if not text:
