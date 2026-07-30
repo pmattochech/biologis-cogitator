@@ -121,13 +121,13 @@ Use **Windows Terminal** (not legacy `conhost`) for correct colors and keyboard 
 
 Biologis Cogitator is a **standalone cogitator** — a green-phosphor Textual TUI (on Linux, optionally hosted in a Mechanicus GTK window) — for building and filing 40k biospheres as structured data, then rendering them as in-universe Magos reports and literary prose.
 
-Three rites on the boot screen:
+Rites on the boot screen:
 
 | Rite | Purpose |
 |------|---------|
 | **Registration** | Birth a stellar system, hang a biosphere on a known system, or invoke a pack template |
 | **Amendment** | Open a body, register biomes & species, reshape the mesh |
-| **Consultation** | Read sealed archives only — Magos, literary, state, species files |
+| **Consultation** | Offline for now (dossier redesign). Use **Amendment** to inspect sealed work. |
 
 Under the chassis sits a layered generator: star & orbit bands → planet type → geology → climate → biomes → trophic web → bauplan → species profiles → **Seal** into your results folder.
 

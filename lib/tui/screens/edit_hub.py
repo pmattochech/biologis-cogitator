@@ -8,6 +8,7 @@ from textual.widgets import Button, Input, Label, Select, Static
 
 from ... import packs as packsmod
 from ...wizard_session import WizardSession
+from ..features import CONSULTATION_ENABLED
 from ..widgets.header import CogitatorHeader
 from ..widgets.warn_log import WarnLog
 
@@ -119,7 +120,13 @@ class EditHubScreen(Screen):
                     with Vertical(id="edit-actions"):
                         yield Button("Save pack", id="btn-save", variant="primary")
                         yield Button("Seal results", id="btn-seal", variant="primary")
-                        yield Button("Archive", id="btn-archive")
+                        yield Button(
+                            "Archive"
+                            if CONSULTATION_ENABLED
+                            else "Archive (offline)",
+                            id="btn-archive",
+                            disabled=not CONSULTATION_ENABLED,
+                        )
                         yield Button("Back", id="btn-back")
                 with Vertical(id="edit-main"):
                     yield Static("Amend sections", id="edit-main-title")
@@ -240,6 +247,12 @@ class EditHubScreen(Screen):
             self.app.request_back()  # type: ignore[attr-defined]
             return
         if event.button.id == "btn-archive":
+            if not CONSULTATION_ENABLED:
+                log.push(
+                    "Archive offline — dossier redesign pending. "
+                    "Stay in Amendment to inspect biomes and species."
+                )
+                return
             slug = ((session.body or {}).get("meta") or {}).get("slug")
             from .out_archive import OutArchiveScreen
 

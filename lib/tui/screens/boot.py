@@ -1,4 +1,4 @@
-"""Boot screen — choose Registration, Amendment, or Consultation."""
+"""Boot screen — choose Registration or Amendment (Consultation offline)."""
 from __future__ import annotations
 
 from textual.app import ComposeResult
@@ -6,12 +6,13 @@ from textual.containers import Horizontal, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Button, Static
 
+from ..features import CONSULTATION_ENABLED
 from ..widgets.header import CogitatorHeader
 from ..widgets.warn_log import WarnLog
 
 
 class BootScreen(Screen):
-    """Root rite chooser — three doors, then Abort."""
+    """Root rite chooser — Registration / Amendment; Consultation offline."""
 
     BINDINGS = [("q", "request_terminate", "Terminate")]
 
@@ -20,9 +21,10 @@ class BootScreen(Screen):
         with VerticalScroll(id="main"):
             yield Static("CASUS BIOGENESIS — CHOOSE YOUR RITE", classes="title")
             yield Static(
-                "Three rites stand before the Magos Biologis. "
-                "Register new mesh work, amend what already exists, "
-                "or consult the sealed archive.",
+                "Two rites stand before the Magos Biologis. "
+                "Register new mesh work, or amend what already exists. "
+                "Consultation (sealed archive browser) is offline until "
+                "dossier pages land — use Amendment as the workaround.",
                 classes="litany",
             )
             with Horizontal(classes="-toolbar rite-doors"):
@@ -38,9 +40,10 @@ class BootScreen(Screen):
                     classes="rite-door",
                 )
                 yield Button(
-                    "Rite of Consultation",
+                    "Consultation (offline)",
                     id="btn-consultation",
                     classes="rite-door",
+                    disabled=not CONSULTATION_ENABLED,
                 )
             with Horizontal(classes="-toolbar"):
                 yield Button("Build channel", id="btn-channel")
@@ -82,6 +85,13 @@ class BootScreen(Screen):
             self.app.push_screen(EditPickScreen())
             return
         if bid == "btn-consultation":
+            log = self.query_one(WarnLog)
+            if not CONSULTATION_ENABLED:
+                log.push(
+                    "Consultation offline — dossier redesign pending. "
+                    "Use Rite of Amendment to inspect bodies and species."
+                )
+                return
             from .out_archive import OutArchiveScreen
 
             self.app.push_screen(OutArchiveScreen())
