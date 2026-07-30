@@ -39,7 +39,7 @@ class DossierBrowserScreen(Screen):
                 yield Button("Open dossier", id="btn-open", variant="primary")
                 yield Button("Back", id="btn-back")
             yield Static(
-                "Read-only object pages with plates. "
+                "Read-only body and system dossiers with plate + lore. "
                 "Amendment is still used for editing.",
                 id="db-hint",
                 classes="litany",

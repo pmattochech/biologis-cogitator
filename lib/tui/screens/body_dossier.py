@@ -6,7 +6,7 @@ from pathlib import Path
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import Screen
-from textual.widgets import Button, Input, Select, Static
+from textual.widgets import Button, Input, Select, Static, TextArea
 
 from ... import dossier_media as dmedia
 from ... import packs as packsmod
@@ -42,6 +42,20 @@ class BodyDossierScreen(Screen):
         color: #3a9960;
         height: 1;
         margin: 0 0 1 0;
+    }
+    #bd-lore-label {
+        height: 1;
+        color: #40c070;
+        margin: 0;
+    }
+    #bd-lore {
+        height: 8;
+        min-height: 6;
+        max-height: 10;
+        border: solid #2a8040;
+        margin: 0 0 1 0;
+        background: #081008;
+        color: #b8ffd0;
     }
     #bd-pack-label {
         height: 1;
@@ -117,9 +131,16 @@ class BodyDossierScreen(Screen):
                 with Vertical(id="bd-main-col"):
                     yield Static("World sections", id="bd-main-title")
                     yield Static(
-                        "Plate stays visible while you open sections.",
+                        "Lore / description — short blurb for consultation.",
                         id="bd-hint",
                         classes="litany",
+                    )
+                    yield Static("Lore", id="bd-lore-label")
+                    yield TextArea(
+                        "",
+                        id="bd-lore",
+                        show_line_numbers=False,
+                        read_only=self.read_only,
                     )
                     if not self.read_only:
                         yield Static("Pack target", id="bd-pack-label")
@@ -214,9 +235,19 @@ class BodyDossierScreen(Screen):
             return str(sel.value)
         return self._session().pack_id
 
+    def _apply_lore_to_session(self) -> None:
+        if self.read_only:
+            return
+        try:
+            lore = self.query_one("#bd-lore", TextArea).text
+        except Exception:
+            return
+        self._session().update_lock_fields({"local_notes": lore})
+
     def flush_unsaved(self) -> str | None:
         if self.read_only:
             return None
+        self._apply_lore_to_session()
         pack = self._pack_id()
         if not pack:
             return "set pack id to save"
@@ -257,6 +288,16 @@ class BodyDossierScreen(Screen):
             return f"body plate → {dmedia.plate_path('body', body_slug=slug)}"
         return None
 
+    def _lore_text(self, body: dict) -> str:
+        locks = body.get("locks") or {}
+        pt = (body.get("layers") or {}).get("planet_type") or {}
+        return str(
+            locks.get("local_notes")
+            or pt.get("local_notes")
+            or locks.get("notes")
+            or ""
+        ).strip()
+
     def _refresh(self) -> None:
         session = self._session()
         body = session.body or {}
@@ -287,6 +328,15 @@ class BodyDossierScreen(Screen):
                 )
             else:
                 chrome.set_pic_status("status: default placeholder")
+        except Exception:
+            pass
+        try:
+            ta = self.query_one("#bd-lore", TextArea)
+            # Avoid wiping in-progress edits while the screen stays mounted.
+            if self.read_only or not ta.has_focus:
+                next_text = self._lore_text(body)
+                if ta.text != next_text:
+                    ta.load_text(next_text)
         except Exception:
             pass
 
@@ -358,6 +408,7 @@ class BodyDossierScreen(Screen):
                 log.push("select or type a pack id first")
                 return
             try:
+                self._apply_lore_to_session()
                 path = session.save_pack_lock(pack)
                 note = self._apply_pending_image()
                 log.push(f"saved pack lock → {path}")
@@ -374,6 +425,7 @@ class BodyDossierScreen(Screen):
             if session.body is None:
                 log.push("no body")
                 return
+            self._apply_lore_to_session()
             world = session.finalize()
             note = self._apply_pending_image()
             log.push(f"sealed cogitator-results/{world['meta']['slug']}/")
