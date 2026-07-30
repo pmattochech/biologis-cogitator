@@ -8,6 +8,7 @@ from textual.widgets import Button, Input, Label, Select, Static
 
 from ... import packs as packsmod
 from ...wizard_session import WizardSession
+from ..features import CONSULTATION_ENABLED
 from ..widgets.header import CogitatorHeader
 from ..widgets.warn_log import WarnLog
 
@@ -30,7 +31,13 @@ class ReviewScreen(Screen):
             yield Input(value="", id="pack-title")
             with Horizontal(classes="-toolbar"):
                 yield Button("Seal to results (L7)", id="btn-out", variant="primary")
-                yield Button("Open in Archive", id="btn-archive")
+                yield Button(
+                    "Open body dossier"
+                    if CONSULTATION_ENABLED
+                    else "Archive (offline)",
+                    id="btn-archive",
+                    disabled=not CONSULTATION_ENABLED,
+                )
                 yield Button("Save to pack", id="btn-pack")
                 yield Button("Propose codex (dry-run)", id="btn-propose")
             yield Static(id="propose-panel", classes="panel")
@@ -145,17 +152,19 @@ class ReviewScreen(Screen):
             self._refresh()
             return
         if event.button.id == "btn-archive":
+            if not CONSULTATION_ENABLED:
+                log.push(
+                    "Archive offline. Use Amendment after seal to inspect the body."
+                )
+                return
             body = session.body or {}
             slug = (body.get("meta") or {}).get("slug")
             if not slug:
-                log.push("no body slug — seal to results first or open Archive from boot")
+                log.push("no body slug — seal to results first")
                 return
-            from .out_archive import OutArchiveScreen
+            from .body_dossier import BodyDossierScreen
 
-            # Prefer magos if present; Archive still opens even before write
-            self.app.push_screen(
-                OutArchiveScreen(kind="body", slug=slug, filename="magos.md")
-            )
+            self.app.push_screen(BodyDossierScreen(read_only=False))
             return
         if event.button.id == "btn-pack":
             pack_id = self._resolve_pack_id()

@@ -640,7 +640,8 @@ def magos_species_section(profiles: dict[str, dict[str, Any]]) -> list[str]:
             lines.append(f"- **Dossier:** `{p.get('dossier')}`")
         lines.append(
             f"- **Artifacts:** `species/{sid}/{PROFILE_FILE}`, "
-            f"`species/{sid}/{MIDJOURNEY_FILE}`"
+            f"`species/{sid}/{MIDJOURNEY_FILE}`, "
+            f"`species/{sid}/profile.png` (optional plate)"
         )
         lines.append("")
     return lines

@@ -203,10 +203,10 @@ class BiomeFlowScreen(Screen):
             self._refresh()
             return
         if event.button.id == "btn-next":
-            from .edit_hub import EditHubScreen
+            from .body_dossier import BodyDossierScreen
             from .review import ReviewScreen
 
-            if any(isinstance(s, EditHubScreen) for s in self.app.screen_stack):
+            if any(isinstance(s, BodyDossierScreen) for s in self.app.screen_stack):
                 self.app.pop_screen()
             else:
                 self.app.push_screen(ReviewScreen())

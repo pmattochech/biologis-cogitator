@@ -2,24 +2,26 @@
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal
 
+from . import config as app_config
 from .util import ROOT
 
 DEFAULT_REF = "master"
 DEFAULT_POLL_SECONDS = 30
 MIN_POLL_SECONDS = 10
+# Safe subset of git ref names (branches/tags with optional /).
+_REF_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/\-]*$")
 BANNER_TEXT = (
-    "UPDATE AVAILABLE — a newer cogitator build was detected on the remote. "
-    "Save all unsaved work, then Terminate this session and open the cogitator again "
-    "to load the update."
+    "UPDATE AVAILABLE — save work, Terminate, and reopen to load it."
 )
-CURRENT_BANNER_TEXT = (
-    "COGITATOR CURRENT — this session is running the latest build from origin. "
-    "Veil link synchronized."
-)
+CURRENT_BANNER_TEXT = "COGITATOR CURRENT — veil link synchronized."
+
+RefSource = Literal["env", "config", "default"]
 
 
 @dataclass
@@ -52,8 +54,56 @@ def auto_update_enabled() -> bool:
     return True
 
 
+def validate_ref(ref: str) -> str:
+    """Normalize and validate a branch/tag name. Raises ValueError if unsafe."""
+    name = (ref or "").strip()
+    if not name or name in {".", ".."} or name.startswith("-"):
+        raise ValueError("empty or invalid git ref")
+    if name.startswith("refs/"):
+        raise ValueError("use the short branch/tag name, not refs/…")
+    if ".." in name or "\\" in name or name.endswith("/"):
+        raise ValueError(f"invalid git ref: {name}")
+    if not _REF_RE.match(name):
+        raise ValueError(f"invalid git ref: {name}")
+    return name
+
+
+def env_update_ref() -> str | None:
+    raw = (os.environ.get("BIOLOGIS_REF") or "").strip()
+    return raw or None
+
+
+def ref_source() -> RefSource:
+    """Where the active update ref comes from (env wins over config)."""
+    if env_update_ref():
+        return "env"
+    if app_config.get_git_ref():
+        return "config"
+    return "default"
+
+
 def update_ref() -> str:
-    return (os.environ.get("BIOLOGIS_REF") or DEFAULT_REF).strip() or DEFAULT_REF
+    """Active origin branch/tag: BIOLOGIS_REF → config git_ref → master."""
+    env = env_update_ref()
+    if env:
+        try:
+            return validate_ref(env)
+        except ValueError:
+            return env.strip() or DEFAULT_REF
+    cfg = app_config.get_git_ref()
+    if cfg:
+        try:
+            return validate_ref(cfg)
+        except ValueError:
+            return cfg
+    return DEFAULT_REF
+
+
+def persist_update_ref(ref: str) -> str:
+    """Save preferred channel to config.yaml. Returns normalized ref."""
+    name = validate_ref(ref)
+    app_config.set_git_ref(name)
+    return name
 
 
 def poll_interval_seconds() -> float:
@@ -176,6 +226,20 @@ def check_for_update(
     return status
 
 
+def _checkout_fetched_ref(base: Path, branch: str) -> subprocess.CompletedProcess[str]:
+    """Force local install-* branch onto FETCH_HEAD (detach-proof)."""
+    # Sanitize local branch name: slashes → dashes so git accepts -B name.
+    local_name = "install-" + branch.replace("/", "-")
+    return _git(
+        "checkout",
+        "-f",
+        "-B",
+        local_name,
+        "FETCH_HEAD",
+        cwd=base,
+    )
+
+
 def apply_startup_update(
     root: Path | None = None,
     *,
@@ -203,15 +267,7 @@ def apply_startup_update(
         return status
     base = status.root
     branch = status.ref
-    # Detach-proof branch for installers; matches remote-install naming.
-    co = _git(
-        "checkout",
-        "-f",
-        "-B",
-        f"install-{branch}",
-        "FETCH_HEAD",
-        cwd=base,
-    )
+    co = _checkout_fetched_ref(base, branch)
     if co.returncode != 0:
         status.error = (co.stderr or co.stdout or "checkout failed").strip()
         status.message = f"update apply failed: {status.error}"
@@ -229,20 +285,107 @@ def apply_startup_update(
     return status
 
 
+def list_remote_branches(root: Path | None = None) -> list[str]:
+    """Remote branch names from origin (ls-remote). Empty on failure."""
+    base = root or ROOT
+    if not is_git_checkout(base):
+        return []
+    remotes = _git("remote", cwd=base)
+    if "origin" not in (remotes.stdout or ""):
+        return []
+    r = _git("ls-remote", "--heads", "origin", cwd=base, timeout=120.0)
+    if r.returncode != 0:
+        return []
+    names: list[str] = []
+    for line in (r.stdout or "").splitlines():
+        parts = line.split()
+        if len(parts) < 2:
+            continue
+        ref = parts[-1]
+        prefix = "refs/heads/"
+        if ref.startswith(prefix):
+            name = ref[len(prefix) :]
+            if name and name not in names:
+                names.append(name)
+    return sorted(names, key=lambda s: (s != DEFAULT_REF, s))
+
+
+def switch_to_ref(
+    ref: str,
+    root: Path | None = None,
+    *,
+    persist: bool = True,
+    apply_now: bool = True,
+) -> UpdateStatus:
+    """Select update channel: persist to config, optionally checkout remote tip.
+
+    Python modules already loaded in this process stay stale — caller should
+    tell the operator to Terminate and reopen after a successful apply.
+    """
+    base = (root or ROOT).resolve()
+    branch = validate_ref(ref)
+    if persist:
+        persist_update_ref(branch)
+    status = UpdateStatus(
+        enabled=True,
+        root=base,
+        ref=branch,
+        local=local_head(base),
+        dirty=working_tree_dirty(base),
+    )
+    if env_update_ref() and env_update_ref() != branch:
+        status.message = (
+            f"saved channel {branch} in config, but BIOLOGIS_REF="
+            f"{env_update_ref()!r} still overrides until you unset it"
+        )
+        return status
+    if not apply_now:
+        status.message = (
+            f"channel set to {branch} — Terminate and reopen to load that build"
+        )
+        return status
+    if not is_git_checkout(base):
+        status.message = "not a git checkout — channel saved for next install/update"
+        return status
+    if status.dirty:
+        status.message = (
+            f"channel set to {branch}, but working tree is dirty — "
+            "not checking out. Commit/stash, or reopen after a clean install tree."
+        )
+        return status
+    remote = fetch_remote_head(base, ref=branch)
+    status.remote = remote
+    if not remote:
+        status.message = (
+            f"could not fetch origin/{branch} — channel saved; "
+            "check the name or network, then Terminate and reopen"
+        )
+        return status
+    co = _checkout_fetched_ref(base, branch)
+    if co.returncode != 0:
+        status.error = (co.stderr or co.stdout or "checkout failed").strip()
+        status.message = f"checkout failed: {status.error}"
+        return status
+    status.applied = True
+    status.local = local_head(base) or remote
+    status.available = False
+    status.message = (
+        f"switched to {branch} ({status.short_local}). "
+        "Terminate and reopen the cogitator to load this build."
+    )
+    return status
+
+
 def banner_text(status: UpdateStatus | None = None) -> str:
     if status and status.short_remote and status.short_local:
         return (
-            f"UPDATE AVAILABLE ({status.short_local} → {status.short_remote}). "
-            "Save all unsaved work, then Terminate and open the cogitator again "
-            "to load the update."
+            f"UPDATE ({status.short_local} → {status.short_remote}) — "
+            "save, Terminate, reopen."
         )
     return BANNER_TEXT
 
 
 def current_banner_text(status: UpdateStatus | None = None) -> str:
     if status and status.short_local:
-        return (
-            f"COGITATOR CURRENT — latest {status.ref} ({status.short_local}). "
-            "Veil link synchronized with origin."
-        )
+        return f"CURRENT — {status.ref} ({status.short_local})"
     return CURRENT_BANNER_TEXT

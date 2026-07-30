@@ -1,12 +1,14 @@
 """Filing IDs: body AAAA, biome AAAA-BBB, species AAAA-BBB-NNN[-AA].
 
-Universal registry: data/enums/filing_ids.csv
-Folders keep prose slugs; filing IDs are for app allocation/lookup only.
+Universal registry lives in user config (not the install git tree), so
+auto-update is not blocked by registry writes. Seeded once from
+data/enums/filing_ids.csv.
 """
 from __future__ import annotations
 
 import csv
 import re
+import shutil
 from pathlib import Path
 from typing import Any, Iterator
 
@@ -30,11 +32,36 @@ SPECIAL_ORIGIN_ABBREVS: dict[str, str] = {
 }
 SPECIAL_ORIGIN_IDS = frozenset(SPECIAL_ORIGIN_ABBREVS)
 
-REGISTRY_PATH = ENUMS / "filing_ids.csv"
+BUNDLED_REGISTRY_PATH = ENUMS / "filing_ids.csv"
+# Back-compat name: prefer registry_path() for the writable file.
+REGISTRY_PATH = BUNDLED_REGISTRY_PATH
 CSV_FIELDS = ("kind", "filing_id", "slug", "parent_filing_id", "label")
 
 
 # --- CSV registry -----------------------------------------------------------
+
+
+def registry_path() -> Path:
+    """Writable filing registry under XDG/AppData config (not the git checkout)."""
+    from . import config as app_config
+
+    return app_config.config_dir() / "filing_ids.csv"
+
+
+def _ensure_user_registry() -> Path:
+    """Return user registry path, seeding from bundled CSV on first use."""
+    path = registry_path()
+    if path.is_file():
+        return path
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if BUNDLED_REGISTRY_PATH.is_file():
+        shutil.copy2(BUNDLED_REGISTRY_PATH, path)
+    else:
+        path.write_text(
+            "kind,filing_id,slug,parent_filing_id,label\n",
+            encoding="utf-8",
+        )
+    return path
 
 
 def _empty_rows() -> list[dict[str, str]]:
@@ -42,9 +69,10 @@ def _empty_rows() -> list[dict[str, str]]:
 
 
 def load_registry() -> list[dict[str, str]]:
-    if not REGISTRY_PATH.is_file():
+    path = _ensure_user_registry()
+    if not path.is_file():
         return _empty_rows()
-    with REGISTRY_PATH.open(encoding="utf-8", newline="") as fh:
+    with path.open(encoding="utf-8", newline="") as fh:
         reader = csv.DictReader(fh)
         rows: list[dict[str, str]] = []
         for raw in reader:
@@ -65,8 +93,9 @@ def load_registry() -> list[dict[str, str]]:
 
 
 def save_registry(rows: list[dict[str, str]]) -> None:
-    REGISTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with REGISTRY_PATH.open("w", encoding="utf-8", newline="") as fh:
+    path = _ensure_user_registry()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=CSV_FIELDS, lineterminator="\n")
         writer.writeheader()
         for row in sorted(

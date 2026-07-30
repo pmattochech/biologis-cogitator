@@ -50,12 +50,20 @@ biologis-cogitator
 |--------|---------|
 | Skip the folder picker for now | `BIOLOGIS_NO_SETUP=1 curl -fsSL … \| bash` then later `biologis-cogitator setup` |
 | Install somewhere else | `BIOLOGIS_HOME=~/src/biologis-cogitator curl -fsSL … \| bash` |
-| Pin a branch/tag | `BIOLOGIS_REF=master curl -fsSL … \| bash` |
+| Pin a branch/tag (install or launch) | `BIOLOGIS_REF=cursor/my-branch biologis-cogitator` |
 | Classic terminal (no GTK window) | `BIOLOGIS_NO_WINDOW=1 biologis-cogitator` |
 | Disable auto-update | `BIOLOGIS_NO_AUTOUPDATE=1 biologis-cogitator` |
 | Update check interval (seconds) | `BIOLOGIS_UPDATE_CHECK_SECONDS=30` (default 30, min 10) |
 
-**Auto-update:** on every launch the cogitator fetches `origin` (`BIOLOGIS_REF`, default `master`) and fast-forwards a clean install checkout. While open, a **green** banner confirms you are on the latest build (then fades); if the remote moves ahead, an **amber** banner asks you to save, Terminate, and reopen. Dirty developer working trees are never force-updated.
+**Build channel (test before master):** auto-update tracks one origin branch/tag.
+
+1. **Env (wins):** `BIOLOGIS_REF=<branch>` for this process only.
+2. **In-app:** boot screen → **Build channel** — pick a remote branch, Apply, then **Terminate and reopen**.
+3. **Config:** saved as `git_ref` in `~/.config/biologis-cogitator/config.yaml` (used when env is unset).
+
+Priority: `BIOLOGIS_REF` → config `git_ref` → `master`.
+
+**Auto-update:** on every launch the cogitator fetches that channel and fast-forwards a clean install checkout. While open, a **green** banner confirms you are on the latest build (then fades); if the remote moves ahead, an **amber** banner asks you to save, Terminate, and reopen. Dirty developer working trees are never force-updated.
 
 Already have the tree locally?
 
@@ -100,11 +108,12 @@ biologis-cogitator
 | Local checkout | `.\install.ps1` or `.\install.ps1 -Yes` |
 | Full Linux/GTK via WSL | Install under WSL with the Linux one-liner, or `.\run.cmd --wsl` from a checkout |
 | Disable auto-update | `$env:BIOLOGIS_NO_AUTOUPDATE=1` |
+| Pin a branch/tag | `$env:BIOLOGIS_REF='cursor/my-branch'` |
 
-Config on Windows: `%APPDATA%\biologis-cogitator\config.yaml`  
+Config on Windows: `%APPDATA%\biologis-cogitator\config.yaml` (includes optional `git_ref`)  
 Default results: `%USERPROFILE%\BiologisCogitator\results`
 
-Use **Windows Terminal** (not legacy `conhost`) for correct colors and keyboard handling. Auto-update on launch works the same as Linux (git fetch of `BIOLOGIS_REF`).
+Use **Windows Terminal** (not legacy `conhost`) for correct colors and keyboard handling. Auto-update / Build channel work the same as Linux (`BIOLOGIS_REF` or in-app **Build channel**).
 
 ---
 
@@ -112,13 +121,13 @@ Use **Windows Terminal** (not legacy `conhost`) for correct colors and keyboard 
 
 Biologis Cogitator is a **standalone cogitator** — a green-phosphor Textual TUI (on Linux, optionally hosted in a Mechanicus GTK window) — for building and filing 40k biospheres as structured data, then rendering them as in-universe Magos reports and literary prose.
 
-Three rites on the boot screen:
+Rites on the boot screen:
 
 | Rite | Purpose |
 |------|---------|
 | **Registration** | Birth a stellar system, hang a biosphere on a known system, or invoke a pack template |
-| **Amendment** | Open a body, register biomes & species, reshape the mesh |
-| **Consultation** | Read sealed archives only — Magos, literary, state, species files |
+| **Amendment** | Open a **body dossier** (plate + sections) to register biomes & species |
+| **Consultation** | Read-only sealed **dossiers** (bodies / systems with plates) |
 
 Under the chassis sits a layered generator: star & orbit bands → planet type → geology → climate → biomes → trophic web → bauplan → species profiles → **Seal** into your results folder.
 
@@ -186,15 +195,7 @@ Without GTK/VTE the cogitator still runs in a normal terminal (`BIOLOGIS_NO_WIND
 
 No GTK/VTE on native Windows — the TUI runs in the console. For the Mechanicus window, use **WSL** and the Linux installer.
 
-### Optional
-
-| Dependency | Why |
-|------------|-----|
-| **Pillow** | Smoother boot-GIF decode in the GTK window (Linux) |
-
-```bash
-python3 -m pip install Pillow
-```
+Pillow and **textual-image** are required (profile picture resize + in-pane preview; boot-GIF decode). Both are listed in `requirements.txt` and installed with the app. Preview uses Kitty/Sixel when the terminal supports them, otherwise Unicode half-blocks (works in the Mechanicus VTE window).
 
 ---
 

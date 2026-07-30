@@ -18,11 +18,12 @@ class CogitatorHeader(Vertical):
     CogitatorHeader #update-banner {
         display: none;
         width: 1fr;
-        height: auto;
-        min-height: 3;
-        max-height: 6;
-        padding: 1 1;
+        height: 1;
+        max-height: 1;
+        min-height: 1;
+        padding: 0 1;
         text-style: bold;
+        overflow: hidden hidden;
     }
     CogitatorHeader #update-banner.-show {
         display: block;
@@ -38,7 +39,7 @@ class CogitatorHeader(Vertical):
         border-bottom: solid #2a8040;
     }
     CogitatorHeader #header-bar {
-        height: 5;
+        height: 3;
         width: 1fr;
         padding: 0 1;
     }
@@ -55,7 +56,7 @@ class CogitatorHeader(Vertical):
         align: right middle;
     }
     CogitatorHeader #header-actions Button {
-        min-width: 12;
+        min-width: 10;
         width: auto;
         height: 3;
         margin: 0 0 0 1;

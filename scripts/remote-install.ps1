@@ -59,7 +59,9 @@ if (Test-Path (Join-Path $Dest ".git")) {
                 exit 1
             }
         }
-        git checkout -f -B "install-$Ref" FETCH_HEAD
+        # Local tracking branch cannot contain '/'; sanitize for feature branches.
+        $localBranch = "install-" + ($Ref -replace '/', '-')
+        git checkout -f -B $localBranch FETCH_HEAD
     } finally {
         Pop-Location
     }

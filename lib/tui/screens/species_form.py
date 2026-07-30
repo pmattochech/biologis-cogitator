@@ -374,10 +374,19 @@ def format_profile_readonly(
     schema: dict[str, Any] | None = None,
     *,
     trophic_slots: list[str] | None = None,
+    body_slug: str | None = None,
 ) -> str:
     """Plain-text mirror of profile fields for Specimens read-only pane."""
     sch = schema or qschema.load_schema()
     lines: list[str] = []
+    if body_slug:
+        from ... import species_media as media
+
+        sid = str(profile.get("id") or "").strip()
+        lines.append("— Profile picture —")
+        lines.append(media.profile_status_label(body_slug, sid))
+        lines.append(f"  {media.resolve_profile_image(body_slug, sid)}")
+        lines.append("")
     for step in qschema.steps(sch):
         title = str(step.get("title") or step.get("id") or "")
         lines.append(f"— {title} —")
@@ -393,6 +402,30 @@ def format_profile_readonly(
                     text = ", ".join(str(x) for x in raw)
                 else:
                     text = str(raw or "").strip()
+            elif ftype in ("select", "biome_select"):
+                code = str(raw or "").strip()
+                if not code:
+                    text = ""
+                elif ftype == "select":
+                    text = qschema.resolve_option_label(field, code, profile)
+                else:
+                    # biome_select: prefer body biome labels when available
+                    text = code
+                    if body_slug:
+                        try:
+                            from ...species_profile import biomes_for_body_slug
+
+                            opts = speciesmod.origin_place_options(
+                                biomes_for_body_slug(body_slug)
+                            )
+                            for lab, val in opts:
+                                if val == code:
+                                    text = lab
+                                    break
+                        except Exception:
+                            pass
+            elif ftype == "trophic_slot":
+                text = str(raw or "").strip()
             else:
                 text = str(raw or "").strip()
             if not text:

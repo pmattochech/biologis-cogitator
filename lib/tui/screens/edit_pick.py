@@ -27,11 +27,11 @@ class EditPickScreen(Screen):
             with Horizontal(id="edit-pick-toolbar"):
                 yield Button("From pack", id="btn-mode-pack", variant="primary")
                 yield Button("From results", id="btn-mode-results")
-                yield Button("Open editor", id="btn-open", variant="primary")
+                yield Button("Open dossier", id="btn-open", variant="primary")
                 yield Button("Back", id="btn-back")
             yield Static(
-                "Select a body to amend. New biomes and species upon it are "
-                "registered within this rite.",
+                "Select a body to open its dossier page. Biomes and species "
+                "are registered from the body dossier.",
                 classes="litany",
             )
             yield Label("Pack:")
@@ -117,6 +117,6 @@ class EditPickScreen(Screen):
             except Exception as exc:
                 self.query_one(WarnLog).push(str(exc))
                 return
-            from .edit_hub import EditHubScreen
+            from .body_dossier import BodyDossierScreen
 
-            self.app.push_screen(EditHubScreen())
+            self.app.push_screen(BodyDossierScreen())

@@ -67,7 +67,13 @@ class CogitatorApp(App[None]):
             self._update_notice_shown = True
             self._current_notice_shown = False
             self._update_banner_kind = "update"
-            self._update_banner_text = updatemod.banner_text(status)
+            if status.dirty:
+                self._update_banner_text = (
+                    f"UPDATE BLOCKED ({status.short_local} → {status.short_remote}) — "
+                    "install tree dirty; clean checkout then Terminate + reopen."
+                )
+            else:
+                self._update_banner_text = updatemod.banner_text(status)
             self._show_status_banner(
                 self._update_banner_text, kind="update", toast=first
             )
@@ -85,7 +91,7 @@ class CogitatorApp(App[None]):
         self._show_status_banner(
             self._update_banner_text, kind="current", toast=True
         )
-        self.set_timer(12.0, self._hide_current_banner)
+        self.set_timer(6.0, self._hide_current_banner)
 
     def _hide_current_banner(self) -> None:
         if self._update_notice_shown:
@@ -311,9 +317,9 @@ class CogitatorApp(App[None]):
                     slug, pack_id=pack, from_results=from_results
                 )
                 self.session.clear_dirty()
-                from .screens.edit_hub import EditHubScreen
+                from .screens.body_dossier import BodyDossierScreen
 
-                self.push_screen(EditHubScreen())
+                self.push_screen(BodyDossierScreen())
                 try:
                     from .widgets.warn_log import WarnLog
 
@@ -351,4 +357,8 @@ def run_wizard(
         from ..hybrid_splash import maybe_show_hybrid_splash
 
         maybe_show_hybrid_splash()
+    # textual-image must probe the terminal *before* App.run() (TGP/Sixel query).
+    from .widgets.profile_plate import ensure_image_support
+
+    ensure_image_support()
     CogitatorApp(seed=seed, pack=pack, splash=False).run()

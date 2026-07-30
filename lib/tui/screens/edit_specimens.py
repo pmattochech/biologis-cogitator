@@ -6,9 +6,11 @@ from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Button, Label, ListItem, ListView, Static
 
+from ... import species_media as media
 from ... import species_profile as speciesmod
 from ...wizard_session import WizardSession
 from ..widgets.header import CogitatorHeader
+from ..widgets.profile_plate import ProfilePlate
 from ..widgets.warn_log import WarnLog
 from . import species_form as form
 
@@ -31,29 +33,36 @@ class EditSpecimensScreen(Screen):
     #spec-hint { height: auto; color: #3aa060; margin: 0 0 1 0; }
     """
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, *, read_only: bool = False, **kwargs) -> None:
         super().__init__(**kwargs)
+        self.read_only = read_only
         self._selected_id: str | None = None
 
     def compose(self) -> ComposeResult:
-        yield CogitatorHeader("EDITOR / SPECIMENS")
+        yield CogitatorHeader(
+            "EDITOR / SPECIMENS" + (" (read-only)" if self.read_only else "")
+        )
         with Vertical(id="spec-main"):
             with Horizontal(id="spec-toolbar"):
-                yield Button("New", id="btn-new", variant="primary")
-                yield Button("Edit", id="btn-edit")
-                yield Button("Add subspecies", id="btn-subspecies")
-                yield Button("Remove", id="btn-remove")
+                if not self.read_only:
+                    yield Button("New", id="btn-new", variant="primary")
+                yield Button("Open dossier", id="btn-edit", variant="primary")
+                if not self.read_only:
+                    yield Button("Add subspecies", id="btn-subspecies")
+                    yield Button("Remove", id="btn-remove")
                 yield Button("Back", id="btn-back")
             yield Static(
-                "Select a specimen, then Edit. New asks for primary biome first "
-                "(Entry ID is generated; disk write only on Save).",
+                "Select a specimen to preview its dossier plate. "
+                "Open dossier to create/edit on the species page "
+                "(Entry ID generated on New; disk write only on Save).",
                 id="spec-hint",
                 classes="litany",
             )
             yield Label("Specimens")
             yield ListView(id="spec-list")
-            yield Label("Profile (read-only)")
+            yield Label("Dossier preview")
             with VerticalScroll(id="spec-detail"):
+                yield ProfilePlate(media.DEFAULT_PROFILE, id="spec-pic-preview")
                 yield Static("(select a specimen)", id="spec-ro")
             yield Static(id="biome-hint", classes="litany")
         yield WarnLog()
@@ -100,9 +109,22 @@ class EditSpecimensScreen(Screen):
             self._show_detail(keep)
         else:
             self.query_one("#spec-ro", Static).update("(select a specimen)")
+            try:
+                self.query_one("#spec-pic-preview", ProfilePlate).set_image_path(
+                    media.DEFAULT_PROFILE
+                )
+            except Exception:
+                pass
 
     def _show_detail(self, sid: str) -> None:
         session = self._session()
+        slug = session.body_slug() or ""
+        try:
+            self.query_one("#spec-pic-preview", ProfilePlate).set_image_path(
+                media.resolve_profile_image(slug, sid) if slug else media.DEFAULT_PROFILE
+            )
+        except Exception:
+            pass
         profile = session.get_species_profile(sid)
         if not profile:
             self.query_one("#spec-ro", Static).update(
@@ -110,10 +132,11 @@ class EditSpecimensScreen(Screen):
             )
             return
         text = form.format_profile_readonly(
-            profile, trophic_slots=session.trophic_slots()
+            profile,
+            trophic_slots=session.trophic_slots(),
+            body_slug=slug or None,
         )
         self.query_one("#spec-ro", Static).update(text)
-
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         sid = getattr(event.item, "spec_id", None)
         if not sid:
@@ -135,6 +158,7 @@ class EditSpecimensScreen(Screen):
                 species_id=species_id,
                 create=create,
                 profile=profile,
+                read_only=self.read_only,
             )
         )
 
@@ -147,6 +171,8 @@ class EditSpecimensScreen(Screen):
                 self.app.pop_screen()
             return
         if event.button.id == "btn-new":
+            if self.read_only:
+                return
             from .species_wizard import NewSpeciesBiomeScreen
 
             self.app.push_screen(NewSpeciesBiomeScreen())
@@ -159,6 +185,8 @@ class EditSpecimensScreen(Screen):
             self._open_editor(species_id=sid, create=False)
             return
         if event.button.id == "btn-subspecies":
+            if self.read_only:
+                return
             sid = self._selected_id
             if not sid:
                 log.push("select a parent specimen first")
@@ -183,6 +211,8 @@ class EditSpecimensScreen(Screen):
             self._open_editor(species_id=new_id, create=True, profile=clone)
             return
         if event.button.id == "btn-remove":
+            if self.read_only:
+                return
             sid = self._selected_id
             if not sid:
                 log.push("select a specimen first")
