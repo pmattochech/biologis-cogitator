@@ -32,7 +32,7 @@ class ReviewScreen(Screen):
             with Horizontal(classes="-toolbar"):
                 yield Button("Seal to results (L7)", id="btn-out", variant="primary")
                 yield Button(
-                    "Open in Archive"
+                    "Open body dossier"
                     if CONSULTATION_ENABLED
                     else "Archive (offline)",
                     id="btn-archive",
@@ -154,8 +154,7 @@ class ReviewScreen(Screen):
         if event.button.id == "btn-archive":
             if not CONSULTATION_ENABLED:
                 log.push(
-                    "Archive offline — dossier redesign pending. "
-                    "Use Amendment after seal to inspect the body."
+                    "Archive offline. Use Amendment after seal to inspect the body."
                 )
                 return
             body = session.body or {}
@@ -163,12 +162,9 @@ class ReviewScreen(Screen):
             if not slug:
                 log.push("no body slug — seal to results first")
                 return
-            from .out_archive import OutArchiveScreen
+            from .body_dossier import BodyDossierScreen
 
-            # Prefer magos if present; Archive still opens even before write
-            self.app.push_screen(
-                OutArchiveScreen(kind="body", slug=slug, filename="magos.md")
-            )
+            self.app.push_screen(BodyDossierScreen(read_only=False))
             return
         if event.button.id == "btn-pack":
             pack_id = self._resolve_pack_id()

@@ -9,8 +9,8 @@ from .util import RESULTS
 
 Kind = Literal["body", "system"]
 
-BODY_ARTIFACTS = ("magos.md", "literary.md", "state.json")
-SYSTEM_ARTIFACTS = ("system.json", "system.md")
+BODY_ARTIFACTS = ("magos.md", "literary.md", "state.json", "profile.png")
+SYSTEM_ARTIFACTS = ("system.json", "system.md", "profile.png")
 
 
 def list_out_bodies() -> list[str]:

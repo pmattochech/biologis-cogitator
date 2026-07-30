@@ -311,9 +311,9 @@ class CogitatorApp(App[None]):
                     slug, pack_id=pack, from_results=from_results
                 )
                 self.session.clear_dirty()
-                from .screens.edit_hub import EditHubScreen
+                from .screens.body_dossier import BodyDossierScreen
 
-                self.push_screen(EditHubScreen())
+                self.push_screen(BodyDossierScreen())
                 try:
                     from .widgets.warn_log import WarnLog
 

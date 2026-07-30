@@ -126,8 +126,8 @@ Rites on the boot screen:
 | Rite | Purpose |
 |------|---------|
 | **Registration** | Birth a stellar system, hang a biosphere on a known system, or invoke a pack template |
-| **Amendment** | Open a body, register biomes & species, reshape the mesh |
-| **Consultation** | Offline for now (dossier redesign). Use **Amendment** to inspect sealed work. |
+| **Amendment** | Open a **body dossier** (plate + sections) to register biomes & species |
+| **Consultation** | Read-only sealed **dossiers** (bodies / systems with plates) |
 
 Under the chassis sits a layered generator: star & orbit bands → planet type → geology → climate → biomes → trophic web → bauplan → species profiles → **Seal** into your results folder.
 

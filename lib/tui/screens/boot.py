@@ -1,4 +1,4 @@
-"""Boot screen — choose Registration or Amendment (Consultation offline)."""
+"""Boot screen — Registration, Amendment, or Consultation (dossiers)."""
 from __future__ import annotations
 
 from textual.app import ComposeResult
@@ -12,7 +12,7 @@ from ..widgets.warn_log import WarnLog
 
 
 class BootScreen(Screen):
-    """Root rite chooser — Registration / Amendment; Consultation offline."""
+    """Root rite chooser — three doors when Consultation is enabled."""
 
     BINDINGS = [("q", "request_terminate", "Terminate")]
 
@@ -21,10 +21,9 @@ class BootScreen(Screen):
         with VerticalScroll(id="main"):
             yield Static("CASUS BIOGENESIS — CHOOSE YOUR RITE", classes="title")
             yield Static(
-                "Two rites stand before the Magos Biologis. "
-                "Register new mesh work, or amend what already exists. "
-                "Consultation (sealed archive browser) is offline until "
-                "dossier pages land — use Amendment as the workaround.",
+                "Three rites stand before the Magos Biologis. "
+                "Register new mesh work, amend what already exists, "
+                "or consult sealed dossiers (read-only object pages).",
                 classes="litany",
             )
             with Horizontal(classes="-toolbar rite-doors"):
@@ -40,7 +39,9 @@ class BootScreen(Screen):
                     classes="rite-door",
                 )
                 yield Button(
-                    "Consultation (offline)",
+                    "Rite of Consultation"
+                    if CONSULTATION_ENABLED
+                    else "Consultation (offline)",
                     id="btn-consultation",
                     classes="rite-door",
                     disabled=not CONSULTATION_ENABLED,
@@ -88,13 +89,12 @@ class BootScreen(Screen):
             log = self.query_one(WarnLog)
             if not CONSULTATION_ENABLED:
                 log.push(
-                    "Consultation offline — dossier redesign pending. "
-                    "Use Rite of Amendment to inspect bodies and species."
+                    "Consultation offline. Use Rite of Amendment to inspect work."
                 )
                 return
-            from .out_archive import OutArchiveScreen
+            from .dossier_browser import DossierBrowserScreen
 
-            self.app.push_screen(OutArchiveScreen())
+            self.app.push_screen(DossierBrowserScreen())
             return
         if bid == "btn-channel":
             from .channel import ChannelScreen
